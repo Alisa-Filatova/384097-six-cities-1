@@ -11,7 +11,10 @@ const RENTAL_OFFERS = [
 
 const init = () => {
   ReactDOM.render(
-      <App rentalOffers={RENTAL_OFFERS} />,
+      <App
+        rentalOffers={RENTAL_OFFERS}
+        onOfferTitleClick={() => {}}
+      />,
       document.querySelector(`#root`)
   );
 };
