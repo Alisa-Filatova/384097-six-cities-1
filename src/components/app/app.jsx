@@ -16,6 +16,12 @@ const App = (props) => {
 App.propTypes = {
   rentalOffers: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
+    img: PropTypes.string,
+    isPremium: PropTypes.bool,
+    price: PropTypes.number,
+    stars: PropTypes.number,
+    type: PropTypes.string,
+    isInBookmarks: PropTypes.bool,
   })).isRequired,
   onOfferTitleClick: PropTypes.func.isRequired,
 };

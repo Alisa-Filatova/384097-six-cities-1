@@ -1,0 +1,38 @@
+export default [
+  {
+    title: `Beautiful & luxurious apartment at great location`,
+    img: `img/apartment-01.jpg`,
+    isPremium: true,
+    price: 120,
+    stars: 4,
+    type: `Apartment`,
+    isInBookmarks: false,
+  },
+  {
+    title: `Wood and stone place`,
+    img: `img/apartment-02.jpg`,
+    isPremium: false,
+    price: 80,
+    stars: 2,
+    type: `Private room`,
+    isInBookmarks: true,
+  },
+  {
+    title: `Canal View Prinsengracht`,
+    img: `img/apartment-03.jpg`,
+    isPremium: false,
+    price: 180,
+    stars: 3,
+    type: `Apartment`,
+    isInBookmarks: false,
+  },
+  {
+    title: `Nice, cozy, warm big bed apartment`,
+    img: `img/apartment-01.jpg`,
+    isPremium: false,
+    price: 100,
+    stars: 4,
+    type: `Private room`,
+    isInBookmarks: true,
+  },
+];

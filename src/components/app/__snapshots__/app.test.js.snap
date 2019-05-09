@@ -263,6 +263,8 @@ Array [
           >
             <article
               className="cities__place-card place-card"
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
             >
               <div
                 className="place-card__mark"
@@ -278,7 +280,7 @@ Array [
                   href="#"
                 >
                   <img
-                    alt="Place image"
+                    alt="Beautiful & luxurious apartment at great location"
                     className="place-card__image"
                     height="200"
                     src="img/apartment-01.jpg"
@@ -298,7 +300,8 @@ Array [
                     <b
                       className="place-card__price-value"
                     >
-                      €120
+                      €
+                      120
                     </b>
                     <span
                       className="place-card__price-text"
@@ -307,7 +310,8 @@ Array [
                     </span>
                   </div>
                   <button
-                    className="place-card__bookmark-button button"
+                    className="place-card__bookmark-button button 
+              "
                     type="button"
                   >
                     <svg
@@ -335,7 +339,7 @@ Array [
                     <span
                       style={
                         Object {
-                          "width": "93%",
+                          "width": "80%",
                         }
                       }
                     />
@@ -353,7 +357,7 @@ Array [
                     href="#"
                     onClick={[MockFunction]}
                   >
-                    mockTitle
+                    Beautiful & luxurious apartment at great location
                   </a>
                 </h2>
                 <p

@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import MainPage from './main-page.jsx';
+import OffersList from './offers-list.jsx';
 
 const mock = [
   {
@@ -23,15 +23,15 @@ const mock = [
   }
 ];
 
-describe(`MainPage`, () => {
+describe(`OffersList`, () => {
   it(`renders correctly`, () => {
-    const page = renderer.create(
-        <MainPage
+    const list = renderer.create(
+        <OffersList
           rentalOffers={mock}
           onOfferTitleClick={jest.fn()}
         />
     ).toJSON();
 
-    expect(page).toMatchSnapshot();
+    expect(list).toMatchSnapshot();
   });
 });
