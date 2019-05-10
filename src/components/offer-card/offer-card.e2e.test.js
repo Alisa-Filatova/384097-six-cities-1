@@ -34,6 +34,6 @@ describe(`OfferCard`, () => {
     );
 
     card.find(`.cities__image-wrapper > a`).simulate(`click`);
-    expect(onOfferImgCallback.mock.results[0].value).toBe(mock.id);
+    expect(onOfferImgCallback.mock.results[0].value).toBe(card.props().offer.id);
   });
 });
