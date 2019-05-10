@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const OfferCard = (props) => {
-  const {offer, onTitleClick, onMouseOver, onMouseOut} = props;
+  const {offer, onOfferImgClick, onOfferTitleClick, onMouseOver, onMouseOut} = props;
 
   return (
     <article
@@ -16,7 +16,7 @@ const OfferCard = (props) => {
         </div>
       }
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <a href="#" onClick={onOfferImgClick}>
           <img
             className="place-card__image"
             src={offer.img}
@@ -52,7 +52,7 @@ const OfferCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#" onClick={onTitleClick}>{offer.title}</a>
+          <a href="#" onClick={onOfferTitleClick}>{offer.title}</a>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
@@ -62,6 +62,7 @@ const OfferCard = (props) => {
 
 OfferCard.propTypes = {
   offer: PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     img: PropTypes.string,
     isPremium: PropTypes.bool,
@@ -70,7 +71,8 @@ OfferCard.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
   }).isRequired,
-  onTitleClick: PropTypes.func.isRequired,
+  onOfferImgClick: PropTypes.func.isRequired,
+  onOfferTitleClick: PropTypes.func.isRequired,
   onMouseOver: PropTypes.func.isRequired,
   onMouseOut: PropTypes.func.isRequired,
 };

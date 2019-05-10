@@ -4,6 +4,7 @@ import MainPage from './main-page.jsx';
 
 const mock = [
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,
@@ -13,6 +14,7 @@ const mock = [
     isInBookmarks: false,
   },
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,

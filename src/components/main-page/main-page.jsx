@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
 
 const MainPage = (props) => {
-  const {rentalOffers, onOfferTitleClick} = props;
+  const {rentalOffers} = props;
 
   return (
     <>
@@ -111,10 +111,7 @@ const MainPage = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <OffersList
-                rentalOffers={rentalOffers}
-                onOfferTitleClick={onOfferTitleClick}
-              />
+              <OffersList rentalOffers={rentalOffers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map" />
@@ -128,6 +125,7 @@ const MainPage = (props) => {
 
 MainPage.propTypes = {
   rentalOffers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     img: PropTypes.string,
     isPremium: PropTypes.bool,
@@ -136,7 +134,6 @@ MainPage.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
   })).isRequired,
-  onOfferTitleClick: PropTypes.func.isRequired,
 };
 
 export default MainPage;

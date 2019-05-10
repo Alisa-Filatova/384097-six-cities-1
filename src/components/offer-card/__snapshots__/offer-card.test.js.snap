@@ -18,6 +18,7 @@ exports[`OfferCard renders correctly 1`] = `
   >
     <a
       href="#"
+      onClick={[MockFunction]}
     >
       <img
         alt="Beautiful & luxurious apartment at great location"

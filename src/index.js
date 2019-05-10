@@ -5,10 +5,7 @@ import rentalOffers from './mocks/offers';
 
 const init = () => {
   ReactDOM.render(
-      <App
-        rentalOffers={rentalOffers}
-        onOfferTitleClick={() => {}}
-      />,
+      <App rentalOffers={rentalOffers} />,
       document.querySelector(`#root`)
   );
 };

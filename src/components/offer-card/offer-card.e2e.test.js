@@ -1,11 +1,12 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import {shallow, configure} from 'enzyme';
+import {mount, configure} from 'enzyme';
 import OfferCard from './offer-card.jsx';
 
 configure({adapter: new Adapter()});
 
 const mock = {
+  id: 123,
   title: `Beautiful & luxurious apartment at great location`,
   img: `img/apartment-01.jpg`,
   isPremium: true,
@@ -16,29 +17,23 @@ const mock = {
 };
 
 describe(`OfferCard`, () => {
-  it(`renders correctly after handles events`, () => {
-    const onClickHandler = jest.fn();
+  it(`get card offer id on OfferImgClick handler`, () => {
+    const onClickTitleHandler = jest.fn();
     const mouseOverHandler = jest.fn();
     const mouseOutHandler = jest.fn();
+    const onOfferImgCallback = jest.fn(() => card.props().offer.id);
 
-    const card = shallow(
+    const card = mount(
         <OfferCard
           offer={mock}
-          onTitleClick={onClickHandler}
+          onOfferTitleClick={onClickTitleHandler}
+          onOfferImgClick={onOfferImgCallback}
           onMouseOver={mouseOverHandler}
           onMouseOut={mouseOutHandler}
         />
     );
 
-    card.find(`.place-card__name > a`).simulate(`click`);
-    expect(onClickHandler).toHaveBeenCalledTimes(1);
-
-    const offerCard = card.find(`.cities__place-card`);
-
-    offerCard.simulate(`mouseover`);
-    expect(mouseOverHandler).toHaveBeenCalledTimes(1);
-
-    offerCard.simulate(`mouseout`);
-    expect(mouseOutHandler).toHaveBeenCalledTimes(1);
+    card.find(`.cities__image-wrapper > a`).simulate(`click`);
+    expect(onOfferImgCallback.mock.results[0].value).toBe(mock.id);
   });
 });

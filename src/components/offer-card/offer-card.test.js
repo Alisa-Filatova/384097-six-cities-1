@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import OfferCard from './offer-card.jsx';
 
 const mock = {
+  id: 123,
   title: `Beautiful & luxurious apartment at great location`,
   img: `img/apartment-01.jpg`,
   isPremium: true,
@@ -14,14 +15,16 @@ const mock = {
 
 describe(`OfferCard`, () => {
   it(`renders correctly`, () => {
-    const onClickHandler = jest.fn();
+    const onTitleClickHandler = jest.fn();
+    const onImageClickHandler = jest.fn();
     const mouseOverHandler = jest.fn();
     const mouseLeaveHandler = jest.fn();
 
     const card = renderer.create(
         <OfferCard
           offer={mock}
-          onTitleClick={onClickHandler}
+          onOfferTitleClick={onTitleClickHandler}
+          onOfferImgClick={onImageClickHandler}
           onMouseOver={mouseOverHandler}
           onMouseOut={mouseLeaveHandler}
         />

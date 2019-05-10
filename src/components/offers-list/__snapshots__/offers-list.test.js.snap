@@ -21,6 +21,7 @@ exports[`OffersList renders correctly 1`] = `
     >
       <a
         href="#"
+        onClick={[Function]}
       >
         <img
           alt="Beautiful & luxurious apartment at great location"
@@ -98,7 +99,7 @@ exports[`OffersList renders correctly 1`] = `
       >
         <a
           href="#"
-          onClick={[MockFunction]}
+          onClick={[Function]}
         >
           Beautiful & luxurious apartment at great location
         </a>
@@ -127,6 +128,7 @@ exports[`OffersList renders correctly 1`] = `
     >
       <a
         href="#"
+        onClick={[Function]}
       >
         <img
           alt="Beautiful & luxurious apartment at great location"
@@ -204,7 +206,7 @@ exports[`OffersList renders correctly 1`] = `
       >
         <a
           href="#"
-          onClick={[MockFunction]}
+          onClick={[Function]}
         >
           Beautiful & luxurious apartment at great location
         </a>

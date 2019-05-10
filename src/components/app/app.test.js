@@ -4,6 +4,7 @@ import App from './app.jsx';
 
 const mock = [
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,
@@ -17,10 +18,7 @@ const mock = [
 describe(`App`, () => {
   it(`renders correctly`, () => {
     const app = renderer.create(
-        <App
-          rentalOffers={mock}
-          onOfferTitleClick={jest.fn()}
-        />
+        <App rentalOffers={mock} />
     ).toJSON();
 
     expect(app).toMatchSnapshot();

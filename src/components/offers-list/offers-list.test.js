@@ -4,6 +4,7 @@ import OffersList from './offers-list.jsx';
 
 const mock = [
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,
@@ -13,6 +14,7 @@ const mock = [
     isInBookmarks: false,
   },
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,
@@ -26,10 +28,7 @@ const mock = [
 describe(`OffersList`, () => {
   it(`renders correctly`, () => {
     const list = renderer.create(
-        <OffersList
-          rentalOffers={mock}
-          onOfferTitleClick={jest.fn()}
-        />
+        <OffersList rentalOffers={mock} />
     ).toJSON();
 
     expect(list).toMatchSnapshot();

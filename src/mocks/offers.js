@@ -1,5 +1,6 @@
 export default [
   {
+    id: 123,
     title: `Beautiful & luxurious apartment at great location`,
     img: `img/apartment-01.jpg`,
     isPremium: true,
@@ -9,6 +10,7 @@ export default [
     isInBookmarks: false,
   },
   {
+    id: 234,
     title: `Wood and stone place`,
     img: `img/apartment-02.jpg`,
     isPremium: false,
@@ -18,6 +20,7 @@ export default [
     isInBookmarks: true,
   },
   {
+    id: 456,
     title: `Canal View Prinsengracht`,
     img: `img/apartment-03.jpg`,
     isPremium: false,
@@ -27,6 +30,7 @@ export default [
     isInBookmarks: false,
   },
   {
+    id: 567,
     title: `Nice, cozy, warm big bed apartment`,
     img: `img/apartment-01.jpg`,
     isPremium: false,
