@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import App from './app.jsx';
+import Map from './map.jsx';
 
 const mock = [
   {
@@ -12,11 +12,22 @@ const mock = [
     stars: 4,
     type: `Apartment`,
     isInBookmarks: false,
-    coordinates: [52.3909553943508, 4.929309666406198],
+    coordinates: [52.369553943508, 4.85309666406198],
   },
+  {
+    id: 123,
+    title: `Beautiful & luxurious apartment at great location`,
+    img: `img/apartment-01.jpg`,
+    isPremium: true,
+    price: 120,
+    stars: 4,
+    type: `Apartment`,
+    isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.85309666406198],
+  }
 ];
 
-describe(`App`, () => {
+describe(`Map`, () => {
   it(`renders correctly`, () => {
     // leaflet в вызове map вызывает document.getElementById,
     // но так как тесты выполняются в тестовом окружении и в ноде, то ему jsdom возвращает null.
@@ -26,10 +37,10 @@ describe(`App`, () => {
     mapContainer.setAttribute(`id`, `map`);
     global.document.body.appendChild(mapContainer);
 
-    const app = renderer.create(
-        <App rentalOffers={mock} />
+    const map = renderer.create(
+        <Map rentalOffers={mock} />
     ).toJSON();
 
-    expect(app).toMatchSnapshot();
+    expect(map).toMatchSnapshot();
   });
 });

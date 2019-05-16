@@ -46,6 +46,7 @@ OffersList.propTypes = {
     stars: PropTypes.number,
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
+    coordinates: PropTypes.arrayOf(PropTypes.number),
   })).isRequired,
 };
 
