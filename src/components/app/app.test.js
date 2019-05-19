@@ -1,6 +1,9 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import Adapter from 'enzyme-adapter-react-16';
+import {configure, shallow} from 'enzyme';
 import App from './app.jsx';
+
+configure({adapter: new Adapter()});
 
 const mock = [
   {
@@ -18,17 +21,9 @@ const mock = [
 
 describe(`App`, () => {
   it(`renders correctly`, () => {
-    // leaflet в вызове map вызывает document.getElementById,
-    // но так как тесты выполняются в тестовом окружении и в ноде, то ему jsdom возвращает null.
-    // Чтобы пофиксить - создаем окружение с помощью jsdom - так мы подстраиваемся
-    // под реализацию сторонней библиотеки (избегаем падения теста).
-    const mapContainer = global.document.createElement(`mapContainer`);
-    mapContainer.setAttribute(`id`, `map`);
-    global.document.body.appendChild(mapContainer);
-
-    const app = renderer.create(
+    const app = shallow(
         <App rentalOffers={mock} />
-    ).toJSON();
+    );
 
     expect(app).toMatchSnapshot();
   });
