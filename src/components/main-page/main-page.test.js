@@ -1,6 +1,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {configure, shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
 import MainPage from './main-page.jsx';
 
 configure({adapter: new Adapter()});
@@ -39,6 +40,6 @@ describe(`MainPage`, () => {
         />
     );
 
-    expect(page).toMatchSnapshot();
+    expect(shallowToJson(page)).toMatchSnapshot();
   });
 });

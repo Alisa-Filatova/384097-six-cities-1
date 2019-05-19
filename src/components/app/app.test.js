@@ -1,6 +1,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {configure, shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
 import App from './app.jsx';
 
 configure({adapter: new Adapter()});
@@ -25,6 +26,6 @@ describe(`App`, () => {
         <App rentalOffers={mock} />
     );
 
-    expect(app).toMatchSnapshot();
+    expect(shallowToJson(app)).toMatchSnapshot();
   });
 });

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App renders correctly 1`] = `
+<MainPage
+  rentalOffers={
+    Array [
+      Object {
+        "coordinates": Array [
+          52.3909553943508,
+          4.929309666406198,
+        ],
+        "id": 123,
+        "img": "img/apartment-01.jpg",
+        "isInBookmarks": false,
+        "isPremium": true,
+        "price": 120,
+        "stars": 4,
+        "title": "Beautiful & luxurious apartment at great location",
+        "type": "Apartment",
+      },
+    ]
+  }
+/>
+`;
