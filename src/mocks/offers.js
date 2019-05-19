@@ -8,6 +8,7 @@ export default [
     stars: 4,
     type: `Apartment`,
     isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.85309666406198],
   },
   {
     id: 234,
@@ -18,6 +19,7 @@ export default [
     stars: 2,
     type: `Private room`,
     isInBookmarks: true,
+    coordinates: [52.369553943508, 4.85309666406198],
   },
   {
     id: 456,
@@ -28,6 +30,7 @@ export default [
     stars: 3,
     type: `Apartment`,
     isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.929309666406198],
   },
   {
     id: 567,
@@ -38,5 +41,6 @@ export default [
     stars: 4,
     type: `Private room`,
     isInBookmarks: true,
+    coordinates: [52.3809553943508, 4.939309666406198],
   },
 ];

@@ -70,6 +70,7 @@ OfferCard.propTypes = {
     stars: PropTypes.number,
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
+    coordinates: PropTypes.arrayOf(PropTypes.number),
   }).isRequired,
   onOfferImgClick: PropTypes.func.isRequired,
   onOfferTitleClick: PropTypes.func.isRequired,

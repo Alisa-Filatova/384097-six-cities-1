@@ -1,6 +1,10 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import Adapter from 'enzyme-adapter-react-16';
+import {configure, shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
 import MainPage from './main-page.jsx';
+
+configure({adapter: new Adapter()});
 
 const mock = [
   {
@@ -12,6 +16,7 @@ const mock = [
     stars: 4,
     type: `Apartment`,
     isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.929309666406198],
   },
   {
     id: 123,
@@ -22,18 +27,19 @@ const mock = [
     stars: 4,
     type: `Apartment`,
     isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.929309666406198],
   }
 ];
 
 describe(`MainPage`, () => {
   it(`renders correctly`, () => {
-    const page = renderer.create(
+    const page = shallow(
         <MainPage
           rentalOffers={mock}
           onOfferTitleClick={jest.fn()}
         />
-    ).toJSON();
+    );
 
-    expect(page).toMatchSnapshot();
+    expect(shallowToJson(page)).toMatchSnapshot();
   });
 });

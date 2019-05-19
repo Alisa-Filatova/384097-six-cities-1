@@ -11,6 +11,7 @@ const mock = {
   stars: 4,
   type: `Apartment`,
   isInBookmarks: false,
+  coordinates: [52.3909553943508, 4.929309666406198],
 };
 
 describe(`OfferCard`, () => {
