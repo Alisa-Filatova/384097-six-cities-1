@@ -1,6 +1,10 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import Adapter from 'enzyme-adapter-react-16';
+import {configure, shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
 import App from './app.jsx';
+
+configure({adapter: new Adapter()});
 
 const mock = [
   {
@@ -12,15 +16,16 @@ const mock = [
     stars: 4,
     type: `Apartment`,
     isInBookmarks: false,
+    coordinates: [52.3909553943508, 4.929309666406198],
   },
 ];
 
 describe(`App`, () => {
   it(`renders correctly`, () => {
-    const app = renderer.create(
+    const app = shallow(
         <App rentalOffers={mock} />
-    ).toJSON();
+    );
 
-    expect(app).toMatchSnapshot();
+    expect(shallowToJson(app)).toMatchSnapshot();
   });
 });

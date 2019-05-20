@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
+import Map from '../map/map.jsx';
 
 const MainPage = (props) => {
   const {rentalOffers} = props;
@@ -114,7 +115,7 @@ const MainPage = (props) => {
               <OffersList rentalOffers={rentalOffers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <Map rentalOffers={rentalOffers} />
             </div>
           </div>
         </div>
@@ -133,6 +134,7 @@ MainPage.propTypes = {
     stars: PropTypes.number,
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
+    coordinates: PropTypes.arrayOf(PropTypes.number),
   })).isRequired,
 };
 
