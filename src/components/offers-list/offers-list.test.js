@@ -13,6 +13,10 @@ const mock = [
     type: `Apartment`,
     isInBookmarks: false,
     coordinates: [52.3909553943508, 4.929309666406198],
+    town: {
+      name: `Amsterdam`,
+      coordinates: [52.38333, 4.9],
+    },
   },
   {
     id: 123,
@@ -24,6 +28,10 @@ const mock = [
     type: `Apartment`,
     isInBookmarks: false,
     coordinates: [52.3909553943508, 4.929309666406198],
+    town: {
+      name: `Amsterdam`,
+      coordinates: [52.38333, 4.9],
+    },
   }
 ];
 

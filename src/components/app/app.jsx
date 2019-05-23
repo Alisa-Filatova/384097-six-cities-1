@@ -1,14 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {ActionCreator} from '../../reducer/reducer';
 import MainPage from '../main-page/main-page.jsx';
 
 const App = (props) => {
-  const {rentalOffers} = props;
+  const {rentalOffers, onTownClick, currentTown, townsList} = props;
 
   return (
-    <MainPage rentalOffers={rentalOffers} />
+    <MainPage
+      rentalOffers={rentalOffers}
+      onTownClick={onTownClick}
+      currentTown={currentTown}
+      towns={townsList}
+    />
   );
 };
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  currentTown: state.currentTown,
+  rentalOffers: state.rentalOffers.filter((offer) => offer.town.name === state.currentTown),
+  townsList: state.townsList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onTownClick: (currentTown) => {
+    dispatch(ActionCreator.changeTown(currentTown));
+  },
+});
 
 App.propTypes = {
   rentalOffers: PropTypes.arrayOf(PropTypes.shape({
@@ -21,7 +40,15 @@ App.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
     coordinates: PropTypes.arrayOf(PropTypes.number),
+    town: PropTypes.shape({
+      name: PropTypes.string,
+      coordinates: PropTypes.arrayOf(PropTypes.number),
+    }),
   })).isRequired,
+  onTownClick: PropTypes.func.isRequired,
+  currentTown: PropTypes.string.isRequired,
+  townsList: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default App;
+export {App};
+export default connect(mapStateToProps, mapDispatchToProps)(App);

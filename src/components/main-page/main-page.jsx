@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
+import TownsList from '../towns-list/towns-list.jsx';
 
 const MainPage = (props) => {
-  const {rentalOffers} = props;
+  const {rentalOffers, onTownClick, currentTown, towns} = props;
 
   return (
     <>
@@ -56,47 +57,18 @@ const MainPage = (props) => {
       </header>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="cities tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
-        <div className="cities__places-wrapper">
+        <TownsList
+          towns={towns}
+          onTownClick={onTownClick}
+          currentTown={currentTown}
+        />
+        <div className="cities__places-wrapper" style={{height: `100vh`}}>
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">
+                {`${rentalOffers.length} ${rentalOffers.length === 1 ? `place` : `places`} to stay in ${currentTown}`}
+              </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex="0">
@@ -115,7 +87,7 @@ const MainPage = (props) => {
               <OffersList rentalOffers={rentalOffers} />
             </section>
             <div className="cities__right-section">
-              <Map rentalOffers={rentalOffers} />
+              <Map rentalOffers={rentalOffers} town={rentalOffers[0].town} />
             </div>
           </div>
         </div>
@@ -135,7 +107,14 @@ MainPage.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
     coordinates: PropTypes.arrayOf(PropTypes.number),
+    town: PropTypes.shape({
+      name: PropTypes.string,
+      coordinates: PropTypes.arrayOf(PropTypes.number),
+    }),
   })).isRequired,
+  currentTown: PropTypes.string.isRequired,
+  onTownClick: PropTypes.func.isRequired,
+  towns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default MainPage;
