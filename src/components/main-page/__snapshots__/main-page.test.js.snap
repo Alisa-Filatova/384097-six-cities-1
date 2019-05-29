@@ -102,91 +102,23 @@ exports[`MainPage renders correctly 1`] = `
     >
       Cities
     </h1>
-    <div
-      className="cities tabs"
-    >
-      <section
-        className="locations container"
-      >
-        <ul
-          className="locations__list tabs__list"
-        >
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Paris
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Cologne
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Brussels
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item tabs__item--active"
-            >
-              <span>
-                Amsterdam
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Hamburg
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Dusseldorf
-              </span>
-            </a>
-          </li>
-        </ul>
-      </section>
-    </div>
+    <TownsList
+      currentTown="Amsterdam"
+      onTownClick={[MockFunction]}
+      towns={
+        Array [
+          "Amsterdam",
+          "Paris",
+        ]
+      }
+    />
     <div
       className="cities__places-wrapper"
+      style={
+        Object {
+          "height": "100vh",
+        }
+      }
     >
       <div
         className="cities__places-container container"
@@ -202,7 +134,7 @@ exports[`MainPage renders correctly 1`] = `
           <b
             className="places__found"
           >
-            312 places to stay in Amsterdam
+            2 places to stay in Amsterdam
           </b>
           <form
             action="#"
@@ -273,6 +205,13 @@ exports[`MainPage renders correctly 1`] = `
                   "price": 120,
                   "stars": 4,
                   "title": "Beautiful & luxurious apartment at great location",
+                  "town": Object {
+                    "coordinates": Array [
+                      52.38333,
+                      4.9,
+                    ],
+                    "name": "Amsterdam",
+                  },
                   "type": "Apartment",
                 },
                 Object {
@@ -287,6 +226,13 @@ exports[`MainPage renders correctly 1`] = `
                   "price": 120,
                   "stars": 4,
                   "title": "Beautiful & luxurious apartment at great location",
+                  "town": Object {
+                    "coordinates": Array [
+                      52.38333,
+                      4.9,
+                    ],
+                    "name": "Amsterdam",
+                  },
                   "type": "Apartment",
                 },
               ]
@@ -311,6 +257,13 @@ exports[`MainPage renders correctly 1`] = `
                   "price": 120,
                   "stars": 4,
                   "title": "Beautiful & luxurious apartment at great location",
+                  "town": Object {
+                    "coordinates": Array [
+                      52.38333,
+                      4.9,
+                    ],
+                    "name": "Amsterdam",
+                  },
                   "type": "Apartment",
                 },
                 Object {
@@ -325,9 +278,25 @@ exports[`MainPage renders correctly 1`] = `
                   "price": 120,
                   "stars": 4,
                   "title": "Beautiful & luxurious apartment at great location",
+                  "town": Object {
+                    "coordinates": Array [
+                      52.38333,
+                      4.9,
+                    ],
+                    "name": "Amsterdam",
+                  },
                   "type": "Apartment",
                 },
               ]
+            }
+            town={
+              Object {
+                "coordinates": Array [
+                  52.38333,
+                  4.9,
+                ],
+                "name": "Amsterdam",
+              }
             }
           />
         </div>

@@ -71,6 +71,10 @@ OfferCard.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
     coordinates: PropTypes.arrayOf(PropTypes.number),
+    town: PropTypes.shape({
+      name: PropTypes.string,
+      coordinates: PropTypes.arrayOf(PropTypes.number),
+    }),
   }).isRequired,
   onOfferImgClick: PropTypes.func.isRequired,
   onOfferTitleClick: PropTypes.func.isRequired,
