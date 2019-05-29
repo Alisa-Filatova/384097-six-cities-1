@@ -2,6 +2,8 @@
 
 exports[`App renders correctly 1`] = `
 <MainPage
+  currentTown="Amsterdam"
+  onTownClick={[MockFunction]}
   rentalOffers={
     Array [
       Object {
@@ -16,8 +18,21 @@ exports[`App renders correctly 1`] = `
         "price": 120,
         "stars": 4,
         "title": "Beautiful & luxurious apartment at great location",
+        "town": Object {
+          "coords": Array [
+            52.38333,
+            4.9,
+          ],
+          "name": "Amsterdam",
+        },
         "type": "Apartment",
       },
+    ]
+  }
+  towns={
+    Array [
+      "Amsterdam",
+      "Paris",
     ]
   }
 />

@@ -47,6 +47,10 @@ OffersList.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
     coordinates: PropTypes.arrayOf(PropTypes.number),
+    town: PropTypes.shape({
+      name: PropTypes.string,
+      coordinates: PropTypes.arrayOf(PropTypes.number),
+    }),
   })).isRequired,
 };
 

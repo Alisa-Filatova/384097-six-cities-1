@@ -2,21 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
-const DEFAULT_CITY = [52.38333, 4.9];
 const ZOOM = 12;
 
 const SETTINGS = {
-  center: DEFAULT_CITY,
   zoom: ZOOM,
   zoomControl: false,
   marker: true,
   icon: leaflet.icon({
     iconUrl: `img/pin.svg`,
     iconSize: [27, 39],
-  })
+  }),
 };
 
 class Map extends React.PureComponent {
+
+  componentDidMount() {
+    this._initMap();
+  }
+
+  componentDidUpdate() {
+    if (this.map && this.markersLayer) {
+      const {town, rentalOffers} = this.props;
+      const center = town.coordinates;
+
+      this.map.panTo(center);
+      this.markersLayer.clearLayers();
+
+      rentalOffers.forEach((place) => {
+        leaflet.marker(place.coordinates, {icon: SETTINGS.icon}).addTo(this.markersLayer);
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.map.remove();
+    this.map = null;
+  }
+
   render() {
     return (
       <section
@@ -26,21 +48,20 @@ class Map extends React.PureComponent {
     );
   }
 
-  componentDidMount() {
-    this._initMap();
-  }
-
   _initMap() {
-    const map = leaflet.map(`map`, SETTINGS);
+    const {town, rentalOffers} = this.props;
+    this.map = leaflet.map(`map`, SETTINGS);
 
-    map.setView(SETTINGS.center, SETTINGS.zoom);
+    this.map.setView(town.coordinates, SETTINGS.zoom);
 
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
-      .addTo(map);
+      .addTo(this.map);
 
-    this.props.rentalOffers.forEach((offer) => {
-      leaflet.marker(offer.coordinates, {icon: SETTINGS.icon}).addTo(map);
+    this.markersLayer = leaflet.layerGroup().addTo(this.map);
+
+    rentalOffers.forEach((place) => {
+      leaflet.marker(place.coordinates, {icon: SETTINGS.icon}).addTo(this.markersLayer);
     });
   }
 }
@@ -56,7 +77,15 @@ Map.propTypes = {
     type: PropTypes.string,
     isInBookmarks: PropTypes.bool,
     coordinates: PropTypes.arrayOf(PropTypes.number),
+    town: PropTypes.shape({
+      name: PropTypes.string,
+      coordinates: PropTypes.arrayOf(PropTypes.number),
+    }),
   })).isRequired,
+  town: PropTypes.shape({
+    name: PropTypes.string,
+    coordinates: PropTypes.arrayOf(PropTypes.number),
+  }),
 };
 
 export default Map;
