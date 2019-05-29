@@ -14,7 +14,7 @@ exports[`TownsList renders correctly 1`] = `
         className="locations__item"
       >
         <a
-          className="locations__item-link tabs__item false"
+          className="locations__item-link tabs__item "
           href="#"
           onClick={[Function]}
         >

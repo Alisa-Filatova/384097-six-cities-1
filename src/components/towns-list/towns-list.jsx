@@ -6,13 +6,13 @@ const TownsList = ({towns, onTownClick, currentTown}) => {
     <div className="cities tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {towns.map((town, idx) => (
+          {towns.map((town) => (
             <li
               className="locations__item"
-              key={town + idx}
+              key={town}
             >
               <a
-                className={`locations__item-link tabs__item ${town === currentTown && `tabs__item--active`}`}
+                className={`locations__item-link tabs__item ${town === currentTown ? `tabs__item--active` : ``}`}
                 onClick={(event) => {
                   event.preventDefault();
                   onTownClick(town);
