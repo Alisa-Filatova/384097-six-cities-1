@@ -27,6 +27,7 @@ describe(`OfferCard`, () => {
 
     const card = renderer.create(
         <OfferCard
+          activeItem={1}
           offer={mock}
           onOfferTitleClick={onTitleClickHandler}
           onOfferImgClick={onImageClickHandler}

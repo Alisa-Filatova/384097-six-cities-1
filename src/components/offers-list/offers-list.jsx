@@ -2,39 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import OfferCard from '../offer-card/offer-card.jsx';
 
-class OffersList extends React.PureComponent {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeOffer: null,
-    };
-  }
-
-  render() {
-    const {rentalOffers} = this.props;
-
-    return (
-      <div className="cities__places-list places__list tabs__content">
-        {rentalOffers.map((offer, idx) => (
-          <OfferCard
-            offer={offer}
-            onOfferTitleClick={() => {}}
-            onOfferImgClick={() => {}}
-            key={idx}
-            onMouseOver={() => {
-              this.setState({activeOffer: offer});
-            }}
-            onMouseOut={() => {
-              this.setState({activeOffer: null});
-            }}
-          />
-        ))}
-      </div>
-    );
-  }
-}
+const OffersList = ({rentalOffers, setActiveItem}) => (
+  <div className="cities__places-list places__list tabs__content">
+    {rentalOffers.map((offer, idx) => (
+      <OfferCard
+        activeItem={offer.id}
+        offer={offer}
+        onOfferTitleClick={() => {}}
+        onOfferImgClick={() => setActiveItem(offer.id)}
+        key={idx}
+        onMouseOver={() => setActiveItem(offer.id)}
+        onMouseOut={() => setActiveItem(null)}
+      />
+    ))}
+  </div>
+);
 
 OffersList.propTypes = {
   rentalOffers: PropTypes.arrayOf(PropTypes.shape({
@@ -52,6 +34,7 @@ OffersList.propTypes = {
       coordinates: PropTypes.arrayOf(PropTypes.number),
     }),
   })).isRequired,
+  setActiveItem: PropTypes.func.isRequired,
 };
 
 export default OffersList;

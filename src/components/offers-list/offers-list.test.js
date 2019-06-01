@@ -38,7 +38,10 @@ const mock = [
 describe(`OffersList`, () => {
   it(`renders correctly`, () => {
     const list = renderer.create(
-        <OffersList rentalOffers={mock} />
+        <OffersList
+          rentalOffers={mock}
+          setActiveItem={jest.fn()}
+        />
     ).toJSON();
 
     expect(list).toMatchSnapshot();

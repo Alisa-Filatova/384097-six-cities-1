@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const OfferCard = (props) => {
-  const {offer, onOfferImgClick, onOfferTitleClick, onMouseOver, onMouseOut} = props;
+  const {offer, onOfferImgClick, onOfferTitleClick, onMouseOver, onMouseOut, activeItem} = props;
 
   return (
     <article
-      className="cities__place-card place-card"
+      className={`cities__place-card ${activeItem !== null ? `cities__place-card--active` : ``} place-card`}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
@@ -80,6 +80,7 @@ OfferCard.propTypes = {
   onOfferTitleClick: PropTypes.func.isRequired,
   onMouseOver: PropTypes.func.isRequired,
   onMouseOut: PropTypes.func.isRequired,
+  activeItem: PropTypes.number.isRequired,
 };
 
 export default OfferCard;
