@@ -190,7 +190,7 @@ exports[`MainPage renders correctly 1`] = `
               </li>
             </ul>
           </form>
-          <OffersList
+          <WithActiveItem
             rentalOffers={
               Array [
                 Object {
