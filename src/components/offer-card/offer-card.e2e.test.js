@@ -26,7 +26,7 @@ describe(`OfferCard`, () => {
 
     const card = mount(
         <OfferCard
-          activeOffer={1}
+          activeItem={1}
           offer={mock}
           onOfferTitleClick={onClickTitleHandler}
           onOfferImgClick={onOfferImgCallback}
