@@ -1,6 +1,6 @@
 import React from 'react';
 
-const withActiveItem = ({WrappedComponent, item = null}) => (
+const withActiveItem = (WrappedComponent, item = null) => (
   class WithActiveItem extends React.PureComponent {
     constructor(props) {
       super(props);
