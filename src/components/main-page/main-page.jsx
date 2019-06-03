@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
 import TownsList from '../towns-list/towns-list.jsx';
+import withActiveItem from '../../hocs/with-active-item.jsx';
 
 const MainPage = (props) => {
   const {rentalOffers, onTownClick, currentTown, towns} = props;
+  const WrappedOffersList = withActiveItem(OffersList);
 
   return (
     <>
@@ -84,7 +86,7 @@ const MainPage = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <OffersList rentalOffers={rentalOffers} />
+              <WrappedOffersList rentalOffers={rentalOffers} />
             </section>
             <div className="cities__right-section">
               <Map rentalOffers={rentalOffers} town={rentalOffers[0].town} />
