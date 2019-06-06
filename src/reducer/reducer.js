@@ -1,14 +1,17 @@
+import api from '../api.js';
+
 const MAX_TOWNS = 6;
 
 const ActionType = {
   CHANGE_TOWN: `CHANGE_TOWN`,
-  RESET: `RESET`,
   LOAD_OFFERS: `LOAD_OFFERS`,
+  RESET: `RESET`,
 };
 
 const initialState = {
-  currentTown: `Amsterdam`,
+  currentTown: `Cologne`,
   rentalOffers: [],
+  townsList: [],
 };
 
 const ActionCreator = {
@@ -16,18 +19,19 @@ const ActionCreator = {
     type: ActionType.CHANGE_TOWN,
     payload: currentTown,
   }),
-  loadOffers: (offers) => ({
-    type: ActionType.CHANGE_TOWN,
-    payload: offers,
+  loadOffers: (rentalOffers) => ({
+    type: ActionType.LOAD_OFFERS,
+    payload: rentalOffers,
   }),
 };
 
-const loadOffers = () => (dispatch) => {
-  return fetch(`https://es31-server.appspot.com/six-cities`)
-    .then((response) => response.json())
-    .then((offers) => {
-      dispatch.ActionCreator.loadOffers(offers);
-    });
+const Operation = {
+  loadOffers: () => (dispatch) => {
+    return api.get(`/hotels`)
+      .then((response) => {
+        dispatch(ActionCreator.loadOffers(response.data));
+      });
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,4 +50,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export {reducer, ActionCreator, ActionType, MAX_TOWNS, loadOffers};
+export {reducer, ActionCreator, ActionType, MAX_TOWNS, Operation};

@@ -23,11 +23,11 @@ exports[`OffersList renders correctly 1`] = `
         href="#"
         onClick={[Function]}
       >
-        <img
+        <preview_image
           alt="Beautiful & luxurious apartment at great location"
           className="place-card__image"
           height="200"
-          src="img/apartment-01.jpg"
+          src="preview_image/apartment-01.jpg"
           width="260"
         />
       </a>
@@ -54,7 +54,7 @@ exports[`OffersList renders correctly 1`] = `
           </span>
         </div>
         <button
-          className="place-card__bookmark-button button 
+          className="place-card__bookmark-button button
               "
           type="button"
         >
@@ -130,11 +130,11 @@ exports[`OffersList renders correctly 1`] = `
         href="#"
         onClick={[Function]}
       >
-        <img
+        <preview_image
           alt="Beautiful & luxurious apartment at great location"
           className="place-card__image"
           height="200"
-          src="img/apartment-01.jpg"
+          src="preview_image/apartment-01.jpg"
           width="260"
         />
       </a>
@@ -161,7 +161,7 @@ exports[`OffersList renders correctly 1`] = `
           </span>
         </div>
         <button
-          className="place-card__bookmark-button button 
+          className="place-card__bookmark-button button
               "
           type="button"
         >

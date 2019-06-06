@@ -12,13 +12,13 @@ exports[`App renders correctly 1`] = `
           4.929309666406198,
         ],
         "id": 123,
-        "img": "img/apartment-01.jpg",
+        "preview_image": "preview_image/apartment-01.jpg",
         "isInBookmarks": false,
         "isPremium": true,
         "price": 120,
-        "stars": 4,
+        "rating": 4,
         "title": "Beautiful & luxurious apartment at great location",
-        "town": Object {
+        "city": Object {
           "coords": Array [
             52.38333,
             4.9,

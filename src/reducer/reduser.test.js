@@ -5,11 +5,11 @@ const DEFAULT_TOWN = `Amsterdam`;
 
 describe(`Reducer works correct`, () => {
 
-  const townsList = [...new Set(rentalOffers.map((offer) => offer.town.name))].slice(0, MAX_TOWNS);
+  const townsList = [...new Set(rentalOffers.map((offer) => offer.city.name))].slice(0, MAX_TOWNS);
 
   it(`without params it return initialState`, () => {
     expect(reducer(undefined, {})).toEqual({
-      currentTown: rentalOffers[0].town.name,
+      currentTown: rentalOffers[0].city.name,
       rentalOffers,
       townsList,
     });
@@ -38,7 +38,7 @@ describe(`Reducer works correct`, () => {
           type: ActionType.RESET,
         })
     ).toEqual({
-      currentTown: rentalOffers[0].town.name,
+      currentTown: rentalOffers[0].city.name,
       rentalOffers,
       townsList,
     });

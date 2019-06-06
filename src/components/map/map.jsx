@@ -22,14 +22,14 @@ class Map extends React.PureComponent {
 
   componentDidUpdate() {
     if (this.map && this.markersLayer) {
-      const {town, rentalOffers} = this.props;
-      const center = town.coordinates;
+      const {city, rentalOffers} = this.props;
+      const center = [city.location.latitude, city.location.longitude];
 
       this.map.panTo(center);
       this.markersLayer.clearLayers();
 
       rentalOffers.forEach((place) => {
-        leaflet.marker(place.coordinates, {icon: SETTINGS.icon}).addTo(this.markersLayer);
+        leaflet.marker([place.location.latitude, place.location.longitude], {icon: SETTINGS.icon}).addTo(this.markersLayer);
       });
     }
   }
@@ -49,10 +49,10 @@ class Map extends React.PureComponent {
   }
 
   _initMap() {
-    const {town, rentalOffers} = this.props;
+    const {city, rentalOffers} = this.props;
     this.map = leaflet.map(`map`, SETTINGS);
 
-    this.map.setView(town.coordinates, SETTINGS.zoom);
+    this.map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
 
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
@@ -61,7 +61,7 @@ class Map extends React.PureComponent {
     this.markersLayer = leaflet.layerGroup().addTo(this.map);
 
     rentalOffers.forEach((place) => {
-      leaflet.marker(place.coordinates, {icon: SETTINGS.icon}).addTo(this.markersLayer);
+      leaflet.marker([place.location.latitude, place.location.longitude], {icon: SETTINGS.icon}).addTo(this.markersLayer);
     });
   }
 }
@@ -70,21 +70,43 @@ Map.propTypes = {
   rentalOffers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
-    img: PropTypes.string,
-    isPremium: PropTypes.bool,
+    [`preview_image`]: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string),
+    [`is_premium`]: PropTypes.bool,
+    [`is_favourite`]: PropTypes.bool,
+    bedrooms: PropTypes.number,
+    goods: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.string,
     price: PropTypes.number,
-    stars: PropTypes.number,
+    rating: PropTypes.number,
     type: PropTypes.string,
-    isInBookmarks: PropTypes.bool,
-    coordinates: PropTypes.arrayOf(PropTypes.number),
-    town: PropTypes.shape({
+    location: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      zoom: PropTypes.number,
+    }),
+    city: PropTypes.shape({
       name: PropTypes.string,
-      coordinates: PropTypes.arrayOf(PropTypes.number),
+      location: PropTypes.shape({
+        latitude: PropTypes.number,
+        longitude: PropTypes.number,
+        zoom: PropTypes.number,
+      }),
+    }),
+    host: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      [`is_pro`]: PropTypes.bool,
+      [`avatar_url`]: PropTypes.string,
     }),
   })).isRequired,
-  town: PropTypes.shape({
+  city: PropTypes.shape({
     name: PropTypes.string,
-    coordinates: PropTypes.arrayOf(PropTypes.number),
+    location: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      zoom: PropTypes.number,
+    }),
   }),
 };
 

@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import {reducer, ActionCreator} from './reducer/reducer';
+import thunk from 'redux-thunk';
+import {compose} from 'recompose';
+import {reducer, Operation} from './reducer/reducer';
 import App from './components/app/app.jsx';
 
 const init = () => {
   const store = createStore(
       reducer,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      compose(
+          applyMiddleware(thunk),
+          window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      )
   );
 
-  store.dispatch(ActionCreator.loadOffers());
+  store.dispatch(Operation.loadOffers());
 
   ReactDOM.render(
       <Provider store={store}>

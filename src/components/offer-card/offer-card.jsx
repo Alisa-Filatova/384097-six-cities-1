@@ -10,7 +10,7 @@ const OfferCard = (props) => {
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      {offer.isPremium &&
+      {offer.is_premium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -19,7 +19,7 @@ const OfferCard = (props) => {
         <a href="#" onClick={onOfferImgClick}>
           <img
             className="place-card__image"
-            src={offer.img}
+            src={offer.preview_image}
             width="260"
             height="200"
             alt={offer.title}
@@ -35,7 +35,7 @@ const OfferCard = (props) => {
           <button
             className={
               `place-card__bookmark-button button 
-              ${offer.isInBookmarks ? `place-card__bookmark-button--active` : ``}`
+              ${offer.is_favorite ? `place-card__bookmark-button--active` : ``}`
             }
             type="button"
           >
@@ -47,7 +47,7 @@ const OfferCard = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: (offer.stars * 10) * 2 + `%`}} />
+            <span style={{width: (offer.rating * 10) * 2 + `%`}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -64,16 +64,34 @@ OfferCard.propTypes = {
   offer: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
-    img: PropTypes.string,
-    isPremium: PropTypes.bool,
+    [`preview_image`]: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string),
+    [`is_premium`]: PropTypes.bool,
+    [`is_favorite`]: PropTypes.bool,
+    bedrooms: PropTypes.number,
+    goods: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.string,
     price: PropTypes.number,
-    stars: PropTypes.number,
+    rating: PropTypes.number,
     type: PropTypes.string,
-    isInBookmarks: PropTypes.bool,
-    coordinates: PropTypes.arrayOf(PropTypes.number),
-    town: PropTypes.shape({
+    location: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      zoom: PropTypes.number,
+    }),
+    city: PropTypes.shape({
       name: PropTypes.string,
-      coordinates: PropTypes.arrayOf(PropTypes.number),
+      location: PropTypes.shape({
+        latitude: PropTypes.number,
+        longitude: PropTypes.number,
+        zoom: PropTypes.number,
+      }),
+    }),
+    host: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      [`is_pro`]: PropTypes.bool,
+      [`avatar_url`]: PropTypes.string,
     }),
   }).isRequired,
   onOfferImgClick: PropTypes.func.isRequired,
