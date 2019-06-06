@@ -1,16 +1,14 @@
-import rentalOffers from '../mocks/offers.js';
-
 const MAX_TOWNS = 6;
 
 const ActionType = {
   CHANGE_TOWN: `CHANGE_TOWN`,
   RESET: `RESET`,
+  LOAD_OFFERS: `LOAD_OFFERS`,
 };
 
 const initialState = {
-  currentTown: rentalOffers[0].town.name,
-  rentalOffers,
-  townsList: [...new Set(rentalOffers.map((offer) => offer.town.name))].slice(0, MAX_TOWNS),
+  currentTown: `Amsterdam`,
+  rentalOffers: [],
 };
 
 const ActionCreator = {
@@ -18,6 +16,18 @@ const ActionCreator = {
     type: ActionType.CHANGE_TOWN,
     payload: currentTown,
   }),
+  loadOffers: (offers) => ({
+    type: ActionType.CHANGE_TOWN,
+    payload: offers,
+  }),
+};
+
+const loadOffers = () => (dispatch) => {
+  return fetch(`https://es31-server.appspot.com/six-cities`)
+    .then((response) => response.json())
+    .then((offers) => {
+      dispatch.ActionCreator.loadOffers(offers);
+    });
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,10 +36,14 @@ const reducer = (state = initialState, action) => {
       currentTown: action.payload,
     });
 
+    case ActionType.LOAD_OFFERS: return Object.assign({}, state, {
+      rentalOffers: action.payload,
+    });
+
     case ActionType.RESET: return Object.assign({}, initialState);
   }
 
   return state;
 };
 
-export {reducer, ActionCreator, ActionType, MAX_TOWNS};
+export {reducer, ActionCreator, ActionType, MAX_TOWNS, loadOffers};

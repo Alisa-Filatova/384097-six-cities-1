@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../reducer/reducer';
+import {ActionCreator, MAX_TOWNS} from '../../reducer/reducer';
 import MainPage from '../main-page/main-page.jsx';
 
 const App = (props) => {
-  const {rentalOffers, onTownClick, currentTown, townsList} = props;
+  const {rentalOffers, onTownClick, currentTown} = props;
+  const townsList = [...new Set(rentalOffers.map((offer) => offer.town.name))].slice(0, MAX_TOWNS);
 
   return (
     <MainPage
@@ -20,7 +21,6 @@ const App = (props) => {
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   currentTown: state.currentTown,
   rentalOffers: state.rentalOffers.filter((offer) => offer.town.name === state.currentTown),
-  townsList: state.townsList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
