@@ -83,9 +83,9 @@ exports[`MainPage renders correctly 1`] = `
                   className="header__avatar-wrapper user__avatar-wrapper"
                 />
                 <span
-                  className="header__user-name user__name"
+                  className="header__login"
                 >
-                  Oliver.conner@gmail.com
+                  Sign in
                 </span>
               </a>
             </li>
@@ -103,14 +103,58 @@ exports[`MainPage renders correctly 1`] = `
       Cities
     </h1>
     <TownsList
-      currentTown="Amsterdam"
-      onTownClick={[MockFunction]}
-      towns={
+      currentTown={
+        Object {
+          "location": 123,
+        }
+      }
+      offers={
         Array [
-          "Amsterdam",
-          "Paris",
+          Object {
+            "city": Object {
+              "coordinates": Array [
+                52.38333,
+                4.9,
+              ],
+              "name": "Amsterdam",
+            },
+            "coordinates": Array [
+              52.3909553943508,
+              4.929309666406198,
+            ],
+            "id": 123,
+            "isInBookmarks": false,
+            "isPremium": true,
+            "preview_image": "img/apartment-01.jpg",
+            "price": 120,
+            "rating": 4,
+            "title": "Beautiful & luxurious apartment at great location",
+            "type": "Apartment",
+          },
+          Object {
+            "city": Object {
+              "coordinates": Array [
+                52.38333,
+                4.9,
+              ],
+              "name": "Amsterdam",
+            },
+            "coordinates": Array [
+              52.3909553943508,
+              4.929309666406198,
+            ],
+            "id": 123,
+            "isInBookmarks": false,
+            "isPremium": true,
+            "preview_image": "img/apartment-01.jpg",
+            "price": 120,
+            "rating": 4,
+            "title": "Beautiful & luxurious apartment at great location",
+            "type": "Apartment",
+          },
         ]
       }
+      onTownClick={[MockFunction]}
     />
     <div
       className="cities__places-wrapper"
@@ -134,7 +178,7 @@ exports[`MainPage renders correctly 1`] = `
           <b
             className="places__found"
           >
-            2 places to stay in Amsterdam
+            2 places to stay in undefined
           </b>
           <form
             action="#"
@@ -193,109 +237,27 @@ exports[`MainPage renders correctly 1`] = `
           <WithActiveItem
             rentalOffers={
               Array [
-                Object {
-                  "coordinates": Array [
-                    52.3909553943508,
-                    4.929309666406198,
-                  ],
-                  "id": 123,
-                  "img": "img/apartment-01.jpg",
-                  "isInBookmarks": false,
-                  "isPremium": true,
-                  "price": 120,
-                  "stars": 4,
-                  "title": "Beautiful & luxurious apartment at great location",
-                  "town": Object {
-                    "coordinates": Array [
-                      52.38333,
-                      4.9,
-                    ],
-                    "name": "Amsterdam",
-                  },
-                  "type": "Apartment",
-                },
-                Object {
-                  "coordinates": Array [
-                    52.3909553943508,
-                    4.929309666406198,
-                  ],
-                  "id": 123,
-                  "img": "img/apartment-01.jpg",
-                  "isInBookmarks": false,
-                  "isPremium": true,
-                  "price": 120,
-                  "stars": 4,
-                  "title": "Beautiful & luxurious apartment at great location",
-                  "town": Object {
-                    "coordinates": Array [
-                      52.38333,
-                      4.9,
-                    ],
-                    "name": "Amsterdam",
-                  },
-                  "type": "Apartment",
-                },
+                "Amsterdam",
+                "Paris",
               ]
             }
+            setActiveItem={[Function]}
           />
         </section>
         <div
           className="cities__right-section"
         >
           <Map
-            rentalOffers={
+            activeOfferId={null}
+            cityOffers={
               Array [
-                Object {
-                  "coordinates": Array [
-                    52.3909553943508,
-                    4.929309666406198,
-                  ],
-                  "id": 123,
-                  "img": "img/apartment-01.jpg",
-                  "isInBookmarks": false,
-                  "isPremium": true,
-                  "price": 120,
-                  "stars": 4,
-                  "title": "Beautiful & luxurious apartment at great location",
-                  "town": Object {
-                    "coordinates": Array [
-                      52.38333,
-                      4.9,
-                    ],
-                    "name": "Amsterdam",
-                  },
-                  "type": "Apartment",
-                },
-                Object {
-                  "coordinates": Array [
-                    52.3909553943508,
-                    4.929309666406198,
-                  ],
-                  "id": 123,
-                  "img": "img/apartment-01.jpg",
-                  "isInBookmarks": false,
-                  "isPremium": true,
-                  "price": 120,
-                  "stars": 4,
-                  "title": "Beautiful & luxurious apartment at great location",
-                  "town": Object {
-                    "coordinates": Array [
-                      52.38333,
-                      4.9,
-                    ],
-                    "name": "Amsterdam",
-                  },
-                  "type": "Apartment",
-                },
+                "Amsterdam",
+                "Paris",
               ]
             }
-            town={
+            currentTown={
               Object {
-                "coordinates": Array [
-                  52.38333,
-                  4.9,
-                ],
-                "name": "Amsterdam",
+                "location": 123,
               }
             }
           />

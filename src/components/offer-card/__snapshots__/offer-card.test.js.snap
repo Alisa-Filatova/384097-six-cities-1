@@ -7,13 +7,6 @@ exports[`OfferCard renders correctly 1`] = `
   onMouseOver={[MockFunction]}
 >
   <div
-    className="place-card__mark"
-  >
-    <span>
-      Premium
-    </span>
-  </div>
-  <div
     className="cities__image-wrapper place-card__image-wrapper"
   >
     <a

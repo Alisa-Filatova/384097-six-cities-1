@@ -10,13 +10,6 @@ exports[`OffersList renders correctly 1`] = `
     onMouseOver={[Function]}
   >
     <div
-      className="place-card__mark"
-    >
-      <span>
-        Premium
-      </span>
-    </div>
-    <div
       className="cities__image-wrapper place-card__image-wrapper"
     >
       <a
@@ -116,13 +109,6 @@ exports[`OffersList renders correctly 1`] = `
     onMouseOut={[Function]}
     onMouseOver={[Function]}
   >
-    <div
-      className="place-card__mark"
-    >
-      <span>
-        Premium
-      </span>
-    </div>
     <div
       className="cities__image-wrapper place-card__image-wrapper"
     >
