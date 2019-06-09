@@ -1,34 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TownsList = ({towns, onTownClick, currentTown}) => (
-  <div className="cities tabs">
-    <section className="locations container">
-      <ul className="locations__list tabs__list">
-        {towns.map((town) => (
-          <li
-            className="locations__item"
-            key={town}
-          >
-            <a
-              className={`locations__item-link tabs__item ${town === currentTown ? `tabs__item--active` : ``}`}
-              onClick={(event) => {
-                event.preventDefault();
-                onTownClick(town);
-              }}
-              href="#"
+const MAX_CITIES = 6;
+
+const getAvailableCities = (offers) => {
+  return offers.map((o) => o.city.name).reduce((acc, city) => {
+    if (acc.length < MAX_CITIES && !acc.includes(city)) {
+      acc.push(city);
+    }
+    return acc;
+  }, []);
+};
+
+const TownsList = ({offers, onTownClick, currentTown}) => {
+
+  const availableCities = getAvailableCities(offers);
+
+  return (
+    <div className="cities tabs">
+      <section className="locations container">
+        <ul className="locations__list tabs__list">
+          {availableCities.map((town, idx) => (
+            <li
+              className="locations__item"
+              key={town + idx}
             >
-              <span>{town}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  </div>
-);
+              <a
+                className={`locations__item-link tabs__item ${town === currentTown ? `tabs__item--active` : ``}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onTownClick(town);
+                }}
+                href="#"
+              >
+                <span>{town}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+};
+
 
 TownsList.propTypes = {
-  towns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  offers: PropTypes.array.isRequired,
   onTownClick: PropTypes.func.isRequired,
   currentTown: PropTypes.string.isRequired,
 };
