@@ -6,13 +6,6 @@ import TownsList from '../towns-list/towns-list.jsx';
 import withActiveItem from '../../hocs/with-active-item.jsx';
 import withTransformProps from '../../hocs/with-transform-props.jsx';
 
-// const WrappedTownsList = withActiveItem(
-//     withTransformProps((props) => Object.assign({}, props, {
-//       currentTown: props.currentItem,
-//       onTownClick: props.setActiveItem
-//     }))(TownsList)
-// );
-
 const WrappedOffersList = withActiveItem(
     withTransformProps((props) => Object.assign({}, props, {
       setActiveItem: props.setActiveItem,

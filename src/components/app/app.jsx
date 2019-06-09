@@ -5,7 +5,7 @@ import {ActionCreator} from '../../reducers/data/data';
 import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
 import MainPage from '../main-page/main-page.jsx';
 
-class App extends React.PureComponent {
+class App extends React.Component {
   render() {
     const {rentalOffers, onTownClick, currentTown, cityOffers} = this.props;
 

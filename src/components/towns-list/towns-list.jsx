@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const MAX_CITIES = 6;
 
 const getAvailableCities = (offers) => {
-  return offers.map((o) => o.city.name).reduce((acc, city) => {
+  return offers.map((offer) => offer.city.name).reduce((acc, city) => {
     if (acc.length < MAX_CITIES && !acc.includes(city)) {
       acc.push(city);
     }
@@ -27,10 +27,7 @@ const TownsList = ({offers, onTownClick, currentTown}) => {
             >
               <a
                 className={`locations__item-link tabs__item ${town === currentTown ? `tabs__item--active` : ``}`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onTownClick(town);
-                }}
+                onClick={() => onTownClick(town)}
                 href="#"
               >
                 <span>{town}</span>
