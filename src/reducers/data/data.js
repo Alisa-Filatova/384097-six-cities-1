@@ -1,6 +1,6 @@
 const initialState = {
   rentalOffers: [],
-  currentTown: ``,
+  currentTown: {},
 };
 
 const ActionType = {

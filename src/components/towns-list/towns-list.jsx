@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 const MAX_CITIES = 6;
 
-const getAvailableCities = (offers) => {
-  return offers.map((offer) => offer.city.name).reduce((acc, city) => {
-    if (acc.length < MAX_CITIES && !acc.includes(city)) {
+// TODO
+const getCities = (offers) => {
+  return offers.map((offer) => offer.city).reduce((acc, city) => {
+    if (acc.length < MAX_CITIES && !acc.includes(city.name)) {
       acc.push(city);
     }
     return acc;
@@ -13,24 +14,23 @@ const getAvailableCities = (offers) => {
 };
 
 const TownsList = ({offers, onTownClick, currentTown}) => {
-
-  const availableCities = getAvailableCities(offers);
+  const cities = getCities(offers);
 
   return (
     <div className="cities tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          {availableCities.map((town, idx) => (
+          {cities.map((city, idx) => (
             <li
               className="locations__item"
-              key={town + idx}
+              key={city.name + idx}
             >
               <a
-                className={`locations__item-link tabs__item ${town === currentTown ? `tabs__item--active` : ``}`}
-                onClick={() => onTownClick(town)}
+                className={`locations__item-link tabs__item ${city.name === currentTown.name ? `tabs__item--active` : ``}`}
+                onClick={() => onTownClick(city)}
                 href="#"
               >
-                <span>{town}</span>
+                <span>{city.name}</span>
               </a>
             </li>
           ))}
@@ -44,7 +44,7 @@ const TownsList = ({offers, onTownClick, currentTown}) => {
 TownsList.propTypes = {
   offers: PropTypes.array.isRequired,
   onTownClick: PropTypes.func.isRequired,
-  currentTown: PropTypes.string.isRequired,
+  currentTown: PropTypes.object.isRequired,
 };
 
 export default TownsList;

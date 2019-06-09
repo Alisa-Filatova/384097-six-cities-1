@@ -23,7 +23,6 @@ class MainPage extends React.PureComponent {
 
   render() {
     const {rentalOffers, onTownClick, currentTown, cityOffers, isAuthorizationRequired} = this.props;
-    console.log(currentTown);
     console.log(cityOffers);
 
     return (
@@ -83,7 +82,7 @@ class MainPage extends React.PureComponent {
           <h1 className="visually-hidden">Cities</h1>
           <TownsList
             offers={rentalOffers}
-            currentTown={currentTown.name}
+            currentTown={currentTown}
             onTownClick={onTownClick}
           />
           <div className="cities__places-wrapper" style={{height: `100vh`}}>
@@ -110,15 +109,16 @@ class MainPage extends React.PureComponent {
                 </form>
                 <WrappedOffersList
                   rentalOffers={cityOffers}
-                  setActiveItem={this._handleActivePlaceCard.bind(this)}
+                  setActiveItem={this._handleGetActiveOffer.bind(this)}
                 />
               </section>
               <div className="cities__right-section">
-                {/*<Map*/}
-                {/*  key={currentTown.name}*/}
-                {/*  activeOfferId={this.state.activeOfferId}*/}
-                {/*  cityOffers={cityOffers}*/}
-                {/*/>*/}
+                <Map
+                  key={currentTown.name}
+                  currentTown={currentTown}
+                  activeOfferId={this.state.activeOfferId}
+                  cityOffers={cityOffers}
+                />
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ class MainPage extends React.PureComponent {
     );
   }
 
-  _handleActivePlaceCard(offerId) {
+  _handleGetActiveOffer(offerId) {
     this.setState((prevState) => {
       return Object.assign({}, prevState, {activeOfferId: offerId});
     });
@@ -168,7 +168,7 @@ MainPage.propTypes = {
       [`avatar_url`]: PropTypes.string,
     }),
   })).isRequired,
-  currentTown: PropTypes.string.isRequired,
+  currentTown: PropTypes.object.isRequired,
   onTownClick: PropTypes.func.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,

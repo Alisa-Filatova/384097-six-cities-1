@@ -68,7 +68,7 @@ App.propTypes = {
     }),
   })).isRequired,
   onTownClick: PropTypes.func.isRequired,
-  currentTown: PropTypes.string.isRequired,
+  currentTown: PropTypes.object.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,
 };

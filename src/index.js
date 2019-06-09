@@ -20,16 +20,17 @@ const init = () => {
       )
   );
 
-  const getRandomItem = (items) => {
+  // TODO
+  const getRandomOffer = (offers) => {
     const min = 0;
-    const max = Math.floor(items.length);
-    return items[Math.floor(Math.random() * (max - min)) + min];
+    const max = Math.floor(offers.length);
+    return offers[Math.floor(Math.random() * (max - min)) + min];
   };
 
   store.dispatch(Operation.loadOffers())
     .then(() => {
       const currentState = store.getState();
-      const offer = getRandomItem(getOffers(currentState));
+      const offer = getRandomOffer(getOffers(currentState));
 
       if (offer) {
         store.dispatch(ActionCreator.changeTown(offer.city));

@@ -10,7 +10,7 @@ const mock = [
   {
     id: 123,
     title: `Beautiful & luxurious apartment at great location`,
-    preview_image: `img/apartment-01.jpg`,
+    [`preview_image`]: `img/apartment-01.jpg`,
     isPremium: true,
     price: 120,
     rating: 4,
@@ -29,9 +29,9 @@ describe(`App`, () => {
     const app = shallow(
         <App
           rentalOffers={mock}
-          currentTown={mock[0].city.name}
-          townsList={[`Amsterdam`, `Paris`]}
+          currentTown={mock[0].city}
           onTownClick={jest.fn()}
+          cityOffers={[`Amsterdam`, `Paris`]}
         />
     );
 

@@ -2,33 +2,57 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
-class Map extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this._mapRef = React.createRef();
-  }
+const ZOOM = 12;
+const pin =
+  leaflet.icon({
+    iconUrl: `img/pin.svg`,
+    iconSize: [27, 39],
+  });
 
+const activePin =
+  leaflet.icon({
+    iconUrl: `img/pin-active.svg`,
+    iconSize: [30, 42],
+  });
+
+const SETTINGS = {
+  zoom: ZOOM,
+  zoomControl: false,
+  marker: true,
+  icon: pin,
+};
+
+
+class Map extends React.PureComponent {
   componentDidMount() {
     this._initMap();
   }
 
   componentDidUpdate() {
-    if (!this._initialized) {
-      this._initMap();
-    }
-    this._addMarkersOnMap();
-  }
+    if (this.map && this.markersLayer) {
+      const {location} = this.props.currentTown;
+      const center = [location.latitude, location.longitude];
 
-  componentWillUnmount() {
-    this.map.remove();
-    this.map = null;
+      this.map.panTo(center);
+      this.markersLayer.clearLayers();
+
+      this.props.cityOffers.forEach((place) => {
+        leaflet.marker([place.location.latitude, place.location.longitude],
+            {icon: this.props.activeOfferId === place.id ? activePin : SETTINGS.icon}).addTo(this.markersLayer);
+      });
+    }
   }
+  //
+  // componentWillUnmount() {
+  //   this.map.remove();
+  //   this.map = null;
+  // }
 
   render() {
     return (
       <section
         className="cities__map map"
-        ref={this._mapRef}
+        id="map"
       />
     );
   }
@@ -38,59 +62,21 @@ class Map extends React.PureComponent {
       return;
     }
 
-    const {cityLocation} = this.props.cityOffers[0];
-    const city = [cityLocation.latitude, cityLocation.longitude];
-    const zoom = cityLocation.zoom;
-    this._map = leaflet.map(this._mapRef.current, {
-      center: city,
-      zoom,
-      zoomControl: false,
-      marker: true
-    });
-    this._map.setView(city, zoom);
+    const {location} = this.props.currentTown;
+    const center = [location.latitude, location.longitude];
+
+    this.map = leaflet.map(`map`, SETTINGS);
+    this.map.setView(center, location.zoom);
 
     leaflet
-    .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
-      updateWhenIdle: true,
-      attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
-    })
-    .addTo(this._map);
+      .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
+      .addTo(this.map);
 
-    this._icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [27, 39]
-    });
+    this.markersLayer = leaflet.layerGroup().addTo(this.map);
 
-    this._activeIcon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [27, 39]
-    });
-    this._addMarkersOnMap();
-
-    this._initialized = true;
-  }
-
-  _addMarkersOnMap() {
-    if (!this._markers) {
-      this._markers = new Map();
-    } else {
-      this._markers.forEach((offerId, marker) => {
-        if (this.props.activeOfferId === offerId) {
-          marker.setIcon(this._activeIcon);
-        } else {
-          marker.setIcon(this._icon);
-        }
-      });
-      return;
-    }
-
-    this.props.cityOffers.forEach(({id, location}) => {
-      const loc = [location.latitude, location.longitude];
-      const marker = leaflet.marker(loc, {
-        icon: id === this.props.activeOfferId ? this._activeIcon : this._icon
-      });
-      this._markers.set(marker, id);
-      marker.addTo(this._map);
+    this.props.cityOffers.forEach((place) => {
+      leaflet.marker([place.location.latitude, place.location.longitude],
+          {icon: this.props.activeOfferId === place.id ? activePin : SETTINGS.icon}).addTo(this.markersLayer);
     });
   }
 }
@@ -98,6 +84,7 @@ class Map extends React.PureComponent {
 Map.propTypes = {
   cityOffers: PropTypes.array,
   activeOfferId: PropTypes.any,
+  currentTown: PropTypes.object,
 };
 
 export default Map;

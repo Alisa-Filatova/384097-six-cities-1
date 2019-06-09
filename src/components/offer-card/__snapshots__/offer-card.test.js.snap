@@ -7,24 +7,17 @@ exports[`OfferCard renders correctly 1`] = `
   onMouseOver={[MockFunction]}
 >
   <div
-    className="place-card__mark"
-  >
-    <span>
-      Premium
-    </span>
-  </div>
-  <div
     className="cities__image-wrapper place-card__image-wrapper"
   >
     <a
       href="#"
       onClick={[MockFunction]}
     >
-      <preview_image
+      <img
         alt="Beautiful & luxurious apartment at great location"
         className="place-card__image"
         height="200"
-        src="preview_image/apartment-01.jpg"
+        src="img/apartment-01.jpg"
         width="260"
       />
     </a>
@@ -51,7 +44,7 @@ exports[`OfferCard renders correctly 1`] = `
         </span>
       </div>
       <button
-        className="place-card__bookmark-button button
+        className="place-card__bookmark-button button 
               "
         type="button"
       >
