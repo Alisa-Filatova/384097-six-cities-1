@@ -2,37 +2,45 @@
 
 exports[`App renders correctly 1`] = `
 <MainPage
-  currentTown="Amsterdam"
+  cityOffers={
+    Array [
+      "Amsterdam",
+      "Paris",
+    ]
+  }
+  currentTown={
+    Object {
+      "coords": Array [
+        52.38333,
+        4.9,
+      ],
+      "name": "Amsterdam",
+    }
+  }
   onTownClick={[MockFunction]}
   rentalOffers={
     Array [
       Object {
-        "coordinates": Array [
-          52.3909553943508,
-          4.929309666406198,
-        ],
-        "id": 123,
-        "img": "img/apartment-01.jpg",
-        "isInBookmarks": false,
-        "isPremium": true,
-        "price": 120,
-        "stars": 4,
-        "title": "Beautiful & luxurious apartment at great location",
-        "town": Object {
+        "city": Object {
           "coords": Array [
             52.38333,
             4.9,
           ],
           "name": "Amsterdam",
         },
+        "coordinates": Array [
+          52.3909553943508,
+          4.929309666406198,
+        ],
+        "id": 123,
+        "isInBookmarks": false,
+        "isPremium": true,
+        "preview_image": "img/apartment-01.jpg",
+        "price": 120,
+        "rating": 4,
+        "title": "Beautiful & luxurious apartment at great location",
         "type": "Apartment",
       },
-    ]
-  }
-  towns={
-    Array [
-      "Amsterdam",
-      "Paris",
     ]
   }
 />
