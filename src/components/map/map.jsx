@@ -15,23 +15,20 @@ const SETTINGS = {
 };
 
 class Map extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this._mapRef = React.createRef();
+  }
 
   componentDidMount() {
     this._initMap();
   }
 
   componentDidUpdate() {
-    if (this.map && this.markersLayer) {
-      const {city, rentalOffers} = this.props;
-      const center = [city.location.latitude, city.location.longitude];
-
-      this.map.panTo(center);
-      this.markersLayer.clearLayers();
-
-      rentalOffers.forEach((place) => {
-        leaflet.marker([place.location.latitude, place.location.longitude], {icon: SETTINGS.icon}).addTo(this.markersLayer);
-      });
+    if (!this._initialized) {
+      this._initMap();
     }
+    this._addMarkersOnMap();
   }
 
   componentWillUnmount() {
@@ -43,71 +40,76 @@ class Map extends React.PureComponent {
     return (
       <section
         className="cities__map map"
-        id="map"
+        ref={this._mapRef}
       />
     );
   }
 
   _initMap() {
-    const {city, rentalOffers} = this.props;
-    this.map = leaflet.map(`map`, SETTINGS);
+    if (!this.props.cityOffers.length) {
+      return;
+    }
 
-    this.map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+    const {cityLocation} = this.props.cityOffers[0];
+    const city = [cityLocation.latitude, cityLocation.longitude];
+    const zoom = cityLocation.zoom;
+    this._map = leaflet.map(this._mapRef.current, {
+      center: city,
+      zoom,
+      zoomControl: false,
+      marker: true
+    });
+    this._map.setView(city, zoom);
 
     leaflet
-      .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
-      .addTo(this.map);
+    .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
+      updateWhenIdle: true,
+      attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
+    })
+    .addTo(this._map);
 
-    this.markersLayer = leaflet.layerGroup().addTo(this.map);
+    this._icon = leaflet.icon({
+      iconUrl: `img/pin.svg`,
+      iconSize: [27, 39]
+    });
 
-    rentalOffers.forEach((place) => {
-      leaflet.marker([place.location.latitude, place.location.longitude], {icon: SETTINGS.icon}).addTo(this.markersLayer);
+    this._activeIcon = leaflet.icon({
+      iconUrl: `img/pin.svg`,
+      iconSize: [27, 39]
+    });
+    this._addMarkersOnMap();
+
+    this._initialized = true;
+  }
+
+  _addMarkersOnMap() {
+    if (!this._markers) {
+      this._markers = new Map();
+    } else {
+      this._markers.forEach((offerId, marker) => {
+        if (this.props.activeOfferId === offerId) {
+          marker.setIcon(this._activeIcon);
+        } else {
+          marker.setIcon(this._icon);
+        }
+      });
+      return;
+    }
+
+    this.props.cityOffers.forEach(({id, location}) => {
+      const loc = [location.latitude, location.longitude];
+      const marker = leaflet.marker(loc, {
+        icon: id === this.props.activeOfferId ? this._activeIcon : this._icon
+      });
+      this._markers.set(marker, id);
+      marker.addTo(this._map);
     });
   }
 }
 
 Map.propTypes = {
-  rentalOffers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    [`preview_image`]: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    [`is_premium`]: PropTypes.bool,
-    [`is_favourite`]: PropTypes.bool,
-    bedrooms: PropTypes.number,
-    goods: PropTypes.arrayOf(PropTypes.string),
-    description: PropTypes.string,
-    price: PropTypes.number,
-    rating: PropTypes.number,
-    type: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-    city: PropTypes.shape({
-      name: PropTypes.string,
-      location: PropTypes.shape({
-        latitude: PropTypes.number,
-        longitude: PropTypes.number,
-        zoom: PropTypes.number,
-      }),
-    }),
-    host: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      [`is_pro`]: PropTypes.bool,
-      [`avatar_url`]: PropTypes.string,
-    }),
-  })).isRequired,
-  city: PropTypes.shape({
-    name: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-  }),
+  cityOffers: PropTypes.array.isRequired,
+  activeOfferId: PropTypes.any,
 };
 
 export default Map;

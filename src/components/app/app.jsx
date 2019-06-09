@@ -1,26 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {ActionCreator, MAX_TOWNS} from '../../reducer/reducer';
+import {ActionCreator} from '../../reducers/data/data';
+import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
 import MainPage from '../main-page/main-page.jsx';
 
-const App = (props) => {
-  const {rentalOffers, onTownClick, currentTown, townsList} = props;
+class App extends React.PureComponent {
+  render() {
+    const {rentalOffers, onTownClick, currentTown, cityOffers} = this.props;
 
-  return (
-    <MainPage
-      rentalOffers={rentalOffers}
-      onTownClick={onTownClick}
-      currentTown={currentTown}
-      towns={townsList}
-    />
-  );
-};
+    return (
+      <MainPage
+        rentalOffers={rentalOffers}
+        onTownClick={onTownClick}
+        currentTown={currentTown}
+        cityOffers={cityOffers}
+      />
+    );
+  }
+}
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  currentTown: state.currentTown,
-  rentalOffers: state.rentalOffers.filter((offer) => offer.city.name === state.currentTown),
-  townsList: [...new Set(state.rentalOffers.map((offer) => offer.city.name))].slice(0, MAX_TOWNS),
+  currentTown: getCurrentCity(state),
+  rentalOffers: getOffers(state),
+  cityOffers: getCityOffers(state),
+  isAuthorizationRequired: state.user.isAuthorizationRequired,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -65,15 +69,8 @@ App.propTypes = {
   })).isRequired,
   onTownClick: PropTypes.func.isRequired,
   currentTown: PropTypes.string.isRequired,
-  townsList: PropTypes.arrayOf(PropTypes.string),
-  currentOffer: PropTypes.shape({
-    name: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-  }),
+  cityOffers: PropTypes.array.isRequired,
+  isAuthorizationRequired: PropTypes.bool,
 };
 
 export {App};
