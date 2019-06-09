@@ -13,6 +13,7 @@ const OffersList = ({rentalOffers, setActiveItem}) => (
         key={idx}
         onMouseOver={() => setActiveItem(offer.id)}
         onMouseOut={() => setActiveItem(null)}
+        {...rentalOffers}
       />
     ))}
   </div>
