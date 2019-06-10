@@ -4,8 +4,10 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
+import {BrowserRouter} from 'react-router-dom';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
+import {Operation as UserOperation} from './reducers/user/user';
 import {getOffers} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
@@ -16,8 +18,7 @@ const init = () => {
       reducer,
       compose(
           applyMiddleware(thunk.withExtraArgument(api)),
-          window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-      )
+          window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (a) => a)
   );
 
   // TODO
@@ -27,6 +28,7 @@ const init = () => {
     return offers[Math.floor(Math.random() * (max - min)) + min];
   };
 
+  store.dispatch(UserOperation.checkAuthorization());
   store.dispatch(Operation.loadOffers())
     .then(() => {
       const currentState = store.getState();
@@ -39,7 +41,9 @@ const init = () => {
 
   ReactDOM.render(
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>,
       document.querySelector(`#root`)
   );

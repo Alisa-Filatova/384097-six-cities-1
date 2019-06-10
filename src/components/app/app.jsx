@@ -1,35 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
+import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
+import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
+import AppHeader from '../app-header/app-header.jsx';
+import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
+import SignIn from '../sign-in/sign-in.jsx';
+import {PageType} from '../../enums/page-type';
 
-class App extends React.Component {
-  render() {
-    const {rentalOffers, onTownClick, currentTown, cityOffers} = this.props;
-
-    return (
-      <MainPage
-        rentalOffers={rentalOffers}
-        onTownClick={onTownClick}
-        currentTown={currentTown}
-        cityOffers={cityOffers}
+const App = ({rentalOffers, onTownClick, currentTown, cityOffers, isAuthorizationRequired, signIn, user}) => (
+  <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
+    <AppHeader
+      isAuthenticated={isAuthorizationRequired}
+      user={user}
+    />
+    <Switch>
+      <Route
+        path="/"
+        exact
+        render={() =>
+          <MainPage
+            rentalOffers={rentalOffers}
+            onTownClick={onTownClick}
+            currentTown={currentTown}
+            cityOffers={cityOffers}
+          />
+        }
       />
-    );
-  }
-}
+      <Route
+        path="/login"
+        exact
+        render={() =>
+          <SignIn
+            signIn={signIn}
+            user={user}
+          />
+        }
+      />
+    </Switch>
+  </PageWrapper>
+);
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   currentTown: getCurrentCity(state),
   rentalOffers: getOffers(state),
   cityOffers: getCityOffers(state),
-  isAuthorizationRequired: state.user.isAuthorizationRequired,
+  isAuthorizationRequired: getAuthorizationStatus(state),
+  user: getUser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onTownClick: (currentTown) => {
     dispatch(ActionCreator.changeTown(currentTown));
+  },
+  signIn: (data) => {
+    dispatch(UserActionCreator.signIn(data));
   },
 });
 
@@ -71,6 +100,14 @@ App.propTypes = {
   currentTown: PropTypes.object.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,
+  signIn: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    [`avatar_url`]: PropTypes.string,
+    [`is_pro`]: PropTypes.bool,
+  }),
 };
 
 export {App};
