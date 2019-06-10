@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import {compose} from 'recompose';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
+import {Operation as UserOperation} from './reducers/user/user';
 import {getOffers} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
@@ -27,6 +28,7 @@ const init = () => {
     return offers[Math.floor(Math.random() * (max - min)) + min];
   };
 
+  store.dispatch(UserOperation.checkAuthorization());
   store.dispatch(Operation.loadOffers())
     .then(() => {
       const currentState = store.getState();
