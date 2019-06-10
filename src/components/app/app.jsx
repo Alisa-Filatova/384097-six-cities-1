@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
@@ -17,19 +18,30 @@ const App = ({rentalOffers, onTownClick, currentTown, cityOffers, isAuthorizatio
       isAuthenticated={isAuthorizationRequired}
       user={user}
     />
-    {isAuthorizationRequired ?
-      <MainPage
-        rentalOffers={rentalOffers}
-        onTownClick={onTownClick}
-        currentTown={currentTown}
-        cityOffers={cityOffers}
+    <Switch>
+      <Route
+        path="/"
+        exact
+        render={() =>
+          <MainPage
+            rentalOffers={rentalOffers}
+            onTownClick={onTownClick}
+            currentTown={currentTown}
+            cityOffers={cityOffers}
+          />
+        }
       />
-      :
-      <SignIn
-        signIn={signIn}
-        user={user}
+      <Route
+        path="/login"
+        exact
+        render={() =>
+          <SignIn
+            signIn={signIn}
+            user={user}
+          />
+        }
       />
-    }
+    </Switch>
   </PageWrapper>
 );
 

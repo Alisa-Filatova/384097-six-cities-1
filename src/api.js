@@ -1,7 +1,6 @@
 import axios from 'axios';
-import {ActionCreator} from './reducers/user/user';
 
-export const createAPI = (dispatch) => {
+export const createAPI = () => {
   const api = axios.create({
     baseURL: `https://es31-server.appspot.com/six-cities`,
     timeout: 5000,
@@ -11,7 +10,7 @@ export const createAPI = (dispatch) => {
   const onSuccess = (response) => response;
   const onFail = (error) => {
     if (error.response.status === 403) {
-      dispatch(ActionCreator.requireAuthorization(true));
+      history.pushState(null, null, `/login`);
     }
     return error;
   };

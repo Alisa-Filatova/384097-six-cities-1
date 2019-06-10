@@ -5,11 +5,17 @@ const MAX_CITIES = 6;
 
 // TODO
 const getCities = (offers) => {
-  return offers.map((offer) => offer.city).reduce((acc, city) => {
-    if (acc.length < MAX_CITIES && !acc.includes(city.name)) {
-      acc.push(city);
+  const cities = offers.map((offer) => offer.city).sort((a, b) => {
+    const textA = a.name.toUpperCase();
+    const textB = b.name.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+  });
+
+  return cities.reduce((prev, current) => {
+    if (!prev.includes(current) && prev.length < MAX_CITIES) {
+      prev.push(current);
     }
-    return acc;
+    return prev;
   }, []);
 };
 
