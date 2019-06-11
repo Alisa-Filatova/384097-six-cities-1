@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
@@ -10,43 +10,80 @@ import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
+import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../enums/page-type';
 
-const App = ({rentalOffers, onTownClick, currentTown, cityOffers, isAuthorizationRequired, signIn, user}) => (
-  <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
-    <AppHeader
-      isAuthenticated={isAuthorizationRequired}
-      user={user}
-    />
-    <Switch>
-      <Route
-        path="/"
-        exact
-        render={() =>
-          <MainPage
-            rentalOffers={rentalOffers}
-            onTownClick={onTownClick}
-            currentTown={currentTown}
-            cityOffers={cityOffers}
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeOfferId: null,
+    };
+  }
+
+  render() {
+    const {rentalOffers, onCityClick, currentCity, cityOffers, isAuthorizationRequired, signIn, user} = this.props;
+    const {activeOfferId} = this.state;
+    // const currentOffer = rentalOffers.filter((offer) => offer.id === activeOfferId)[0];
+
+    return (
+      <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
+        <AppHeader
+          isAuthenticated={isAuthorizationRequired}
+          user={user}
+        />
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() =>
+              <MainPage
+                rentalOffers={rentalOffers}
+                onCityClick={onCityClick}
+                currentCity={currentCity}
+                cityOffers={cityOffers}
+                setActiveItem={this._handleGetActiveOffer.bind(this)}
+                activeOfferId={activeOfferId}
+              />
+            }
           />
-        }
-      />
-      <Route
-        path="/login"
-        exact
-        render={() =>
-          <SignIn
-            signIn={signIn}
-            user={user}
+          <Route
+            path="/login"
+            exact
+            render={() => (
+              <>
+              {!isAuthorizationRequired
+                ?
+                <SignIn
+                  signIn={signIn}
+                  user={user}
+                />
+                :
+                <Redirect to='/' />
+              }
+            </>
+            )}
           />
-        }
-      />
-    </Switch>
-  </PageWrapper>
-);
+          <Route
+            exact
+            path={`/offer/${activeOfferId}`}
+            render={() => <OfferDetails rentalOffers={rentalOffers} activeOfferId={activeOfferId} />}
+          />
+        </Switch>
+      </PageWrapper>
+    );
+  }
+
+  _handleGetActiveOffer(offerId) {
+    this.setState((prevState) => {
+      return Object.assign({}, prevState, {activeOfferId: offerId});
+    });
+  }
+}
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  currentTown: getCurrentCity(state),
+  currentCity: getCurrentCity(state),
   rentalOffers: getOffers(state),
   cityOffers: getCityOffers(state),
   isAuthorizationRequired: getAuthorizationStatus(state),
@@ -54,8 +91,8 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onTownClick: (currentTown) => {
-    dispatch(ActionCreator.changeTown(currentTown));
+  onCityClick: (currentCity) => {
+    dispatch(ActionCreator.changeCity(currentCity));
   },
   signIn: (data) => {
     dispatch(UserActionCreator.signIn(data));
@@ -96,8 +133,8 @@ App.propTypes = {
       [`avatar_url`]: PropTypes.string,
     }),
   })).isRequired,
-  onTownClick: PropTypes.func.isRequired,
-  currentTown: PropTypes.object.isRequired,
+  onCityClick: PropTypes.func.isRequired,
+  currentCity: PropTypes.object.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,
   signIn: PropTypes.func.isRequired,

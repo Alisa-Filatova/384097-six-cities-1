@@ -30,7 +30,7 @@ class Map extends React.PureComponent {
 
   componentDidUpdate() {
     if (this.map && this.markersLayer) {
-      const {location} = this.props.currentTown;
+      const {location} = this.props.currentCity;
       const center = [location.latitude, location.longitude];
 
       this.map.panTo(center);
@@ -62,7 +62,7 @@ class Map extends React.PureComponent {
       return;
     }
 
-    const {location} = this.props.currentTown;
+    const {location} = this.props.currentCity;
     const center = [location.latitude, location.longitude];
 
     this.map = leaflet.map(`map`, SETTINGS);
@@ -84,7 +84,7 @@ class Map extends React.PureComponent {
 Map.propTypes = {
   cityOffers: PropTypes.array,
   activeOfferId: PropTypes.any,
-  currentTown: PropTypes.object,
+  currentCity: PropTypes.object,
 };
 
 export default Map;

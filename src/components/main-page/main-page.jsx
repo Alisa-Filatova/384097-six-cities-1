@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
-import TownsList from '../towns-list/towns-list.jsx';
+import CitiesList from '../cities-list/cities-list.jsx';
 import withActiveItem from '../../hocs/with-active-item.jsx';
 import withTransformProps from '../../hocs/with-transform-props.jsx';
 
@@ -12,32 +12,24 @@ const WrappedOffersList = withActiveItem(
     }))(OffersList)
 );
 
-class MainPage extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeOfferId: null,
-    };
-  }
-
+class MainPage extends React.Component {
   render() {
-    const {rentalOffers, onTownClick, currentTown, cityOffers} = this.props;
+    const {rentalOffers, onCityClick, currentCity, cityOffers, activeOfferId, setActiveItem} = this.props;
 
     return (
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <TownsList
+        <CitiesList
           offers={rentalOffers}
-          currentTown={currentTown}
-          onTownClick={onTownClick}
+          currentCity={currentCity}
+          onCityClick={onCityClick}
         />
         <div className="cities__places-wrapper" style={{height: `100vh`}}>
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentTown.name}`}
+                {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
@@ -56,14 +48,14 @@ class MainPage extends React.PureComponent {
               </form>
               <WrappedOffersList
                 rentalOffers={cityOffers}
-                setActiveItem={this._handleGetActiveOffer.bind(this)}
+                setActiveItem={setActiveItem}
               />
             </section>
             <div className="cities__right-section">
               <Map
-                key={currentTown.name}
-                currentTown={currentTown}
-                activeOfferId={this.state.activeOfferId}
+                key={currentCity.name}
+                currentCity={currentCity}
+                activeOfferId={activeOfferId}
                 cityOffers={cityOffers}
               />
             </div>
@@ -71,12 +63,6 @@ class MainPage extends React.PureComponent {
         </div>
       </main>
     );
-  }
-
-  _handleGetActiveOffer(offerId) {
-    this.setState((prevState) => {
-      return Object.assign({}, prevState, {activeOfferId: offerId});
-    });
   }
 }
 
@@ -114,9 +100,11 @@ MainPage.propTypes = {
       [`avatar_url`]: PropTypes.string,
     }),
   })).isRequired,
-  currentTown: PropTypes.object.isRequired,
-  onTownClick: PropTypes.func.isRequired,
+  currentCity: PropTypes.object.isRequired,
+  onCityClick: PropTypes.func.isRequired,
   cityOffers: PropTypes.array.isRequired,
+  activeOfferId: PropTypes.any,
+  setActiveItem: PropTypes.func,
 };
 
 export default MainPage;

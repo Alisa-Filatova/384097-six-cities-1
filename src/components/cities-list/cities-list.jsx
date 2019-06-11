@@ -19,7 +19,7 @@ const getCities = (offers) => {
   }, []);
 };
 
-const TownsList = ({offers, onTownClick, currentTown}) => {
+const CitiesList = ({offers, onCityClick, currentCity}) => {
   const cities = getCities(offers);
 
   return (
@@ -32,8 +32,8 @@ const TownsList = ({offers, onTownClick, currentTown}) => {
               key={city.name + idx}
             >
               <a
-                className={`locations__item-link tabs__item ${city.name === currentTown.name ? `tabs__item--active` : ``}`}
-                onClick={() => onTownClick(city)}
+                className={`locations__item-link tabs__item ${city.name === currentCity.name ? `tabs__item--active` : ``}`}
+                onClick={() => onCityClick(city)}
                 href="#"
               >
                 <span>{city.name}</span>
@@ -47,10 +47,10 @@ const TownsList = ({offers, onTownClick, currentTown}) => {
 };
 
 
-TownsList.propTypes = {
+CitiesList.propTypes = {
   offers: PropTypes.array.isRequired,
-  onTownClick: PropTypes.func.isRequired,
-  currentTown: PropTypes.object.isRequired,
+  onCityClick: PropTypes.func.isRequired,
+  currentCity: PropTypes.object.isRequired,
 };
 
-export default TownsList;
+export default CitiesList;

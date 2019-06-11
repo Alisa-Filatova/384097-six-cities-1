@@ -9,7 +9,7 @@ exports[`MainPage renders correctly 1`] = `
   >
     Cities
   </h1>
-  <TownsList
+  <CitiesList
     currentTown={
       Object {
         "location": 123,

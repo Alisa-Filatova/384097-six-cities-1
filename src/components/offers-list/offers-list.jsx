@@ -8,11 +8,11 @@ const OffersList = ({rentalOffers, setActiveItem}) => (
       <OfferCard
         activeItem={offer.id}
         offer={offer}
-        onOfferTitleClick={() => {}}
+        onOfferTitleClick={() => setActiveItem(offer)}
         onOfferImgClick={() => setActiveItem(offer.id)}
         key={idx}
         onMouseOver={() => setActiveItem(offer.id)}
-        onMouseOut={() => setActiveItem(null)}
+        onMouseOut={() => {}}
         {...rentalOffers}
       />
     ))}

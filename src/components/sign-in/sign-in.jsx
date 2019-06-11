@@ -10,13 +10,6 @@ class SignIn extends React.Component {
     this.handleCheckDataSignIn = this.handleCheckDataSignIn.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.user !== prevProps.user) {
-      const {history} = this.props;
-      history.push(`/`);
-    }
-  }
-
   handleCheckDataSignIn(email, password) {
     if (email && password) {
       this.props.signIn({email, password});
@@ -75,7 +68,6 @@ class SignIn extends React.Component {
           </section>
         </div>
       </main>
-
     );
   }
 }
@@ -83,7 +75,6 @@ class SignIn extends React.Component {
 SignIn.propTypes = {
   signIn: PropTypes.func,
   user: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default SignIn;

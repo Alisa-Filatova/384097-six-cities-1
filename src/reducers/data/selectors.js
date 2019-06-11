@@ -9,7 +9,7 @@ export const getOffers = (state) => {
 };
 
 export const getCurrentCity = (state) => {
-  return state[NAMESPACE].currentTown;
+  return state[NAMESPACE].currentCity;
 };
 
 // TODO

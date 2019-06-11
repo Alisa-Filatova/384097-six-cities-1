@@ -4,7 +4,8 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
-import {BrowserRouter} from 'react-router-dom';
+import {Router} from 'react-router-dom';
+import history from './history';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
 import {Operation as UserOperation} from './reducers/user/user';
@@ -13,7 +14,7 @@ import {createAPI} from './api';
 import App from './components/app/app.jsx';
 
 const init = () => {
-  const api = createAPI((...args) => store.dispatch(...args));
+  const api = createAPI(() => history.push(`/login`));
   const store = createStore(
       reducer,
       compose(
@@ -35,15 +36,15 @@ const init = () => {
       const offer = getRandomOffer(getOffers(currentState));
 
       if (offer) {
-        store.dispatch(ActionCreator.changeTown(offer.city));
+        store.dispatch(ActionCreator.changeCity(offer.city));
       }
     });
 
   ReactDOM.render(
       <Provider store={store}>
-        <BrowserRouter>
+        <Router history={history}>
           <App />
-        </BrowserRouter>
+        </Router>
       </Provider>,
       document.querySelector(`#root`)
   );

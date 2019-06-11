@@ -13,15 +13,10 @@ const ActionCreator = ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
   }),
-  signIn: (user = {}) => ({
+
+  signIn: (user) => ({
     type: ActionType.SIGN_IN,
-    payload: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      avatarUrl: user.avatar_url,
-      isPro: user.is_pro,
-    },
+    payload: user,
   })
 });
 
@@ -29,23 +24,23 @@ const Operation = {
   signIn: (data) => (dispatch, _getState, api) => {
     return api.post(`/login`, data)
       .then((response) => {
-        if (response.data) {
-          dispatch(ActionCreator.signIn(response.data));
+        if (response.status === 200) {
           dispatch(ActionCreator.requireAuthorization(true));
+          dispatch(ActionCreator.signIn(response.data));
         }
-      })
-      .catch(() => {});
+      });
   },
 
-  checkAuthorization: () => (dispatch, _getState, api) => {
-    return api.get(`/login`)
-      .then((response) => {
-        if (response.data) {
-          dispatch(ActionCreator.signIn(response.data));
-          dispatch(ActionCreator.requireAuthorization(true));
-        }
-      })
-      .catch(() => {});
+  checkAuthorization: () => {
+    return (dispatch, _getState, api) => {
+      return api
+        .get(`/login`)
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(ActionCreator.requireAuthorization(false));
+          }
+        });
+    };
   },
 };
 
