@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Operation} from '../../reducers/user/user';
 
-class SignIn extends React.Component {
+class SignIn extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.emailInput = React.createRef();
-    this.passwordInput = React.createRef();
-    this.handleCheckDataSignIn = this.handleCheckDataSignIn.bind(this);
-  }
-
-  handleCheckDataSignIn(email, password) {
-    if (email && password) {
-      this.props.signIn({email, password});
-    }
+    this._emailInput = React.createRef();
+    this._passwordInput = React.createRef();
+    this._handleCheckDataLogin = this._handleCheckDataLogin.bind(this);
   }
 
   render() {
@@ -26,7 +22,7 @@ class SignIn extends React.Component {
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
-                  ref={this.emailInput}
+                  ref={this._emailInput}
                   className="login__input form__input"
                   type="email"
                   name="email"
@@ -37,7 +33,7 @@ class SignIn extends React.Component {
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
-                  ref={this.passwordInput}
+                  ref={this._passwordInput}
                   className="login__input form__input"
                   type="password"
                   name="password"
@@ -48,12 +44,7 @@ class SignIn extends React.Component {
               <button
                 className="login__submit form__submit button"
                 type="submit"
-                onClick={(event) => {
-                  event.preventDefault();
-                  if (this.emailInput && this.passwordInput) {
-                    this.handleCheckDataSignIn(this.emailInput.current.value, this.passwordInput.current.value);
-                  }
-                }}
+                onClick={this._handleCheckDataLogin}
               >
                 Sign in
               </button>
@@ -70,11 +61,31 @@ class SignIn extends React.Component {
       </main>
     );
   }
+
+  _handleCheckDataLogin(event) {
+    event.preventDefault();
+
+    if (this._emailInput && this._passwordInput) {
+      const [email, password] = [this._emailInput.current.value, this._passwordInput.current.value];
+      if (email && password) {
+        this.props.login({email, password});
+      }
+    }
+  }
 }
 
 SignIn.propTypes = {
-  signIn: PropTypes.func,
+  login: PropTypes.func,
   user: PropTypes.object,
 };
 
-export default SignIn;
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps);
+const mapDispatchToProps = (dispatch) => ({
+  login: (data) => {
+    dispatch(Operation.login(data));
+  },
+});
+
+export {SignIn};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

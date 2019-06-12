@@ -8,7 +8,7 @@ import {Router} from 'react-router-dom';
 import history from './history';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
-import {Operation as UserOperation} from './reducers/user/user';
+import {Operation as UserOperation, ActionCreator as UserActions} from './reducers/user/user';
 import {getOffers} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
@@ -20,7 +20,10 @@ const getRandomOffer = (offers) => {
 };
 
 const init = () => {
-  const api = createAPI(() => history.push(`/login`));
+  const api = createAPI(() => {
+    store.dispatch(UserActions.requireAuthorization(false));
+  });
+
   const store = createStore(
       reducer,
       compose(
@@ -37,6 +40,7 @@ const init = () => {
         store.dispatch(ActionCreator.changeCity(offer.city));
       }
     });
+
   store.dispatch(UserOperation.checkAuthorization());
 
   ReactDOM.render(

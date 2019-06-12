@@ -23,7 +23,7 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {rentalOffers, cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, signIn, user} = this.props;
+    const {rentalOffers, cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, login, user} = this.props;
     const {activeOfferId} = this.state;
     // const currentOffer = rentalOffers.filter((offer) => offer.id === activeOfferId)[0];
 
@@ -56,7 +56,7 @@ class App extends React.PureComponent {
               {!isAuthorizationRequired
                 ?
                 <SignIn
-                  signIn={signIn}
+                  signIn={login}
                   user={user}
                 />
                 :
@@ -67,7 +67,7 @@ class App extends React.PureComponent {
           />
           <Route
             exact
-            path={`/offer/${activeOfferId}`}
+            path={`/offer/:${activeOfferId}`}
             render={() => <OfferDetails rentalOffers={rentalOffers} activeOfferId={activeOfferId} />}
           />
         </Switch>
@@ -95,8 +95,8 @@ const mapDispatchToProps = (dispatch) => ({
   onCityClick: (currentCity) => {
     dispatch(ActionCreator.changeCity(currentCity));
   },
-  signIn: (data) => {
-    dispatch(UserActionCreator.signIn(data));
+  login: (data) => {
+    dispatch(UserActionCreator.login(data));
   },
 });
 
@@ -138,7 +138,7 @@ App.propTypes = {
   currentCity: PropTypes.object.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,
-  signIn: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,

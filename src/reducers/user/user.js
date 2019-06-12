@@ -5,7 +5,7 @@ const initialState = {
 
 const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  SIGN_IN: `SIGN_IN`,
+  LOGIN: `LOGIN`,
 };
 
 const ActionCreator = ({
@@ -14,34 +14,35 @@ const ActionCreator = ({
     payload: status,
   }),
 
-  signIn: (user) => ({
-    type: ActionType.SIGN_IN,
+  login: (user) => ({
+    type: ActionType.LOGIN,
     payload: user,
   })
 });
 
 const Operation = {
-  signIn: (data) => (dispatch, _getState, api) => {
+  login: (data) => (dispatch, _getState, api) => {
     return api.post(`/login`, data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.data) {
+          dispatch(ActionCreator.login(response.data));
           dispatch(ActionCreator.requireAuthorization(true));
-          dispatch(ActionCreator.signIn(response.data));
         }
-      });
+      })
+      .catch(() => {});
   },
 
-  checkAuthorization: () => {
-    return (dispatch, _getState, api) => {
-      return api
-        .get(`/login`)
-        .then((res) => {
-          if (res.status === 200) {
-            dispatch(ActionCreator.requireAuthorization(false));
-          }
-        });
-    };
-  },
+  checkAuthorization: () => (dispatch, _getState, api) => {
+    return api
+      .get(`/login`)
+      .then((response) => {
+        if (response.data) {
+          dispatch(ActionCreator.login(response.data));
+          dispatch(ActionCreator.requireAuthorization(true));
+        }
+      })
+      .catch(() => {});
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,7 +51,7 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isAuthorizationRequired: action.payload,
       });
-    case ActionType.SIGN_IN:
+    case ActionType.LOGIN:
       return Object.assign({}, state, {
         user: action.payload,
       });

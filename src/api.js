@@ -1,17 +1,20 @@
 import axios from 'axios';
 
+const BASE_URL = `https://es31-server.appspot.com/six-cities`;
+const STATUS_FORBIDDEN = 403;
+const TIMEOUT = 5000;
+
 export const createAPI = (onLoginFail) => {
   const api = axios.create({
-    baseURL: `https://es31-server.appspot.com/six-cities`,
-    timeout: 5000,
+    baseURL: BASE_URL,
+    timeout: TIMEOUT,
     withCredentials: true,
   });
 
   const onSuccess = (response) => response;
   const onFail = (error) => {
-    if (error.response.request.responseURL.indexOf(`/login`) === -1 && error.response.status === 403) {
+    if (error.response.status === STATUS_FORBIDDEN) {
       onLoginFail();
-      return;
     }
 
     throw error;
