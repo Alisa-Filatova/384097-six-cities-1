@@ -1,6 +1,10 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import Adapter from 'enzyme-adapter-react-16';
+import {configure, shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
 import OfferCard from './offer-card.jsx';
+
+configure({adapter: new Adapter()});
 
 const mock = {
   id: 123,
@@ -25,7 +29,7 @@ describe(`OfferCard`, () => {
     const mouseOverHandler = jest.fn();
     const mouseLeaveHandler = jest.fn();
 
-    const card = renderer.create(
+    const card = shallow(
         <OfferCard
           activeItem={1}
           offer={mock}
@@ -34,8 +38,8 @@ describe(`OfferCard`, () => {
           onMouseOver={mouseOverHandler}
           onMouseOut={mouseLeaveHandler}
         />
-    ).toJSON();
+    );
 
-    expect(card).toMatchSnapshot();
+    expect(shallowToJson(card)).toMatchSnapshot();
   });
 });

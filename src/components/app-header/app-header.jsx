@@ -50,7 +50,7 @@ const AppHeader = ({isAuthenticated, user}) => (
 export default AppHeader;
 
 AppHeader.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
 

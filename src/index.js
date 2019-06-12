@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
 import {Router} from 'react-router-dom';
+import history from './history';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
 import {Operation as UserOperation, ActionCreator as UserActions} from './reducers/user/user';

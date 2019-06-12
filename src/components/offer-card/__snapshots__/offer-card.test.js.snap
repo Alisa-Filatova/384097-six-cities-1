@@ -87,12 +87,12 @@ exports[`OfferCard renders correctly 1`] = `
     <h2
       className="place-card__name"
     >
-      <a
-        href="#"
+      <Link
         onClick={[MockFunction]}
+        to="/offer/:123"
       >
         Beautiful & luxurious apartment at great location
-      </a>
+      </Link>
     </h2>
     <p
       className="place-card__type"

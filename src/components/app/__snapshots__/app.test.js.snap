@@ -5,6 +5,22 @@ exports[`App renders correctly 1`] = `
   pageType="login"
 >
   <AppHeader />
-  <SignIn />
+  <Switch>
+    <Route
+      exact={true}
+      path="/"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/login"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/offer/:null"
+      render={[Function]}
+    />
+  </Switch>
 </PageWrapper>
 `;

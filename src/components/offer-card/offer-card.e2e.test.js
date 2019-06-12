@@ -7,14 +7,32 @@ configure({adapter: new Adapter()});
 
 const mock = {
   id: 123,
-  title: `Beautiful & luxurious apartment at great location`,
-  [`preview_image`]: `img/apartment-01.jpg`,
+  title: `Nice place`,
   isPremium: true,
   price: 120,
-  rating: 4,
+  rating: 2.4,
+  [`is_favorite`]: false,
+  description: `asd asd`,
   type: `Apartment`,
-  isInBookmarks: false,
-  coordinates: [52.3909553943508, 4.929309666406198],
+  [`preview_image`]: `photo.jpg`,
+  images: [``],
+  goods: [``],
+  bedrooms: 2,
+  [`max_adults`]: 2,
+  host: {},
+  location: {
+    latitude: 1288999,
+    longitude: 87676689,
+    zoom: 17,
+  },
+  city: {
+    name: `Amsterdam`,
+    location: {
+      latitude: 1288999,
+      longitude: 1288999,
+      zoom: 13,
+    },
+  }
 };
 
 describe(`OfferCard`, () => {
