@@ -46,7 +46,9 @@ describe(`MainPage`, () => {
           rentalOffers={mock}
           onTownClick={jest.fn()}
           cityOffers={[`Amsterdam`, `Paris`]}
-          currentTown={{location: 123}}
+          currentCity={{location: 123, name: `Amsterdam`}}
+          onCityClick={jest.fn()}
+          cities={mock}
         />
     );
 

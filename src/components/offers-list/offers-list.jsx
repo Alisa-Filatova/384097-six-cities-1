@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import OfferCard from '../offer-card/offer-card.jsx';
 
-const OffersList = ({rentalOffers, setActiveItem}) => (
+const OffersList = ({rentalOffers, setActiveItem, onOfferTitleClick}) => (
   <div className="cities__places-list places__list tabs__content">
     {rentalOffers.map((offer, idx) => (
       <OfferCard
         activeItem={offer.id}
         offer={offer}
-        onOfferTitleClick={() => {}}
+        onOfferTitleClick={() => onOfferTitleClick(offer)}
         onOfferImgClick={() => setActiveItem(offer.id)}
         key={idx}
         onMouseOver={() => setActiveItem(offer.id)}
-        onMouseOut={() => setActiveItem(null)}
+        onMouseOut={() => {}}
         {...rentalOffers}
       />
     ))}
@@ -54,6 +54,7 @@ OffersList.propTypes = {
     }),
   })).isRequired,
   setActiveItem: PropTypes.func.isRequired,
+  onOfferTitleClick: PropTypes.func.isRequired,
 };
 
 export default OffersList;
