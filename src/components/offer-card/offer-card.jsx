@@ -7,18 +7,17 @@ const OfferCard = (props) => {
 
   return (
     <article
-      id={offer.id}
       className={`cities__place-card ${activeItem !== null ? `cities__place-card--active` : ``} place-card`}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      {offer[`is_premium`] &&
+      {offer.is_premium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       }
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="" onClick={onOfferImgClick}>
+        <a href="#" onClick={onOfferImgClick}>
           <img
             className="place-card__image"
             src={offer.preview_image}

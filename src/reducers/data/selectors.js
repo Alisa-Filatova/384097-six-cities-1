@@ -4,6 +4,33 @@ import {NameSpace} from '../namespaces';
 const NAMESPACE = NameSpace.DATA;
 const MAX_CITIES = 6;
 
+const sortCitiesByName = (offers) => {
+  const cities = offers.map((offer) => offer.city).sort((a, b) => {
+    const textA = a.name.toUpperCase();
+    const textB = b.name.toUpperCase();
+    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+  });
+
+  return cities.reduce((prev, current) => {
+    if (!prev.includes(current)) {
+      prev.push(current);
+    }
+    return prev;
+  }, []);
+};
+
+const getUnicCities = (arr) => {
+  const unicCities = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (i === 0 || arr[i].name !== arr[i - 1].name) {
+      unicCities.push(arr[i]);
+    }
+  }
+
+  return unicCities;
+};
+
 export const getOffers = (state) => {
   return state[NAMESPACE].rentalOffers;
 };
@@ -12,10 +39,9 @@ export const getCurrentCity = (state) => {
   return state[NAMESPACE].currentCity;
 };
 
-// TODO
 export const getCities = createSelector(
     [getOffers],
-    (offers) => [...new Set(offers.map((offer) => offer.city.name))].slice(0, MAX_CITIES)
+    (offers) => getUnicCities(sortCitiesByName(offers)).slice(0, MAX_CITIES)
 );
 
 export const getCityOffers = createSelector(

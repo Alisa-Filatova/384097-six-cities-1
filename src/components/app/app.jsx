@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
+import {getOffers, getCurrentCity, getCityOffers, getCities} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
@@ -13,7 +13,7 @@ import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../enums/page-type';
 
-class App extends React.Component {
+class App extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {rentalOffers, onCityClick, currentCity, cityOffers, isAuthorizationRequired, signIn, user} = this.props;
+    const {rentalOffers, cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, signIn, user} = this.props;
     const {activeOfferId} = this.state;
     // const currentOffer = rentalOffers.filter((offer) => offer.id === activeOfferId)[0];
 
@@ -39,7 +39,7 @@ class App extends React.Component {
             exact
             render={() =>
               <MainPage
-                rentalOffers={rentalOffers}
+                cities={cities}
                 onCityClick={onCityClick}
                 currentCity={currentCity}
                 cityOffers={cityOffers}
@@ -88,6 +88,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   cityOffers: getCityOffers(state),
   isAuthorizationRequired: getAuthorizationStatus(state),
   user: getUser(state),
+  cities: getCities(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -145,6 +146,7 @@ App.propTypes = {
     [`avatar_url`]: PropTypes.string,
     [`is_pro`]: PropTypes.bool,
   }),
+  cities: PropTypes.arrayOf(PropTypes.object),
 };
 
 export {App};

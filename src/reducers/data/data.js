@@ -6,7 +6,6 @@ const initialState = {
 const ActionType = {
   LOAD_OFFERS: `LOAD_OFFERS`,
   CHANGE_CITY: `CHANGE_CITY`,
-  RESET: `RESET`,
 };
 
 const ActionCreator = {
@@ -38,8 +37,6 @@ const reducer = (state = initialState, action) => {
     case ActionType.CHANGE_CITY: return Object.assign({}, state, {
       currentCity: action.payload,
     });
-
-    case ActionType.RESET: return Object.assign({}, initialState);
   }
 
   return state;

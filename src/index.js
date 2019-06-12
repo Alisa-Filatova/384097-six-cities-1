@@ -13,6 +13,12 @@ import {getOffers} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
 
+const getRandomOffer = (offers) => {
+  const min = 0;
+  const max = Math.floor(offers.length);
+  return offers[Math.floor(Math.random() * (max - min)) + min];
+};
+
 const init = () => {
   const api = createAPI(() => history.push(`/login`));
   const store = createStore(
@@ -22,14 +28,6 @@ const init = () => {
           window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (a) => a)
   );
 
-  // TODO
-  const getRandomOffer = (offers) => {
-    const min = 0;
-    const max = Math.floor(offers.length);
-    return offers[Math.floor(Math.random() * (max - min)) + min];
-  };
-
-  store.dispatch(UserOperation.checkAuthorization());
   store.dispatch(Operation.loadOffers())
     .then(() => {
       const currentState = store.getState();
@@ -39,6 +37,7 @@ const init = () => {
         store.dispatch(ActionCreator.changeCity(offer.city));
       }
     });
+  store.dispatch(UserOperation.checkAuthorization());
 
   ReactDOM.render(
       <Provider store={store}>

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
-const ZOOM = 12;
 const pin =
   leaflet.icon({
     iconUrl: `img/pin.svg`,
@@ -15,15 +14,8 @@ const activePin =
     iconSize: [30, 42],
   });
 
-const SETTINGS = {
-  zoom: ZOOM,
-  zoomControl: false,
-  marker: true,
-  icon: pin,
-};
-
-
 class Map extends React.PureComponent {
+
   componentDidMount() {
     this._initMap();
   }
@@ -38,15 +30,10 @@ class Map extends React.PureComponent {
 
       this.props.cityOffers.forEach((place) => {
         leaflet.marker([place.location.latitude, place.location.longitude],
-            {icon: this.props.activeOfferId === place.id ? activePin : SETTINGS.icon}).addTo(this.markersLayer);
+            {icon: this.props.activeOfferId === place.id ? activePin : pin}).addTo(this.markersLayer);
       });
     }
   }
-  //
-  // componentWillUnmount() {
-  //   this.map.remove();
-  //   this.map = null;
-  // }
 
   render() {
     return (
@@ -65,7 +52,13 @@ class Map extends React.PureComponent {
     const {location} = this.props.currentCity;
     const center = [location.latitude, location.longitude];
 
-    this.map = leaflet.map(`map`, SETTINGS);
+    this.map = leaflet.map(`map`, {
+      zoom: location.zoom,
+      zoomControl: false,
+      marker: true,
+      icon: pin,
+    });
+
     this.map.setView(center, location.zoom);
 
     leaflet
@@ -76,7 +69,7 @@ class Map extends React.PureComponent {
 
     this.props.cityOffers.forEach((place) => {
       leaflet.marker([place.location.latitude, place.location.longitude],
-          {icon: this.props.activeOfferId === place.id ? activePin : SETTINGS.icon}).addTo(this.markersLayer);
+          {icon: this.props.activeOfferId === place.id ? activePin : pin}).addTo(this.markersLayer);
     });
   }
 }
