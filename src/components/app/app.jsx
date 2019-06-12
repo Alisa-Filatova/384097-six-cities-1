@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {getOffers, getCurrentCity, getCityOffers, getCities} from '../../reducers/data/selectors';
+import {getOffers, getCurrentCity, getCityOffers, getCities, getCurrentOffer} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
@@ -12,6 +12,7 @@ import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../enums/page-type';
+
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -23,9 +24,8 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {rentalOffers, cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, login, user} = this.props;
+    const {cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, login, user, onCardTitleClick, currentOffer} = this.props;
     const {activeOfferId} = this.state;
-    // const currentOffer = rentalOffers.filter((offer) => offer.id === activeOfferId)[0];
 
     return (
       <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
@@ -45,6 +45,7 @@ class App extends React.PureComponent {
                 cityOffers={cityOffers}
                 setActiveItem={this._handleGetActiveOffer.bind(this)}
                 activeOfferId={activeOfferId}
+                onOfferTitleClick={onCardTitleClick}
               />
             }
           />
@@ -68,7 +69,7 @@ class App extends React.PureComponent {
           <Route
             exact
             path={`/offer/:${activeOfferId}`}
-            render={() => <OfferDetails rentalOffers={rentalOffers} activeOfferId={activeOfferId} />}
+            render={() => <OfferDetails offer={currentOffer} activeOfferId={activeOfferId} />}
           />
         </Switch>
       </PageWrapper>
@@ -89,11 +90,15 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   isAuthorizationRequired: getAuthorizationStatus(state),
   user: getUser(state),
   cities: getCities(state),
+  currentOffer: getCurrentOffer(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onCityClick: (currentCity) => {
     dispatch(ActionCreator.changeCity(currentCity));
+  },
+  onCardTitleClick: (offer) => {
+    dispatch(ActionCreator.changeOffer(offer));
   },
   login: (data) => {
     dispatch(UserActionCreator.login(data));
@@ -147,6 +152,8 @@ App.propTypes = {
     [`is_pro`]: PropTypes.bool,
   }),
   cities: PropTypes.arrayOf(PropTypes.object),
+  onCardTitleClick: PropTypes.func,
+  currentOffer: PropTypes.object,
 };
 
 export {App};

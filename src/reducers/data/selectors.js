@@ -39,6 +39,10 @@ export const getCurrentCity = (state) => {
   return state[NAMESPACE].currentCity;
 };
 
+export const getCurrentOffer = (state) => {
+  return state[NAMESPACE].currentOffer;
+};
+
 export const getCities = createSelector(
     [getOffers],
     (offers) => getUnicCities(sortCitiesByName(offers)).slice(0, MAX_CITIES)

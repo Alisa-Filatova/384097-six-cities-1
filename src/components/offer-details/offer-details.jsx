@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
-const OfferDetails = ({rentalOffers, activeOfferId}) => {
-  const offer = rentalOffers.filter((item) => item.id === activeOfferId)[0];
+const OfferDetails = ({offer, activeOfferId}) => {
   return (
-    <main className="page__main page__main--property" id={offer.id}>
+    <main className="page__main page__main--property">
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
@@ -28,7 +27,7 @@ const OfferDetails = ({rentalOffers, activeOfferId}) => {
               <button
                 className={
                   `place-card__bookmark-button button 
-                  ${offer[`is_favorite`] ? `place-card__bookmark-button--active` : ``}`
+                  ${offer.is_favorite ? `place-card__bookmark-button--active` : ``}`
                 }
                 type="button"
               >
@@ -117,44 +116,58 @@ const OfferDetails = ({rentalOffers, activeOfferId}) => {
                 <label className="reviews__label form__label" htmlFor="review">Your review</label>
                 <div className="reviews__rating-form form__rating">
                   <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"/>
-                    <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
-                      <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star"/>
-                      </svg>
-                    </label>
+                  <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
+                    <svg className="form__star-image" width="37" height="33">
+                      <use xlinkHref="#icon-star"/>
+                    </svg>
+                  </label>
 
-                    <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio"/>
-                      <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
-                        <svg className="form__star-image" width="37" height="33">
-                          <use xlinkHref="#icon-star"/>
-                        </svg>
-                      </label>
+                  <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio"/>
+                  <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
+                    <svg className="form__star-image" width="37" height="33">
+                      <use xlinkHref="#icon-star"/>
+                    </svg>
+                  </label>
 
-                      <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio"/>
-                        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
-                          <svg className="form__star-image" width="37" height="33">
-                            <use xlinkHref="#icon-star"/>
-                          </svg>
-                        </label>
+                  <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio"/>
+                  <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
+                    <svg className="form__star-image" width="37" height="33">
+                      <use xlinkHref="#icon-star"/>
+                    </svg>
+                  </label>
 
-                        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars"
-                               type="radio"/>
-                          <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
-                            <svg className="form__star-image" width="37" height="33">
-                              <use xlinkHref="#icon-star"/>
-                            </svg>
-                          </label>
+                  <input
+                    className="form__rating-input visually-hidden"
+                    name="rating"
+                    value="2"
+                    id="2-stars"
+                    type="radio"
+                  />
+                  <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
+                    <svg className="form__star-image" width="37" height="33">
+                      <use xlinkHref="#icon-star"/>
+                    </svg>
+                  </label>
 
-                          <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star"
-                                 type="radio"/>
-                            <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
-                              <svg className="form__star-image" width="37" height="33">
-                                <use xlinkHref="#icon-star"/>
-                              </svg>
-                            </label>
-                          </div>
-                <textarea className="reviews__textarea form__textarea" id="review" name="review"
-                          placeholder="Tell how was your stay, what you like and what can be improved"/>
+                  <input
+                    className="form__rating-input visually-hidden"
+                    name="rating"
+                    value="1"
+                    id="1-star"
+                    type="radio"
+                  />
+                  <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
+                    <svg className="form__star-image" width="37" height="33">
+                      <use xlinkHref="#icon-star"/>
+                    </svg>
+                  </label>
+                </div>
+                <textarea
+                  className="reviews__textarea form__textarea"
+                  id="review"
+                  name="review"
+                  placeholder="Tell how was your stay, what you like and what can be improved"
+                />
                 <div className="reviews__button-wrapper">
                   <p className="reviews__help">
                     To submit review please make sure to set <span className="reviews__star">rating</span> and describe your
@@ -293,39 +306,7 @@ const OfferDetails = ({rentalOffers, activeOfferId}) => {
 };
 
 OfferDetails.propTypes = {
-  rentalOffers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    [`preview_image`]: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    [`is_premium`]: PropTypes.bool,
-    [`is_favorite`]: PropTypes.bool,
-    bedrooms: PropTypes.number,
-    goods: PropTypes.arrayOf(PropTypes.string),
-    description: PropTypes.string,
-    price: PropTypes.number,
-    rating: PropTypes.number,
-    type: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-    city: PropTypes.shape({
-      name: PropTypes.string,
-      location: PropTypes.shape({
-        latitude: PropTypes.number,
-        longitude: PropTypes.number,
-        zoom: PropTypes.number,
-      }),
-    }),
-    host: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      [`is_pro`]: PropTypes.bool,
-      [`avatar_url`]: PropTypes.string,
-    }),
-  })).isRequired,
+  offer: PropTypes.object.isRequired,
   activeOfferId: PropTypes.any,
 };
 

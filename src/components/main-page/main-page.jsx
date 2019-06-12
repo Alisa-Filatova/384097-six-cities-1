@@ -12,7 +12,7 @@ const WrappedOffersList = withActiveItem(
     }))(OffersList)
 );
 
-const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiveItem, cities}) => (
+const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiveItem, cities, onOfferTitleClick}) => (
   <main className="page__main page__main--index">
     <h1 className="visually-hidden">Cities</h1>
     <CitiesList
@@ -45,6 +45,7 @@ const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiv
           <WrappedOffersList
             rentalOffers={cityOffers}
             setActiveItem={setActiveItem}
+            onOfferTitleClick={onOfferTitleClick}
           />
         </section>
         <div className="cities__right-section">
@@ -67,6 +68,7 @@ MainPage.propTypes = {
   cityOffers: PropTypes.array.isRequired,
   activeOfferId: PropTypes.any,
   setActiveItem: PropTypes.func,
+  onOfferTitleClick: PropTypes.func,
 };
 
 export default MainPage;
