@@ -9,13 +9,8 @@ exports[`MainPage renders correctly 1`] = `
   >
     Cities
   </h1>
-  <TownsList
-    currentTown={
-      Object {
-        "location": 123,
-      }
-    }
-    offers={
+  <CitiesList
+    cities={
       Array [
         Object {
           "city": Object {
@@ -61,7 +56,13 @@ exports[`MainPage renders correctly 1`] = `
         },
       ]
     }
-    onTownClick={[MockFunction]}
+    currentCity={
+      Object {
+        "location": 123,
+        "name": "Amsterdam",
+      }
+    }
+    onCityClick={[MockFunction]}
   />
   <div
     className="cities__places-wrapper"
@@ -85,7 +86,7 @@ exports[`MainPage renders correctly 1`] = `
         <b
           className="places__found"
         >
-          2 places to stay in undefined
+          2 places to stay in Amsterdam
         </b>
         <form
           action="#"
@@ -148,25 +149,25 @@ exports[`MainPage renders correctly 1`] = `
               "Paris",
             ]
           }
-          setActiveItem={[Function]}
         />
       </section>
       <div
         className="cities__right-section"
       >
         <Map
-          activeOfferId={null}
           cityOffers={
             Array [
               "Amsterdam",
               "Paris",
             ]
           }
-          currentTown={
+          currentCity={
             Object {
               "location": 123,
+              "name": "Amsterdam",
             }
           }
+          key="Amsterdam"
         />
       </div>
     </div>

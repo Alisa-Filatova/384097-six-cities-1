@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 const OfferCard = (props) => {
   const {offer, onOfferImgClick, onOfferTitleClick, onMouseOver, onMouseOut, activeItem} = props;
@@ -52,7 +53,7 @@ const OfferCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#" onClick={onOfferTitleClick}>{offer.title}</a>
+          <Link to={`/offer/:${offer.id}`} onClick={onOfferTitleClick}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

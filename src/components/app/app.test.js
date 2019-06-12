@@ -29,9 +29,11 @@ describe(`App`, () => {
     const app = shallow(
         <App
           rentalOffers={mock}
-          currentTown={mock[0].city}
+          currentCity={mock[0].city}
           onTownClick={jest.fn()}
           cityOffers={[`Amsterdam`, `Paris`]}
+          login={jest.fn()}
+          onCityClick={jest.fn()}
         />
     );
 

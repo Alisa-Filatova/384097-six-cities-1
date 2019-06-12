@@ -1,12 +1,13 @@
 const initialState = {
   rentalOffers: [],
-  currentTown: {},
+  currentCity: {},
+  currentOffer: {},
 };
 
 const ActionType = {
   LOAD_OFFERS: `LOAD_OFFERS`,
-  CHANGE_TOWN: `CHANGE_TOWN`,
-  RESET: `RESET`,
+  CHANGE_CITY: `CHANGE_CITY`,
+  SET_CURRENT_OFFER: `SET_CURRENT_OFFER`,
 };
 
 const ActionCreator = {
@@ -14,9 +15,13 @@ const ActionCreator = {
     type: ActionType.LOAD_OFFERS,
     payload: rentalOffers,
   }),
-  changeTown: (currentTown) => ({
-    type: ActionType.CHANGE_TOWN,
-    payload: currentTown,
+  changeCity: (currentCity) => ({
+    type: ActionType.CHANGE_CITY,
+    payload: currentCity,
+  }),
+  changeOffer: (currentOffer) => ({
+    type: ActionType.SET_CURRENT_OFFER,
+    payload: currentOffer,
   }),
 };
 
@@ -31,15 +36,20 @@ const Operation = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.LOAD_OFFERS: return Object.assign({}, state, {
-      rentalOffers: action.payload,
-    });
+    case ActionType.LOAD_OFFERS:
+      return Object.assign({}, state, {
+        rentalOffers: action.payload,
+      });
 
-    case ActionType.CHANGE_TOWN: return Object.assign({}, state, {
-      currentTown: action.payload,
-    });
+    case ActionType.CHANGE_CITY:
+      return Object.assign({}, state, {
+        currentCity: action.payload,
+      });
 
-    case ActionType.RESET: return Object.assign({}, initialState);
+    case ActionType.SET_CURRENT_OFFER:
+      return Object.assign({}, state, {
+        currentOffer: action.payload,
+      });
   }
 
   return state;

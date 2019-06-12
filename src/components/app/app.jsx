@@ -1,52 +1,107 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {getOffers, getCurrentCity, getCityOffers} from '../../reducers/data/selectors';
+import {getOffers, getCurrentCity, getCityOffers, getCities, getCurrentOffer} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
+import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../enums/page-type';
 
-const App = ({rentalOffers, onTownClick, currentTown, cityOffers, isAuthorizationRequired, signIn, user}) => (
-  <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
-    <AppHeader
-      isAuthenticated={isAuthorizationRequired}
-      user={user}
-    />
-    {isAuthorizationRequired ?
-      <MainPage
-        rentalOffers={rentalOffers}
-        onTownClick={onTownClick}
-        currentTown={currentTown}
-        cityOffers={cityOffers}
-      />
-      :
-      <SignIn
-        signIn={signIn}
-        user={user}
-      />
-    }
-  </PageWrapper>
-);
+
+class App extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeOfferId: null,
+    };
+  }
+
+  render() {
+    const {cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, login, user, onCardTitleClick, currentOffer} = this.props;
+    const {activeOfferId} = this.state;
+
+    return (
+      <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
+        <AppHeader
+          isAuthenticated={isAuthorizationRequired}
+          user={user}
+        />
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() =>
+              <MainPage
+                cities={cities}
+                onCityClick={onCityClick}
+                currentCity={currentCity}
+                cityOffers={cityOffers}
+                setActiveItem={this._handleGetActiveOffer.bind(this)}
+                activeOfferId={activeOfferId}
+                onOfferTitleClick={onCardTitleClick}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            exact
+            render={() => (
+              <>
+              {!isAuthorizationRequired
+                ?
+                <SignIn
+                  signIn={login}
+                  user={user}
+                />
+                :
+                <Redirect to='/' />
+              }
+            </>
+            )}
+          />
+          <Route
+            exact
+            path={`/offer/:${activeOfferId}`}
+            render={() => <OfferDetails offer={currentOffer} activeOfferId={activeOfferId} />}
+          />
+        </Switch>
+      </PageWrapper>
+    );
+  }
+
+  _handleGetActiveOffer(offerId) {
+    this.setState((prevState) => {
+      return Object.assign({}, prevState, {activeOfferId: offerId});
+    });
+  }
+}
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  currentTown: getCurrentCity(state),
+  currentCity: getCurrentCity(state),
   rentalOffers: getOffers(state),
   cityOffers: getCityOffers(state),
   isAuthorizationRequired: getAuthorizationStatus(state),
   user: getUser(state),
+  cities: getCities(state),
+  currentOffer: getCurrentOffer(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onTownClick: (currentTown) => {
-    dispatch(ActionCreator.changeTown(currentTown));
+  onCityClick: (currentCity) => {
+    dispatch(ActionCreator.changeCity(currentCity));
   },
-  signIn: (data) => {
-    dispatch(UserActionCreator.signIn(data));
+  onCardTitleClick: (offer) => {
+    dispatch(ActionCreator.changeOffer(offer));
+  },
+  login: (data) => {
+    dispatch(UserActionCreator.login(data));
   },
 });
 
@@ -84,11 +139,11 @@ App.propTypes = {
       [`avatar_url`]: PropTypes.string,
     }),
   })).isRequired,
-  onTownClick: PropTypes.func.isRequired,
-  currentTown: PropTypes.object.isRequired,
+  onCityClick: PropTypes.func.isRequired,
+  currentCity: PropTypes.object.isRequired,
   cityOffers: PropTypes.array.isRequired,
   isAuthorizationRequired: PropTypes.bool,
-  signIn: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -96,6 +151,9 @@ App.propTypes = {
     [`avatar_url`]: PropTypes.string,
     [`is_pro`]: PropTypes.bool,
   }),
+  cities: PropTypes.arrayOf(PropTypes.object),
+  onCardTitleClick: PropTypes.func,
+  currentOffer: PropTypes.object,
 };
 
 export {App};
