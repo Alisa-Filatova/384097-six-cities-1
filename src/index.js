@@ -9,15 +9,9 @@ import history from './history';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
 import {Operation as UserOperation, ActionCreator as UserActions} from './reducers/user/user';
-import {getOffers} from './reducers/data/selectors';
+import {getRandomOffer} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
-
-const getRandomOffer = (offers) => {
-  const min = 0;
-  const max = Math.floor(offers.length);
-  return offers[Math.floor(Math.random() * (max - min)) + min];
-};
 
 const init = () => {
   const api = createAPI(() => {
@@ -34,7 +28,7 @@ const init = () => {
   store.dispatch(Operation.loadOffers())
     .then(() => {
       const currentState = store.getState();
-      const offer = getRandomOffer(getOffers(currentState));
+      const offer = getRandomOffer(currentState);
 
       if (offer) {
         store.dispatch(ActionCreator.changeCity(offer.city));

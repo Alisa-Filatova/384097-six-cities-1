@@ -31,6 +31,12 @@ const getUnicCities = (arr) => {
   return unicCities;
 };
 
+const getRandomCityOffer = (offers) => {
+  const min = 0;
+  const max = Math.floor(offers.length);
+  return offers[Math.floor(Math.random() * (max - min)) + min];
+};
+
 export const getOffers = (state) => {
   return state[NAMESPACE].rentalOffers;
 };
@@ -52,4 +58,9 @@ export const getCityOffers = createSelector(
     getOffers,
     getCurrentCity,
     (offers, city) => offers.filter((offer) => offer.city.name === city.name)
+);
+
+export const getRandomOffer = createSelector(
+    [getOffers],
+    (state) => getRandomCityOffer(state)
 );
