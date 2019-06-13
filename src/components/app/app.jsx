@@ -6,13 +6,14 @@ import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {getOffers, getCurrentCity, getCityOffers, getCities, getCurrentOffer} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
+import {getReviews} from '../../reducers/review/selectors';
+import {Operation as ReviewsOperation} from '../../reducers/review/review';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../enums/page-type';
-
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -24,7 +25,20 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {cities, onCityClick, currentCity, cityOffers, isAuthorizationRequired, login, user, onCardTitleClick, currentOffer} = this.props;
+    const {
+      cities,
+      onCityClick,
+      currentCity,
+      cityOffers,
+      isAuthorizationRequired,
+      login,
+      user,
+      onCardTitleClick,
+      currentOffer,
+      reviewsList,
+      getReviewsList,
+    } = this.props;
+
     const {activeOfferId} = this.state;
 
     return (
@@ -69,7 +83,13 @@ class App extends React.PureComponent {
           <Route
             exact
             path={`/offer/:${activeOfferId}`}
-            render={() => <OfferDetails offer={currentOffer} activeOfferId={activeOfferId} />}
+            render={() => (
+              <OfferDetails
+                offer={currentOffer}
+                reviews={getReviewsList(currentOffer.id) || reviewsList}
+                nearOffers={cityOffers}
+              />
+            )}
           />
         </Switch>
       </PageWrapper>
@@ -91,6 +111,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   user: getUser(state),
   cities: getCities(state),
   currentOffer: getCurrentOffer(state),
+  reviewsList: getReviews(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -103,6 +124,9 @@ const mapDispatchToProps = (dispatch) => ({
   login: (data) => {
     dispatch(UserActionCreator.login(data));
   },
+  getReviewsList: (id) => {
+    dispatch(ReviewsOperation.getReviewsList(id));
+  }
 });
 
 App.propTypes = {
@@ -154,6 +178,8 @@ App.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.object),
   onCardTitleClick: PropTypes.func,
   currentOffer: PropTypes.object,
+  reviewsList: PropTypes.arrayOf(PropTypes.object),
+  getReviewsList: PropTypes.func,
 };
 
 export {App};
