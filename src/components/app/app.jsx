@@ -31,6 +31,7 @@ class App extends React.PureComponent {
 
     this.state = {
       activeOfferId: null,
+      activeFilter: `Popular`,
     };
   }
 
@@ -68,6 +69,7 @@ class App extends React.PureComponent {
                 onTopRatedClick={() => sortOffersByRating(cityOffers)}
                 onPopularClick={() => sortOffersById(cityOffers)}
                 onOfferTitleClick={onCardTitleClick}
+                setActiveFilter={this._handleGetActiveFilter.bind(this)}
               />
             }
           />
@@ -107,6 +109,12 @@ class App extends React.PureComponent {
   _handleGetActiveOffer(offerId) {
     this.setState((prevState) => {
       return Object.assign({}, prevState, {activeOfferId: offerId});
+    });
+  }
+
+  _handleGetActiveFilter(filter) {
+    this.setState((prevState) => {
+      return Object.assign({}, prevState, {activeFilter: filter});
     });
   }
 }

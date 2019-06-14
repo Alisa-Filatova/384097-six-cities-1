@@ -9,11 +9,11 @@ import withTransformProps from '../../hocs/with-transform-props/with-transform-p
 import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
 
 const WrappedOffersList = withActiveItem(OffersList);
-const WrappedSortBy = withToggle(
+const WrappedSortBy = withToggle(withActiveItem(
     withTransformProps((props) => Object.assign({}, props, {
       isOpen: props.toggleStatus,
     }))(SortBy)
-);
+));
 
 const MainPage = ({
   onCityClick,
@@ -27,6 +27,7 @@ const MainPage = ({
   onHighToLowClick,
   onTopRatedClick,
   onPopularClick,
+  setActiveFilter,
 }) => (
   <main className="page__main page__main--index">
     <h1 className="visually-hidden">Cities</h1>
@@ -47,6 +48,7 @@ const MainPage = ({
             onHighToLowClick={onHighToLowClick}
             onTopRatedClick={onTopRatedClick}
             onPopularClick={onPopularClick}
+            setActiveItem={setActiveFilter}
           />
           <WrappedOffersList
             rentalOffers={cityOffers}
@@ -60,6 +62,7 @@ const MainPage = ({
             currentCity={currentCity}
             activeOfferId={activeOfferId}
             cityOffers={cityOffers}
+            zoom
           />
         </div>
       </div>
@@ -74,6 +77,7 @@ MainPage.propTypes = {
   cityOffers: PropTypes.array.isRequired,
   activeOfferId: PropTypes.any,
   setActiveItem: PropTypes.func,
+  setActiveFilter: PropTypes.func,
   onOfferTitleClick: PropTypes.func,
   onLowToHighClick: PropTypes.func,
   onHighToLowClick: PropTypes.func,
