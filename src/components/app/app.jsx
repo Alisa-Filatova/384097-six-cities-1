@@ -23,7 +23,8 @@ import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
-import {PageType} from '../../enums/page-type';
+import {PageType} from '../../types/page-type';
+import {SortType} from '../../types/sort-type';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -31,7 +32,7 @@ class App extends React.PureComponent {
 
     this.state = {
       activeOfferId: null,
-      activeFilter: `Popular`,
+      activeFilter: SortType.POPULAR,
     };
   }
 
@@ -47,7 +48,7 @@ class App extends React.PureComponent {
       onCardTitleClick,
     } = this.props;
 
-    const {activeOfferId} = this.state;
+    const {activeOfferId, activeFilter} = this.state;
 
     return (
       <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
@@ -70,6 +71,7 @@ class App extends React.PureComponent {
                 onPopularClick={() => sortOffersById(cityOffers)}
                 onOfferTitleClick={onCardTitleClick}
                 setActiveFilter={this._handleGetActiveFilter.bind(this)}
+                currentFilter={activeFilter}
               />
             }
           />

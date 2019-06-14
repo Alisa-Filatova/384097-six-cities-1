@@ -28,6 +28,7 @@ const MainPage = ({
   onTopRatedClick,
   onPopularClick,
   setActiveFilter,
+  currentFilter,
 }) => (
   <main className="page__main page__main--index">
     <h1 className="visually-hidden">Cities</h1>
@@ -49,6 +50,7 @@ const MainPage = ({
             onTopRatedClick={onTopRatedClick}
             onPopularClick={onPopularClick}
             setActiveItem={setActiveFilter}
+            currentItem={currentFilter}
           />
           <WrappedOffersList
             rentalOffers={cityOffers}
@@ -83,6 +85,7 @@ MainPage.propTypes = {
   onHighToLowClick: PropTypes.func,
   onTopRatedClick: PropTypes.func,
   onPopularClick: PropTypes.func,
+  currentFilter: PropTypes.any,
 };
 
 export default MainPage;

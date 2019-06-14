@@ -4,13 +4,13 @@ import leaflet from 'leaflet';
 
 const pin =
   leaflet.icon({
-    iconUrl: `img/pin.svg`,
+    iconUrl: `/img/pin.svg`,
     iconSize: [27, 39],
   });
 
 const activePin =
   leaflet.icon({
-    iconUrl: `img/pin-active.svg`,
+    iconUrl: `/img/pin-active.svg`,
     iconSize: [30, 42],
   });
 

@@ -75,7 +75,7 @@ const OfferDetails = ({offer, reviews, nearOffers}) => {
                 <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
                   <img
                     className="property__avatar user__avatar"
-                    src={offer.host.avatar_url}
+                    src={`/${offer.host.avatar_url}`}
                     width="74"
                     height="74"
                     alt="Host avatar"

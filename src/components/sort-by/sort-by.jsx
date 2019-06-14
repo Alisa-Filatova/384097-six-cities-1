@@ -1,23 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {SortType} from '../../types/sort-type';
 
-const SortBy = ({onToggle, isOpen, onPopularClick, onLowToHighClick, onHighToLowClick, onTopRatedClick, currentItem = `Popular`, setActiveItem}) => {
+const SortBy = ({onToggle, isOpen, onPopularClick, onLowToHighClick, onHighToLowClick, onTopRatedClick, currentItem, setActiveItem}) => {
 
   const SORT_TYPES_LIST = [
     {
-      name: `Popular`,
+      name: SortType.POPULAR,
       action: onPopularClick,
     },
     {
-      name: `Price: low to high`,
+      name: SortType.LOW_TO_HIGH,
       action: onLowToHighClick,
     },
     {
-      name: `Price: high to low`,
+      name: SortType.HIGH_TO_LOW,
       action: onHighToLowClick,
     },
     {
-      name: `Top rated first`,
+      name: SortType.TOP_RATED,
       action: onTopRatedClick,
     },
   ];
