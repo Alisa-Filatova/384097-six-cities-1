@@ -4,7 +4,17 @@ import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {getOffers, getCurrentCity, getCityOffers, getCities, getCurrentOffer} from '../../reducers/data/selectors';
+import {
+  getOffers,
+  getCurrentCity,
+  getCityOffers,
+  getCities,
+  getCurrentOffer,
+  sortOffersByLowToHigh,
+  sortOffersByHighToLow,
+  sortOffersByRating,
+  sortOffersById,
+} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import {getReviews} from '../../reducers/review/selectors';
 import {Operation as ReviewsOperation} from '../../reducers/review/review';
@@ -26,17 +36,14 @@ class App extends React.PureComponent {
 
   render() {
     const {
-      cities,
-      onCityClick,
-      currentCity,
       cityOffers,
       isAuthorizationRequired,
       login,
       user,
-      onCardTitleClick,
       currentOffer,
       reviewsList,
       getReviewsList,
+      onCardTitleClick,
     } = this.props;
 
     const {activeOfferId} = this.state;
@@ -53,12 +60,13 @@ class App extends React.PureComponent {
             exact
             render={() =>
               <MainPage
-                cities={cities}
-                onCityClick={onCityClick}
-                currentCity={currentCity}
-                cityOffers={cityOffers}
+                {...this.props}
                 setActiveItem={this._handleGetActiveOffer.bind(this)}
                 activeOfferId={activeOfferId}
+                onHighToLowClick={() => sortOffersByHighToLow(cityOffers)}
+                onLowToHighClick={() => sortOffersByLowToHigh(cityOffers)}
+                onTopRatedClick={() => sortOffersByRating(cityOffers)}
+                onPopularClick={() => sortOffersById(cityOffers)}
                 onOfferTitleClick={onCardTitleClick}
               />
             }
@@ -126,7 +134,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   getReviewsList: (id) => {
     dispatch(ReviewsOperation.getReviewsList(id));
-  }
+  },
 });
 
 App.propTypes = {
@@ -180,6 +188,10 @@ App.propTypes = {
   currentOffer: PropTypes.object,
   reviewsList: PropTypes.arrayOf(PropTypes.object),
   getReviewsList: PropTypes.func,
+  onLowToHighClick: PropTypes.func,
+  onHighToLowClick: PropTypes.func,
+  onTopRatedClick: PropTypes.func,
+  onPopularClick: PropTypes.func,
 };
 
 export {App};

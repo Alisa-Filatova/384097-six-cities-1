@@ -4,16 +4,30 @@ import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
 import CitiesList from '../cities-list/cities-list.jsx';
 import SortBy from '../sort-by/sort-by.jsx';
-import withActiveItem from '../../hocs/with-active-item.jsx';
-import withTransformProps from '../../hocs/with-transform-props.jsx';
+import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
+import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
 
-const WrappedOffersList = withActiveItem(
+const WrappedOffersList = withActiveItem(OffersList);
+const WrappedSortBy = withToggle(
     withTransformProps((props) => Object.assign({}, props, {
-      setActiveItem: props.setActiveItem,
-    }))(OffersList)
+      isOpen: props.toggleStatus,
+    }))(SortBy)
 );
 
-const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiveItem, cities, onOfferTitleClick}) => (
+const MainPage = ({
+  onCityClick,
+  currentCity,
+  cityOffers,
+  activeOfferId,
+  setActiveItem,
+  cities,
+  onOfferTitleClick,
+  onLowToHighClick,
+  onHighToLowClick,
+  onTopRatedClick,
+  onPopularClick,
+}) => (
   <main className="page__main page__main--index">
     <h1 className="visually-hidden">Cities</h1>
     <CitiesList
@@ -28,7 +42,12 @@ const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiv
           <b className="places__found">
             {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
           </b>
-          <SortBy />
+          <WrappedSortBy
+            onLowToHighClick={onLowToHighClick}
+            onHighToLowClick={onHighToLowClick}
+            onTopRatedClick={onTopRatedClick}
+            onPopularClick={onPopularClick}
+          />
           <WrappedOffersList
             rentalOffers={cityOffers}
             setActiveItem={setActiveItem}
@@ -56,6 +75,10 @@ MainPage.propTypes = {
   activeOfferId: PropTypes.any,
   setActiveItem: PropTypes.func,
   onOfferTitleClick: PropTypes.func,
+  onLowToHighClick: PropTypes.func,
+  onHighToLowClick: PropTypes.func,
+  onTopRatedClick: PropTypes.func,
+  onPopularClick: PropTypes.func,
 };
 
 export default MainPage;

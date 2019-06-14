@@ -64,3 +64,16 @@ export const getRandomOffer = createSelector(
     [getOffers],
     (state) => getRandomCityOffer(state)
 );
+
+export const sortOffersByLowToHigh = (offers) =>
+  offers.sort((a, b) => a.price - b.price);
+
+export const sortOffersByHighToLow = (offers) =>
+  offers.sort((a, b) => b.price - a.price);
+
+export const sortOffersByRating = (offers) =>
+  offers.sort((a, b) => b.rating - a.rating);
+
+export const sortOffersById = (offers) =>
+  offers.sort((a, b) => a.id - b.id);
+
