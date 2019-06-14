@@ -4,7 +4,17 @@ import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {getOffers, getCurrentCity, getCityOffers, getCities, getCurrentOffer} from '../../reducers/data/selectors';
+import {
+  getOffers,
+  getCurrentCity,
+  getCityOffers,
+  getCities,
+  getCurrentOffer,
+  sortOffersByLowToHigh,
+  sortOffersByHighToLow,
+  sortOffersByRating,
+  sortOffersById,
+} from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import {getReviews} from '../../reducers/review/selectors';
 import {Operation as ReviewsOperation} from '../../reducers/review/review';
@@ -13,7 +23,8 @@ import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
-import {PageType} from '../../enums/page-type';
+import {PageType} from '../../types/page-type';
+import {SortType} from '../../types/sort-type';
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -21,25 +32,23 @@ class App extends React.PureComponent {
 
     this.state = {
       activeOfferId: null,
+      activeFilter: SortType.POPULAR,
     };
   }
 
   render() {
     const {
-      cities,
-      onCityClick,
-      currentCity,
       cityOffers,
       isAuthorizationRequired,
       login,
       user,
-      onCardTitleClick,
       currentOffer,
       reviewsList,
       getReviewsList,
+      onCardTitleClick,
     } = this.props;
 
-    const {activeOfferId} = this.state;
+    const {activeOfferId, activeFilter} = this.state;
 
     return (
       <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
@@ -53,13 +62,16 @@ class App extends React.PureComponent {
             exact
             render={() =>
               <MainPage
-                cities={cities}
-                onCityClick={onCityClick}
-                currentCity={currentCity}
-                cityOffers={cityOffers}
+                {...this.props}
                 setActiveItem={this._handleGetActiveOffer.bind(this)}
                 activeOfferId={activeOfferId}
+                onHighToLowClick={() => sortOffersByHighToLow(cityOffers)}
+                onLowToHighClick={() => sortOffersByLowToHigh(cityOffers)}
+                onTopRatedClick={() => sortOffersByRating(cityOffers)}
+                onPopularClick={() => sortOffersById(cityOffers)}
                 onOfferTitleClick={onCardTitleClick}
+                setActiveFilter={this._handleGetActiveFilter.bind(this)}
+                currentFilter={activeFilter}
               />
             }
           />
@@ -101,6 +113,12 @@ class App extends React.PureComponent {
       return Object.assign({}, prevState, {activeOfferId: offerId});
     });
   }
+
+  _handleGetActiveFilter(filter) {
+    this.setState((prevState) => {
+      return Object.assign({}, prevState, {activeFilter: filter});
+    });
+  }
 }
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
@@ -126,7 +144,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   getReviewsList: (id) => {
     dispatch(ReviewsOperation.getReviewsList(id));
-  }
+  },
 });
 
 App.propTypes = {
@@ -180,6 +198,10 @@ App.propTypes = {
   currentOffer: PropTypes.object,
   reviewsList: PropTypes.arrayOf(PropTypes.object),
   getReviewsList: PropTypes.func,
+  onLowToHighClick: PropTypes.func,
+  onHighToLowClick: PropTypes.func,
+  onTopRatedClick: PropTypes.func,
+  onPopularClick: PropTypes.func,
 };
 
 export {App};
