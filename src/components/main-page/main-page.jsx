@@ -3,16 +3,33 @@ import PropTypes from 'prop-types';
 import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
 import CitiesList from '../cities-list/cities-list.jsx';
-import withActiveItem from '../../hocs/with-active-item.jsx';
-import withTransformProps from '../../hocs/with-transform-props.jsx';
+import SortBy from '../sort-by/sort-by.jsx';
+import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
+import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
 
-const WrappedOffersList = withActiveItem(
+const WrappedOffersList = withActiveItem(OffersList);
+const WrappedSortBy = withToggle(withActiveItem(
     withTransformProps((props) => Object.assign({}, props, {
-      setActiveItem: props.setActiveItem,
-    }))(OffersList)
-);
+      isOpen: props.toggleStatus,
+    }))(SortBy)
+));
 
-const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiveItem, cities, onOfferTitleClick}) => (
+const MainPage = ({
+  onCityClick,
+  currentCity,
+  cityOffers,
+  activeOfferId,
+  setActiveItem,
+  cities,
+  onOfferTitleClick,
+  onLowToHighClick,
+  onHighToLowClick,
+  onTopRatedClick,
+  onPopularClick,
+  setActiveFilter,
+  currentFilter,
+}) => (
   <main className="page__main page__main--index">
     <h1 className="visually-hidden">Cities</h1>
     <CitiesList
@@ -27,21 +44,14 @@ const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiv
           <b className="places__found">
             {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
           </b>
-          <form className="places__sorting" action="#" method="get">
-            <span className="places__sorting-caption">Sort by</span>
-            <span className="places__sorting-type" tabIndex="0">
-              Popular
-              <svg className="places__sorting-arrow" width="7" height="4">
-                <use xlinkHref="#icon-arrow-select"/>
-              </svg>
-            </span>
-            <ul className="places__options places__options--custom places__options--opened">
-              <li className="places__option places__option--active" tabIndex="0">Popular</li>
-              <li className="places__option" tabIndex="0">Price: low to high</li>
-              <li className="places__option" tabIndex="0">Price: high to low</li>
-              <li className="places__option" tabIndex="0">Top rated first</li>
-            </ul>
-          </form>
+          <WrappedSortBy
+            onLowToHighClick={onLowToHighClick}
+            onHighToLowClick={onHighToLowClick}
+            onTopRatedClick={onTopRatedClick}
+            onPopularClick={onPopularClick}
+            setActiveItem={setActiveFilter}
+            currentItem={currentFilter}
+          />
           <WrappedOffersList
             rentalOffers={cityOffers}
             setActiveItem={setActiveItem}
@@ -54,6 +64,7 @@ const MainPage = ({onCityClick, currentCity, cityOffers, activeOfferId, setActiv
             currentCity={currentCity}
             activeOfferId={activeOfferId}
             cityOffers={cityOffers}
+            zoom
           />
         </div>
       </div>
@@ -68,7 +79,13 @@ MainPage.propTypes = {
   cityOffers: PropTypes.array.isRequired,
   activeOfferId: PropTypes.any,
   setActiveItem: PropTypes.func,
+  setActiveFilter: PropTypes.func,
   onOfferTitleClick: PropTypes.func,
+  onLowToHighClick: PropTypes.func,
+  onHighToLowClick: PropTypes.func,
+  onTopRatedClick: PropTypes.func,
+  onPopularClick: PropTypes.func,
+  currentFilter: PropTypes.any,
 };
 
 export default MainPage;

@@ -4,13 +4,13 @@ import leaflet from 'leaflet';
 
 const pin =
   leaflet.icon({
-    iconUrl: `img/pin.svg`,
+    iconUrl: `/img/pin.svg`,
     iconSize: [27, 39],
   });
 
 const activePin =
   leaflet.icon({
-    iconUrl: `img/pin-active.svg`,
+    iconUrl: `/img/pin-active.svg`,
     iconSize: [30, 42],
   });
 
@@ -21,6 +21,8 @@ class Map extends React.PureComponent {
   }
 
   componentDidUpdate() {
+    const {zoom, activeOfferId} = this.props;
+
     if (this.map && this.markersLayer) {
       const {location} = this.props.currentCity;
       const center = [location.latitude, location.longitude];
@@ -30,7 +32,11 @@ class Map extends React.PureComponent {
 
       this.props.cityOffers.forEach((place) => {
         leaflet.marker([place.location.latitude, place.location.longitude],
-            {icon: this.props.activeOfferId === place.id ? activePin : pin}).addTo(this.markersLayer);
+            {icon: activeOfferId === place.id ? activePin : pin}).addTo(this.markersLayer);
+
+        if (zoom && activeOfferId === place.id) {
+          this.map.flyTo([place.location.latitude, place.location.longitude], place.location.zoom);
+        }
       });
     }
   }
@@ -78,6 +84,7 @@ Map.propTypes = {
   cityOffers: PropTypes.array,
   activeOfferId: PropTypes.any,
   currentCity: PropTypes.object,
+  zoom: PropTypes.bool,
 };
 
 export default Map;

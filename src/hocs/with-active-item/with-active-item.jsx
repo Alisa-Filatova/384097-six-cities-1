@@ -12,9 +12,18 @@ const withActiveItem = (Component) => {
       };
     }
 
+    componentDidUpdate(prevProps) {
+      if (this.props.currentItem !== prevProps.currentItem) {
+        this.setState({
+          currentItem: this.props.currentItem,
+        });
+      }
+    }
+
     render() {
       const {currentItem} = this.state;
       const {setActiveItem} = this.props;
+
       return <Component
         {...this.props}
         currentItem={currentItem}
@@ -25,14 +34,6 @@ const withActiveItem = (Component) => {
           });
         }}
       />;
-    }
-
-    componentDidUpdate(prevProps) {
-      if (this.props.currentItem !== prevProps.currentItem) {
-        this.setState({
-          currentItem: this.props.currentItem,
-        });
-      }
     }
   }
 
