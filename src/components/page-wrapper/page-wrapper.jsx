@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const PageWrapper = ({children, pageType}) => (
   <div className={`page page--gray page--${pageType}`}>{children}</div>
