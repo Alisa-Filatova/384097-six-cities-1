@@ -6,9 +6,16 @@ const MAX_CITIES = 6;
 
 const sortCitiesByName = (offers) => {
   const cities = offers.map((offer) => offer.city).sort((a, b) => {
-    const textA = a.name.toUpperCase();
-    const textB = b.name.toUpperCase();
-    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+
+    if (nameA < nameB) {
+      return -1;
+    } else if (nameA > nameB) {
+      return 1;
+    } else {
+      return 0;
+    }
   });
 
   return cities.reduce((prev, current) => {
@@ -76,4 +83,15 @@ export const sortOffersByRating = (offers) =>
 
 export const sortOffersById = (offers) =>
   offers.sort((a, b) => a.id - b.id);
+
+export const getOfferById = (state, id) =>
+  state[NAMESPACE].rentalOffers.filter((it) => it.id === parseInt(id))[0];
+
+export const getCloserOffers = (state, id) => {
+  const offer = getOfferById(state, id);
+
+  return getOffers(state)
+  .filter((it) => it.city.name === offer.city.name)
+  .filter((it) => it.id !== parseInt(id));
+};
 

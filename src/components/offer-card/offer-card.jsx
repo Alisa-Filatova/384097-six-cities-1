@@ -17,8 +17,9 @@ const OfferCard = (props) => {
         </div>
       }
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#" onClick={onOfferImgClick}>
+        <a>
           <img
+            onClick={onOfferImgClick}
             className="place-card__image"
             src={offer.preview_image}
             width="260"
@@ -53,7 +54,7 @@ const OfferCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/:${offer.id}`} onClick={onOfferTitleClick}>{offer.title}</Link>
+          <Link to={`/offer/${offer.id}`} onClick={onOfferTitleClick}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
