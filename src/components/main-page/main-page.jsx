@@ -4,6 +4,7 @@ import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
 import CitiesList from '../cities-list/cities-list.jsx';
 import SortBy from '../sort-by/sort-by.jsx';
+import MainPageEmpty from '../main-page-empty/main-page-empty.jsx';
 import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
 import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
 import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
@@ -30,45 +31,49 @@ const MainPage = ({
   setActiveFilter,
   currentFilter,
 }) => (
-  <main className="page__main page__main--index">
+  <main className={`page__main page__main--index ${cityOffers.length <= 0 ? `page__main--index-empty` : ``}`}>
     <h1 className="visually-hidden">Cities</h1>
     <CitiesList
       cities={cities}
       currentCity={currentCity}
       onCityClick={onCityClick}
     />
-    <div className="cities__places-wrapper" style={{height: `100vh`}}>
-      <div className="cities__places-container container">
-        <section className="cities__places places">
-          <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">
-            {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
-          </b>
-          <WrappedSortBy
-            onLowToHighClick={onLowToHighClick}
-            onHighToLowClick={onHighToLowClick}
-            onTopRatedClick={onTopRatedClick}
-            onPopularClick={onPopularClick}
-            setActiveItem={setActiveFilter}
-            currentItem={currentFilter}
-          />
-          <WrappedOffersList
-            rentalOffers={cityOffers}
-            setActiveItem={setActiveItem}
-            onOfferTitleClick={onOfferTitleClick}
-          />
-        </section>
-        <div className="cities__right-section">
-          <Map
-            key={currentCity.name}
-            currentCity={currentCity}
-            activeOfferId={activeOfferId}
-            cityOffers={cityOffers}
-            zoom
-          />
+    {cityOffers.length > 0 ?
+      <div className="cities__places-wrapper" style={{height: `100vh`}}>
+        <div className="cities__places-container container">
+          <section className="cities__places places">
+            <h2 className="visually-hidden">Places</h2>
+            <b className="places__found">
+              {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
+            </b>
+            <WrappedSortBy
+              onLowToHighClick={onLowToHighClick}
+              onHighToLowClick={onHighToLowClick}
+              onTopRatedClick={onTopRatedClick}
+              onPopularClick={onPopularClick}
+              setActiveItem={setActiveFilter}
+              currentItem={currentFilter}
+            />
+            <WrappedOffersList
+              rentalOffers={cityOffers}
+              setActiveItem={setActiveItem}
+              onOfferTitleClick={onOfferTitleClick}
+            />
+          </section>
+          <div className="cities__right-section">
+            <Map
+              key={currentCity.name}
+              currentCity={currentCity}
+              activeOfferId={activeOfferId}
+              cityOffers={cityOffers}
+              zoom
+            />
+          </div>
         </div>
       </div>
-    </div>
+      :
+      <MainPageEmpty currentCity={currentCity} />
+    }
   </main>
 );
 
