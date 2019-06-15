@@ -4,6 +4,7 @@ const initialState = {
 
 const ActionsType = {
   GET_REVIEWS: `GET_REVIEWS`,
+  POST_REVIEW: `POST_REVIEW`,
 };
 
 const ActionCreators = {
@@ -13,6 +14,10 @@ const ActionCreators = {
       payload: reviews,
     };
   },
+  postReview: (reviews) => ({
+    type: ActionsType.POST_REVIEW,
+    payload: reviews,
+  }),
 };
 
 
@@ -22,12 +27,25 @@ const Operation = {
       .then((response) => {
         dispatch(ActionCreators.getReviews(response.data));
       });
-  }
+  },
+  postReview: (id, review) => (dispatch, getState, api) => {
+    return api.post(`/comments/${id}`, review)
+      .then((response) => {
+        dispatch(ActionCreators.postReview(response.data));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionsType.GET_REVIEWS:
+      return Object.assign({}, state, {
+        reviewsList: action.payload,
+      });
+    case ActionsType.POST_REVIEW:
       return Object.assign({}, state, {
         reviewsList: action.payload,
       });
