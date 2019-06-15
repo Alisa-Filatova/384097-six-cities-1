@@ -14,7 +14,7 @@ const activePin =
     iconSize: [30, 42],
   });
 
-class Map extends React.PureComponent {
+class Map extends React.Component {
 
   componentDidMount() {
     this._initMap();
@@ -41,10 +41,14 @@ class Map extends React.PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.map.remove();
+  }
+
   render() {
     return (
       <section
-        className="cities__map map"
+        className={this.props.className ? this.props.className : `cities__map map`}
         id="map"
       />
     );
@@ -85,6 +89,7 @@ Map.propTypes = {
   activeOfferId: PropTypes.any,
   currentCity: PropTypes.object,
   zoom: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default Map;

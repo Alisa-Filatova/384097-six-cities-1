@@ -33,8 +33,7 @@ const Operation = {
   },
 
   checkAuthorization: () => (dispatch, _getState, api) => {
-    return api
-      .get(`/login`)
+    return api.get(`/login`)
       .then((response) => {
         if (response.data) {
           dispatch(ActionCreator.login(response.data));
