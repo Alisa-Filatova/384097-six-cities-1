@@ -1,26 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CityTab from '../city-tab/city-tab.jsx';
 
 const CitiesList = ({cities, onCityClick, currentCity}) => (
   <div className="cities tabs">
     <section className="locations container">
       <ul className="locations__list tabs__list">
         {cities.map((city) => (
-          <li
-            className="locations__item"
+          <CityTab
             key={city.name}
-          >
-            <a
-              className={`locations__item-link tabs__item ${city.name === currentCity.name ? `tabs__item--active` : ``}`}
-              onClick={(event) => {
-                event.preventDefault();
-                onCityClick(city);
-              }}
-              href=""
-            >
-              <span>{city.name}</span>
-            </a>
-          </li>
+            city={city}
+            onCityClick={onCityClick}
+            isActive={city.name === currentCity.name}
+          />
         ))}
       </ul>
     </section>
