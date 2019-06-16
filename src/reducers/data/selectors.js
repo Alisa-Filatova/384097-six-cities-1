@@ -85,13 +85,15 @@ export const sortOffersById = (offers) =>
   offers.sort((a, b) => a.id - b.id);
 
 export const getOfferById = (state, id) =>
-  state[NAMESPACE].rentalOffers.filter((it) => it.id === parseInt(id))[0];
+  getOffers(state).filter((item) => item.id === +id)[0];
 
 export const getCloserOffers = (state, id) => {
   const offer = getOfferById(state, id);
 
   return getOffers(state)
-  .filter((it) => it.city.name === offer.city.name)
-  .filter((it) => it.id !== parseInt(id));
+  .filter((item) => item.city.name === offer.city.name)
+  .filter((item) => item.id !== +id);
 };
 
+export const getFavoriteOffers = (state) =>
+  getOffers(state).filter((item) => item.is_favorite);

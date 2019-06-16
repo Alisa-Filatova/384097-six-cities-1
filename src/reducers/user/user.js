@@ -21,7 +21,7 @@ const ActionCreator = ({
 });
 
 const Operation = {
-  login: (data) => (dispatch, _getState, api) => {
+  login: (data) => (dispatch, getState, api) => {
     return api.post(`/login`, data)
       .then((response) => {
         if (response.data) {
@@ -32,7 +32,7 @@ const Operation = {
       .catch(() => {});
   },
 
-  checkAuthorization: () => (dispatch, _getState, api) => {
+  checkAuthorization: () => (dispatch, getState, api) => {
     return api.get(`/login`)
       .then((response) => {
         if (response.data) {
