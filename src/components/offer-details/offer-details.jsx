@@ -9,14 +9,21 @@ import ReviewsList from '../reviews-list/reviews-list.jsx';
 import Map from '../map/map.jsx';
 import OffersList from '../offers-list/offers-list.jsx';
 import ReviewForm from '../review-form/review-form.jsx';
+import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
 import {PlaceType} from '../../types/place-type';
 import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG} from '../../constants/constants';
+import {redirectToUrl} from '../../utils/links';
 
-const redirectToId = (url, history) => history.push(url);
 const CloserOffersList = withActiveItem(OffersList);
 
 class OfferDetails extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this._redirectToId = this._redirectToId.bind(this);
+    this._redirectToLogin = this._redirectToLogin.bind(this);
+  }
 
   componentDidMount() {
     this.props.getReviews();
@@ -29,8 +36,7 @@ class OfferDetails extends React.Component {
   }
 
   render() {
-    const {offer, offers, reviews} = this.props;
-    const redirect = (item) => redirectToId(`/offer/${item.id}`, this.props.history);
+    const {offer, offers, reviews, isAuthenticated, onFavoriteClick, setActiveItem} = this.props;
 
     if (!offer) {
       return null;
@@ -57,18 +63,11 @@ class OfferDetails extends React.Component {
               }
               <div className="property__name-wrapper">
                 <h1 className="property__name">{offer.title}</h1>
-                <button
-                  className={
-                    `place-card__bookmark-button button 
-                    ${offer.is_favorite ? `place-card__bookmark-button--active` : ``}`
-                  }
-                  type="button"
-                >
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"/>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoriteButton
+                  isActive={offer.is_favorite}
+                  onClick={isAuthenticated ? () => onFavoriteClick(offer.id) : this._redirectToLogin}
+                  large
+                />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -121,7 +120,7 @@ class OfferDetails extends React.Component {
               </div>
               <section className="property__reviews reviews">
                 <ReviewsList reviews={reviews} />
-                {this.props.isAuthenticated && <ReviewForm offerId={offer.id} />}
+                {isAuthenticated && <ReviewForm offerId={offer.id} />}
               </section>
             </div>
           </div>
@@ -139,13 +138,23 @@ class OfferDetails extends React.Component {
             <CloserOffersList
               className="near-places__list places__list"
               rentalOffers={offers}
-              onOfferTitleClick={redirect}
-              setActiveItem={this.props.setActiveItem}
+              onOfferTitleClick={this._redirectToId}
+              setActiveItem={setActiveItem}
             />
           </section>
         </div>
       </main>
     );
+  }
+
+  _redirectToId(item) {
+    const {history} = this.props;
+    redirectToUrl(`/offer/${item.id}`, history);
+  }
+
+  _redirectToLogin() {
+    const {history} = this.props;
+    redirectToUrl(`/login`, history);
   }
 }
 
@@ -158,6 +167,7 @@ OfferDetails.propTypes = {
   id: PropTypes.any,
   isAuthenticated: PropTypes.bool,
   setActiveItem: PropTypes.func,
+  onFavoriteClick: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => {

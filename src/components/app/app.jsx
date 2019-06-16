@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import {ActionCreator} from '../../reducers/data/data';
+import {ActionCreator, Operation} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {
   getOffers,
@@ -17,8 +17,10 @@ import {
 } from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
+import AppFooter from '../app-footer/app-footer.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
+import Favorites from '../favorites/favorites.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
 import {PageType} from '../../types/page-type';
@@ -76,13 +78,8 @@ class App extends React.PureComponent {
             render={() => (
               <>
               {!isAuthorizationRequired
-                ?
-                <SignIn
-                  signIn={login}
-                  user={user}
-                />
-                :
-                <Redirect to='/' />
+                ? <SignIn signIn={login} user={user} />
+                : <Redirect to='/' />
               }
             </>
             )}
@@ -91,7 +88,19 @@ class App extends React.PureComponent {
             path="/offer/:id"
             render={(props) => <OfferDetails {...props} setActiveItem={this._handleGetActiveOffer.bind(this)} />}
           />
+          <Route
+            path="/favorites"
+            render={() => (
+              <>
+                {isAuthorizationRequired
+                  ? <Favorites />
+                  : <Redirect to='/login' />
+                }
+              </>
+            )}
+          />
         </Switch>
+        <AppFooter />
       </PageWrapper>
     );
   }
@@ -129,6 +138,9 @@ const mapDispatchToProps = (dispatch) => ({
   login: (data) => {
     dispatch(UserActionCreator.login(data));
   },
+  toggleFavorite: (id, status) => {
+    dispatch(Operation.postFavoriteOffer(id, status));
+  }
 });
 
 App.propTypes = {
@@ -184,6 +196,7 @@ App.propTypes = {
   onHighToLowClick: PropTypes.func,
   onTopRatedClick: PropTypes.func,
   onPopularClick: PropTypes.func,
+  favoriteOffers: PropTypes.arrayOf(PropTypes.object),
 };
 
 export {App};
