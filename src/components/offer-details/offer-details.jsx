@@ -68,7 +68,7 @@ class OfferDetails extends React.Component {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.is_favorite}
-                  onClick={isAuthenticated ? this._handleFavoriteClick : this._redirectToLogin}
+                  onClick={this._handleFavoriteClick}
                   large
                 />
               </div>
@@ -163,8 +163,13 @@ class OfferDetails extends React.Component {
   }
 
   _handleFavoriteClick() {
-    const {offer, onFavoriteClick} = this.props;
-    onFavoriteClick(offer);
+    const {offer, onFavoriteClick, isAuthenticated} = this.props;
+
+    if (isAuthenticated) {
+      onFavoriteClick(offer);
+    } else {
+      this._redirectToLogin();
+    }
   }
 }
 

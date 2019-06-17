@@ -13,7 +13,11 @@ import {
   sortOffersByLowToHigh,
   sortOffersByHighToLow,
   sortOffersByRating,
-  sortOffersById, getCurrentCity, getOffers, getCityOffers, getCities, getFavoriteOffers,
+  sortOffersById,
+  getCurrentCity,
+  getCityOffers,
+  getCities,
+  getOffersLoadStatus,
 } from '../../reducers/data/selectors';
 
 const WrappedOffersList = withActiveItem(OffersList);
@@ -36,6 +40,7 @@ const MainPage = ({
   onLowToHighClick,
   onHighToLowClick,
   onTopRatedClick,
+  offersLoaded,
 }) => (
   <main className={`page__main page__main--index ${cityOffers.length <= 0 ? `page__main--index-empty` : ``}`}>
     <h1 className="visually-hidden">Cities</h1>
@@ -44,7 +49,8 @@ const MainPage = ({
       currentCity={currentCity}
       onCityClick={onCityClick}
     />
-    {cityOffers.length > 0 ?
+    {!offersLoaded && <div>Loading</div>}
+    {offersLoaded && cityOffers.length > 0 &&
       <div className="cities__places-wrapper" style={{height: `100vh`}}>
         <div className="cities__places-container container">
           <section className="cities__places places">
@@ -53,7 +59,6 @@ const MainPage = ({
               {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
             </b>
             <WrappedSortBy
-              offers={cityOffers}
               setActiveItem={setActiveFilter}
               currentItem={currentFilter}
               onPopularClick={onPopularClick}
@@ -77,9 +82,8 @@ const MainPage = ({
           </div>
         </div>
       </div>
-      :
-      <MainPageEmpty currentCity={currentCity} />
     }
+    {offersLoaded && cityOffers.length === 0 && <MainPageEmpty currentCity={currentCity} />}
   </main>
 );
 
@@ -96,27 +100,28 @@ MainPage.propTypes = {
   onLowToHighClick: PropTypes.func,
   onHighToLowClick: PropTypes.func,
   onTopRatedClick: PropTypes.func,
+  offersLoaded: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   currentCity: getCurrentCity(state),
-  rentalOffers: getOffers(state),
   cityOffers: getCityOffers(state),
   cities: getCities(state),
+  offersLoaded: getOffersLoadStatus(state),
 });
 
-const mapDispatchToProps = (ownProps) => ({
+const mapDispatchToProps = () => ({
   onPopularClick: (cityOffers) => {
-    dispatch(sortOffersById(cityOffers));
+    sortOffersById(cityOffers);
   },
-  onLowToHighClick: (rentalOffers) => {
-    dispatch(sortOffersByLowToHigh(rentalOffers));
+  onLowToHighClick: (cityOffers) => {
+    sortOffersByLowToHigh(cityOffers);
   },
   onHighToLowClick: (cityOffers) => {
-    dispatch(sortOffersByHighToLow(cityOffers));
+    sortOffersByHighToLow(cityOffers);
   },
   onTopRatedClick: (cityOffers) => {
-    dispatch(sortOffersByRating(cityOffers));
+    sortOffersByRating(cityOffers);
   },
 });
 

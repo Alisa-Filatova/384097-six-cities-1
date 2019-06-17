@@ -9,3 +9,7 @@ export const getAuthorizationStatus = (state) => {
 export const getUser = (state) => {
   return state[NAMESPACE].user;
 };
+
+export const getPendingAuthStatus = (state) => {
+  return state[NAMESPACE].pendingAuthorization;
+};

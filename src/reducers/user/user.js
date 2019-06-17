@@ -1,14 +1,21 @@
 const initialState = {
   isAuthorizationRequired: false,
+  pendingAuthorization: true,
   user: {},
 };
 
 const ActionType = {
+  PENDING_AUTHORIZATION: `PENDING_AUTHORIZATION`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
   LOGIN: `LOGIN`,
 };
 
 const ActionCreator = ({
+  pendingAuthorization: (status) => ({
+    type: ActionType.PENDING_AUTHORIZATION,
+    payload: status,
+  }),
+
   requireAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
@@ -29,18 +36,22 @@ const Operation = {
           dispatch(ActionCreator.requireAuthorization(true));
         }
       })
-      .catch(() => {});
+      .finally(() => {
+        dispatch(ActionCreator.pendingAuthorization(false));
+      });
   },
 
   checkAuthorization: () => (dispatch, getState, api) => {
     return api.get(`/login`)
       .then((response) => {
         if (response.data) {
-          dispatch(ActionCreator.login(response.data));
           dispatch(ActionCreator.requireAuthorization(true));
+          dispatch(ActionCreator.login(response.data));
         }
       })
-      .catch(() => {});
+      .finally(() => {
+        dispatch(ActionCreator.pendingAuthorization(false));
+      });
   }
 };
 
@@ -53,6 +64,10 @@ const reducer = (state = initialState, action) => {
     case ActionType.LOGIN:
       return Object.assign({}, state, {
         user: action.payload,
+      });
+    case ActionType.PENDING_AUTHORIZATION:
+      return Object.assign({}, state, {
+        pendingAuthorization: action.payload,
       });
   }
 

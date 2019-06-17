@@ -52,8 +52,8 @@ export const getCurrentCity = (state) => {
   return state[NAMESPACE].currentCity;
 };
 
-export const getCurrentOffer = (state) => {
-  return state[NAMESPACE].currentOffer;
+export const getOffersLoadStatus = (state) => {
+  return state[NAMESPACE].offersLoaded;
 };
 
 export const getCities = createSelector(
@@ -93,8 +93,8 @@ export const getCloserOffers = (state, id) => {
   const offer = getOfferById(state, id);
 
   return getOffers(state)
-  .filter((item) => item.city.name === offer.city.name)
-  .filter((item) => item.id !== +id);
+    .filter((item) => item.city.name === offer.city.name)
+    .filter((item) => item.id !== +id);
 };
 
 export const getFavoriteOffers = (state) =>

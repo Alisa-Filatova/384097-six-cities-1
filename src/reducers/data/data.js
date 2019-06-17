@@ -1,15 +1,22 @@
 const initialState = {
   rentalOffers: [],
   currentCity: {},
+  offersLoaded: false,
 };
 
 const ActionType = {
+  OFFERS_LOADED: `OFFERS_LOADED`,
   LOAD_OFFERS: `LOAD_OFFERS`,
   CHANGE_CITY: `CHANGE_CITY`,
   UPDATE_OFFER: `UPDATE_OFFER`,
 };
 
 const ActionCreator = {
+  offersLoaded: (status) => ({
+    type: ActionType.OFFERS_LOADED,
+    payload: status,
+  }),
+
   loadOffers: (rentalOffers) => ({
     type: ActionType.LOAD_OFFERS,
     payload: rentalOffers,
@@ -29,9 +36,10 @@ const ActionCreator = {
 const Operation = {
   loadOffers: () => (dispatch, getState, api) => {
     return api.get(`/hotels`)
-    .then((response) => {
-      dispatch(ActionCreator.loadOffers(response.data));
-    });
+      .then((response) => {
+        dispatch(ActionCreator.loadOffers(response.data));
+        dispatch(ActionCreator.offersLoaded(true));
+      });
   },
   changeFavorites: (offer) => (dispatch, getState, api) => {
     const id = offer.id;
@@ -55,6 +63,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.CHANGE_CITY:
       return Object.assign({}, state, {
         currentCity: action.payload,
+      });
+
+    case ActionType.OFFERS_LOADED:
+      return Object.assign({}, state, {
+        offersLoaded: action.payload,
       });
 
     case ActionType.UPDATE_OFFER:

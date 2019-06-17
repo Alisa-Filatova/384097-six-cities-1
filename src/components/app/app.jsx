@@ -9,12 +9,8 @@ import {
   getCurrentCity,
   getCityOffers,
   getCities,
-  sortOffersByLowToHigh,
-  sortOffersByHighToLow,
-  sortOffersByRating,
-  sortOffersById,
 } from '../../reducers/data/selectors';
-import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
+import {getAuthorizationStatus, getUser, getPendingAuthStatus} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
@@ -32,72 +28,78 @@ class App extends React.PureComponent {
       activeOfferId: null,
       activeFilter: SortType.POPULAR,
     };
+
+    this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
+    this._handleGetActiveFilter = this._handleGetActiveFilter.bind(this);
   }
 
   render() {
     const {
-      cityOffers,
+      pendingAuthorization,
       isAuthorizationRequired,
-      login,
       user,
     } = this.props;
 
     const {activeOfferId, activeFilter} = this.state;
 
     return (
-      <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
-        <AppHeader
-          isAuthenticated={isAuthorizationRequired}
-          user={user}
-        />
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={() =>
-              <MainPage
-                {...this.props}
-                setActiveItem={this._handleGetActiveOffer.bind(this)}
-                activeOfferId={activeOfferId}
-                setActiveFilter={this._handleGetActiveFilter.bind(this)}
-                currentFilter={activeFilter}
-              />
-            }
-          />
-          <Route
-            path="/login"
-            exact
-            render={() => (
-              <>
-                {!isAuthorizationRequired
-                  ? <SignIn signIn={login} user={user} />
-                  : <Redirect to="/" />
+      <>
+        {pendingAuthorization ? <div>Loading</div> : (
+          <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
+            <AppHeader
+              isAuthenticated={isAuthorizationRequired}
+              user={user}
+            />
+            <Switch>
+              <Route
+                path="/"
+                exact
+                render={() =>
+                  <MainPage
+                    {...this.props}
+                    setActiveItem={this._handleGetActiveOffer}
+                    activeOfferId={activeOfferId}
+                    setActiveFilter={this._handleGetActiveFilter}
+                    currentFilter={activeFilter}
+                  />
                 }
-              </>
-            )}
-          />
-          <Route
-            path="/offer/:id"
-            render={(props) => (
-              <OfferDetails
-                {...props}
-                setActiveItem={this._handleGetActiveOffer.bind(this)}
               />
-            )}
-          />
-          <Route
-            path="/favorites"
-            render={() => (
-              <>
-                {isAuthorizationRequired
-                  ? <Favorites />
-                  : <Redirect to="/login" />
-                }
-              </>
-            )}
-          />
-        </Switch>
-      </PageWrapper>
+              <Route
+                path="/login"
+                exact
+                render={() => (
+                  <>
+                    {isAuthorizationRequired
+                      ? <Redirect to="/" />
+                      : <SignIn user={user} />
+                    }
+                  </>
+                )}
+              />
+              <Route
+                path="/offer/:id"
+                render={(props) => (
+                  <OfferDetails
+                    {...props}
+                    setActiveItem={this._handleGetActiveOffer}
+                  />
+                )}
+              />
+              <Route
+                path="/favorites"
+                render={() => (
+                  <>
+                    {isAuthorizationRequired
+                      ? <Favorites />
+                      : <Redirect to="/login" />
+                    }
+                  </>
+                )}
+              />
+            </Switch>
+          </PageWrapper>
+        )}
+      </>
     );
   }
 
@@ -121,6 +123,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   isAuthorizationRequired: getAuthorizationStatus(state),
   user: getUser(state),
   cities: getCities(state),
+  pendingAuthorization: getPendingAuthStatus(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -186,6 +189,8 @@ App.propTypes = {
   onTopRatedClick: PropTypes.func,
   onPopularClick: PropTypes.func,
   favoriteOffers: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.any,
+  pendingAuthorization: PropTypes.bool,
 };
 
 export {App};

@@ -29,7 +29,7 @@ class OfferCard extends React.PureComponent {
   }
 
   render() {
-    const {offer, prefix = `cities`, small, isAuthenticated} = this.props;
+    const {offer, prefix = `cities`, small} = this.props;
 
     return (
       <article className={`${prefix}__place-card ${prefix}__card place-card`}>
@@ -57,7 +57,7 @@ class OfferCard extends React.PureComponent {
             </div>
             <FavoriteButton
               isActive={offer.is_favorite}
-              onClick={isAuthenticated ? this._handleFavoriteClick : this._redirectToLogin}
+              onClick={this._handleFavoriteClick}
             />
           </div>
           <div className="place-card__rating rating">
@@ -75,6 +75,11 @@ class OfferCard extends React.PureComponent {
     );
   }
 
+  _redirectToLogin() {
+    const {history} = this.props;
+    redirectToUrl(`/login`, history);
+  }
+
   _handleImgClick(event) {
     event.preventDefault();
     const {offer, onImgClick} = this.props;
@@ -85,13 +90,13 @@ class OfferCard extends React.PureComponent {
   }
 
   _handleFavoriteClick() {
-    const {offer, onFavoriteClick} = this.props;
-    onFavoriteClick(offer);
-  }
+    const {offer, onFavoriteClick, isAuthenticated} = this.props;
 
-  _redirectToLogin() {
-    const {history} = this.props;
-    redirectToUrl(`/login`, history);
+    if (isAuthenticated) {
+      onFavoriteClick(offer);
+    } else {
+      this._redirectToLogin();
+    }
   }
 }
 
