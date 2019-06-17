@@ -5,7 +5,7 @@ import CityTab from '../city-tab/city-tab.jsx';
 const CitiesList = ({cities, onCityClick, currentCity}) => (
   <div className="cities tabs">
     <section className="locations container">
-      <ul className="locations__list tabs__list">
+      <div className="locations__list tabs__list">
         {cities.map((city) => (
           <CityTab
             key={city.name}
@@ -14,7 +14,7 @@ const CitiesList = ({cities, onCityClick, currentCity}) => (
             isActive={city.name === currentCity.name}
           />
         ))}
-      </ul>
+      </div>
     </section>
   </div>
 );

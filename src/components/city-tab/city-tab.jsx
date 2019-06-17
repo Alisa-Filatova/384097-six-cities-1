@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const CityTab = ({city, onCityClick, isActive}) => (
-  <li className="locations__item">
+  <div className="locations__item">
     <a
       className={`locations__item-link tabs__item ${isActive ? `tabs__item--active` : ``}`}
       onClick={(event) => {
@@ -13,7 +13,7 @@ const CityTab = ({city, onCityClick, isActive}) => (
     >
       <span>{city.name}</span>
     </a>
-  </li>
+  </div>
 );
 
 CityTab.propTypes = {

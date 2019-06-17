@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import {ActionCreator, Operation} from '../../reducers/data/data';
+import {ActionCreator} from '../../reducers/data/data';
 import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
 import {
   getOffers,
@@ -17,7 +17,6 @@ import {
 } from '../../reducers/data/selectors';
 import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
-import AppFooter from '../app-footer/app-footer.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import Favorites from '../favorites/favorites.jsx';
@@ -42,7 +41,6 @@ class App extends React.PureComponent {
       isAuthorizationRequired,
       login,
       user,
-      onCardTitleClick,
     } = this.props;
 
     const {activeOfferId, activeFilter} = this.state;
@@ -66,7 +64,6 @@ class App extends React.PureComponent {
                 onLowToHighClick={() => sortOffersByLowToHigh(cityOffers)}
                 onTopRatedClick={() => sortOffersByRating(cityOffers)}
                 onPopularClick={() => sortOffersById(cityOffers)}
-                onOfferTitleClick={onCardTitleClick}
                 setActiveFilter={this._handleGetActiveFilter.bind(this)}
                 currentFilter={activeFilter}
               />
@@ -77,16 +74,21 @@ class App extends React.PureComponent {
             exact
             render={() => (
               <>
-              {!isAuthorizationRequired
-                ? <SignIn signIn={login} user={user} />
-                : <Redirect to='/' />
-              }
-            </>
+                {!isAuthorizationRequired
+                  ? <SignIn signIn={login} user={user} />
+                  : <Redirect to="/" />
+                }
+              </>
             )}
           />
           <Route
             path="/offer/:id"
-            render={(props) => <OfferDetails {...props} setActiveItem={this._handleGetActiveOffer.bind(this)} />}
+            render={(props) => (
+              <OfferDetails
+                {...props}
+                setActiveItem={this._handleGetActiveOffer.bind(this)}
+              />
+            )}
           />
           <Route
             path="/favorites"
@@ -94,13 +96,12 @@ class App extends React.PureComponent {
               <>
                 {isAuthorizationRequired
                   ? <Favorites />
-                  : <Redirect to='/login' />
+                  : <Redirect to="/login" />
                 }
               </>
             )}
           />
         </Switch>
-        <AppFooter />
       </PageWrapper>
     );
   }
@@ -132,15 +133,9 @@ const mapDispatchToProps = (dispatch) => ({
   onCityClick: (currentCity) => {
     dispatch(ActionCreator.changeCity(currentCity));
   },
-  onCardTitleClick: (offer) => {
-    dispatch(ActionCreator.changeOffer(offer));
-  },
   login: (data) => {
     dispatch(UserActionCreator.login(data));
   },
-  toggleFavorite: (id, status) => {
-    dispatch(Operation.postFavoriteOffer(id, status));
-  }
 });
 
 App.propTypes = {

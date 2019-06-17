@@ -1,14 +1,12 @@
 const initialState = {
   rentalOffers: [],
   currentCity: {},
-  currentOffer: {},
 };
 
 const ActionType = {
   LOAD_OFFERS: `LOAD_OFFERS`,
   CHANGE_CITY: `CHANGE_CITY`,
-  SET_CURRENT_OFFER: `SET_CURRENT_OFFER`,
-  POST_TO_FAVORITE: `POST_TO_FAVORITE`,
+  UPDATE_OFFER: `UPDATE_OFFER`,
 };
 
 const ActionCreator = {
@@ -22,14 +20,9 @@ const ActionCreator = {
     payload: currentCity,
   }),
 
-  changeOffer: (currentOffer) => ({
-    type: ActionType.SET_CURRENT_OFFER,
-    payload: currentOffer,
-  }),
-
-  postFavorite: (rentalOffers) => ({
-    type: ActionType.POST_TO_FAVORITE,
-    payload: rentalOffers,
+  updateOffer: (offer) => ({
+    type: ActionType.UPDATE_OFFER,
+    payload: offer,
   }),
 };
 
@@ -40,15 +33,16 @@ const Operation = {
       dispatch(ActionCreator.loadOffers(response.data));
     });
   },
-  postFavoriteOffer: (id, status) => (dispatch, getState, api) => {
+  changeFavorites: (offer) => (dispatch, getState, api) => {
+    const id = offer.id;
+    const status = offer.is_favorite ? `0` : `1`;
     return api.post(`/favorite/${id}/${status}`)
-    .then((response) => {
-      dispatch(ActionCreator.postFavorite(response.data));
-    })
-    .catch((error) => {
-      throw error;
-    });
+      .then((response) => {
+        dispatch(ActionCreator.updateOffer(response.data));
+      })
+      .catch(() => {});
   },
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -63,13 +57,14 @@ const reducer = (state = initialState, action) => {
         currentCity: action.payload,
       });
 
-    case ActionType.SET_CURRENT_OFFER:
+    case ActionType.UPDATE_OFFER:
       return Object.assign({}, state, {
-        currentOffer: action.payload,
-      });
-    case ActionType.POST_TO_FAVORITE:
-      return Object.assign({}, state, {
-        rentalOffers: action.payload,
+        rentalOffers: state.rentalOffers.map((offer) => {
+          if (offer.id === action.payload.id) {
+            return action.payload;
+          }
+          return offer;
+        })
       });
   }
 

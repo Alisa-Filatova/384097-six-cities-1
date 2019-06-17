@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import CityTab from '../city-tab/city-tab.jsx';
 import OfferCard from '../offer-card/offer-card.jsx';
+import AppFooter from '../app-footer/app-footer.jsx';
 import {getFavoriteOffers} from '../../reducers/data/selectors';
 
 const Favorites = ({offers}) => {
@@ -13,25 +14,25 @@ const Favorites = ({offers}) => {
           <div className="page__favorites-container container">
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <ul className="favorites__list">
+              <div className="favorites__list">
                 {offers.map((offer) =>
-                  <li
+                  <div
                     className="favorites__locations-items"
                     key={offer.city.name + offer.id}
                   >
                     <div className="favorites__locations locations locations--current">
                       <CityTab city={offer.city} isActive />
                     </div>
-                    <li className="favorites__places">
+                    <div className="favorites__places">
                       <OfferCard
                         offer={offer}
                         prefix="favorites"
                         small
                       />
-                    </li>
-                  </li>
+                    </div>
+                  </div>
                 )}
-              </ul>
+              </div>
             </section>
           </div>
         </main>
@@ -51,6 +52,7 @@ const Favorites = ({offers}) => {
           </div>
         </main>
       }
+      <AppFooter />
     </>
   );
 };

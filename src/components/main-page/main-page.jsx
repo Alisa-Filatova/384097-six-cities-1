@@ -57,7 +57,6 @@ const MainPage = ({
             <WrappedOffersList
               rentalOffers={cityOffers}
               setActiveItem={setActiveItem}
-              onOfferTitleClick={onOfferTitleClick}
             />
           </section>
           <div className="cities__right-section">

@@ -19,7 +19,6 @@ const ActionCreator = {
   }),
 };
 
-
 const Operation = {
   getReviewsList: (id) => (dispatch, getState, api) => {
     return api.get(`/comments/${id}`)

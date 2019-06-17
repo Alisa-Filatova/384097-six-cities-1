@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Operation} from '../../reducers/review/review';
+import {Operation as DataOperation} from '../../reducers/data/data';
 import {getReviews} from '../../reducers/review/selectors';
 import {getOfferById, getCloserOffers} from '../../reducers/data/selectors';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
@@ -21,8 +22,10 @@ class OfferDetails extends React.Component {
 
   constructor(props) {
     super(props);
+
     this._redirectToId = this._redirectToId.bind(this);
     this._redirectToLogin = this._redirectToLogin.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +39,7 @@ class OfferDetails extends React.Component {
   }
 
   render() {
-    const {offer, offers, reviews, isAuthenticated, onFavoriteClick, setActiveItem} = this.props;
+    const {offer, offers, reviews, isAuthenticated, setActiveItem} = this.props;
 
     if (!offer) {
       return null;
@@ -65,7 +68,7 @@ class OfferDetails extends React.Component {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.is_favorite}
-                  onClick={isAuthenticated ? () => onFavoriteClick(offer.id) : this._redirectToLogin}
+                  onClick={isAuthenticated ? this._handleFavoriteClick : this._redirectToLogin}
                   large
                 />
               </div>
@@ -156,6 +159,11 @@ class OfferDetails extends React.Component {
     const {history} = this.props;
     redirectToUrl(`/login`, history);
   }
+
+  _handleFavoriteClick() {
+    const {offer, onFavoriteClick} = this.props;
+    onFavoriteClick(offer);
+  }
 }
 
 OfferDetails.propTypes = {
@@ -185,6 +193,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getReviews: () => {
     dispatch(Operation.getReviewsList(ownProps.match.params.id));
+  },
+  onFavoriteClick: (offer) => {
+    dispatch(DataOperation.changeFavorites(offer));
   },
 });
 
