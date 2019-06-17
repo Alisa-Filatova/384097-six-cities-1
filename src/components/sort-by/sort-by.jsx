@@ -66,6 +66,7 @@ const SortBy = (props) => {
 };
 
 SortBy.propTypes = {
+  offers: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   isOpen: PropTypes.bool,
   currentItem: PropTypes.any,

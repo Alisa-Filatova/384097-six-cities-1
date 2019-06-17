@@ -9,7 +9,6 @@ import {
   getCurrentCity,
   getCityOffers,
   getCities,
-  getCurrentOffer,
   sortOffersByLowToHigh,
   sortOffersByHighToLow,
   sortOffersByRating,
@@ -60,10 +59,6 @@ class App extends React.PureComponent {
                 {...this.props}
                 setActiveItem={this._handleGetActiveOffer.bind(this)}
                 activeOfferId={activeOfferId}
-                onHighToLowClick={() => sortOffersByHighToLow(cityOffers)}
-                onLowToHighClick={() => sortOffersByLowToHigh(cityOffers)}
-                onTopRatedClick={() => sortOffersByRating(cityOffers)}
-                onPopularClick={() => sortOffersById(cityOffers)}
                 setActiveFilter={this._handleGetActiveFilter.bind(this)}
                 currentFilter={activeFilter}
               />
@@ -126,7 +121,6 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   isAuthorizationRequired: getAuthorizationStatus(state),
   user: getUser(state),
   cities: getCities(state),
-  currentOffer: getCurrentOffer(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

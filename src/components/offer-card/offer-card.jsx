@@ -7,6 +7,17 @@ import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import {redirectToUrl} from '../../utils/links';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
 
+const ImageSize = {
+  DEFAULT: {
+    width: 260,
+    height: 200,
+  },
+  SMALL: {
+    width: 150,
+    height: 110,
+  }
+};
+
 class OfferCard extends React.PureComponent {
 
   constructor(props) {
@@ -21,7 +32,7 @@ class OfferCard extends React.PureComponent {
     const {offer, prefix = `cities`, small, isAuthenticated} = this.props;
 
     return (
-      <article className={`${prefix}__place-card place-card`}>
+      <article className={`${prefix}__place-card ${prefix}__card place-card`}>
         {offer.is_premium &&
           <div className="place-card__mark">
             <span>Premium</span>
@@ -32,13 +43,13 @@ class OfferCard extends React.PureComponent {
             <img
               className="place-card__image"
               src={offer.preview_image}
-              width={small ? 150 : 260}
-              height={small ? 110 : 200}
+              width={small ? ImageSize.SMALL.width : ImageSize.DEFAULT.width}
+              height={small ? ImageSize.SMALL.height : ImageSize.DEFAULT.height}
               alt={offer.title}
             />
           </a>
         </div>
-        <div className="place-card__info">
+        <div className={`${prefix}__card-info place-card__info`}>
           <div className="place-card__price-wrapper">
             <div className="place-card__price">
               <b className="place-card__price-value">&euro;{offer.price}</b>

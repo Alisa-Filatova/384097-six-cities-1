@@ -72,8 +72,10 @@ export const getRandomOffer = createSelector(
     (state) => getRandomCityOffer(state)
 );
 
-export const sortOffersByLowToHigh = (offers) =>
-  offers.sort((a, b) => a.price - b.price);
+export const sortOffersByLowToHigh = createSelector(
+    getCityOffers,
+    (offers) => offers.sort((a, b) => a.price - b.price)
+);
 
 export const sortOffersByHighToLow = (offers) =>
   offers.sort((a, b) => b.price - a.price);
