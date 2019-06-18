@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import CityTab from '../city-tab/city-tab.jsx';
-import OfferCard from '../offer-card/offer-card.jsx';
-import {getFavoriteOffers} from '../../reducers/data/selectors';
+import AppFooter from '../app-footer/app-footer.jsx';
+import OffersList from '../offers-list/offers-list.jsx';
+import {getFavoriteOffers, sortFavoritesListByCities} from '../../reducers/data/selectors';
 
 const Favorites = ({offers}) => {
+  const favoriteOffers = sortFavoritesListByCities(offers);
+
   return (
     <>
       {offers.length > 0 ?
@@ -13,25 +16,24 @@ const Favorites = ({offers}) => {
           <div className="page__favorites-container container">
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <ul className="favorites__list">
-                {offers.map((offer) =>
-                  <li
+              <div className="favorites__list">
+                {Object.entries(favoriteOffers).map(([key, value]) => (
+                  <div
                     className="favorites__locations-items"
-                    key={offer.city.name + offer.id}
+                    key={key}
                   >
                     <div className="favorites__locations locations locations--current">
-                      <CityTab city={offer.city} isActive />
+                      <CityTab city={key} isActive />
                     </div>
-                    <li className="favorites__places">
-                      <OfferCard
-                        offer={offer}
-                        prefix="favorites"
-                        small
-                      />
-                    </li>
-                  </li>
-                )}
-              </ul>
+                    <OffersList
+                      className="favorites__places"
+                      rentalOffers={value}
+                      prefix="favorites"
+                      small
+                    />
+                  </div>
+                ))}
+              </div>
             </section>
           </div>
         </main>
@@ -51,6 +53,7 @@ const Favorites = ({offers}) => {
           </div>
         </main>
       }
+      <AppFooter />
     </>
   );
 };

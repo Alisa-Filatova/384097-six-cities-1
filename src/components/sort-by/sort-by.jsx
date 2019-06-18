@@ -2,7 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {SortType} from '../../types/sort-type';
 
-const SortBy = ({onToggle, isOpen, onPopularClick, onLowToHighClick, onHighToLowClick, onTopRatedClick, currentItem, setActiveItem}) => {
+const SortBy = (props) => {
+  const {
+    onToggle,
+    isOpen,
+    onPopularClick,
+    onLowToHighClick,
+    onHighToLowClick,
+    onTopRatedClick,
+    currentItem,
+  } = props;
 
   const SORT_TYPES_LIST = [
     {
@@ -42,7 +51,6 @@ const SortBy = ({onToggle, isOpen, onPopularClick, onLowToHighClick, onHighToLow
             <li
               className={`places__option ${currentItem === item.name ? `places__option--active` : ``}`}
               tabIndex="0"
-              onMouseOver={() => setActiveItem(item.name)}
               onClick={item.action}
               key={item.name}
             >
@@ -63,7 +71,6 @@ SortBy.propTypes = {
   onLowToHighClick: PropTypes.func,
   onHighToLowClick: PropTypes.func,
   onTopRatedClick: PropTypes.func,
-  setActiveItem: PropTypes.func,
 };
 
 export default SortBy;

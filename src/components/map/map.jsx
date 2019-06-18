@@ -14,7 +14,7 @@ const activePin =
     iconSize: [30, 42],
   });
 
-class Map extends React.Component {
+class Map extends React.PureComponent {
 
   componentDidMount() {
     this._initMap();

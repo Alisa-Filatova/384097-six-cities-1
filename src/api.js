@@ -1,6 +1,6 @@
 import axios from 'axios';
+import {BASE_URL} from './constants/constants';
 
-export const BASE_URL = `https://es31-server.appspot.com/six-cities`;
 const STATUS_FORBIDDEN = 403;
 const TIMEOUT = 5000;
 

@@ -1,17 +1,26 @@
+import {SortType} from '../../types/sort-type';
+
 const initialState = {
   rentalOffers: [],
   currentCity: {},
-  currentOffer: {},
+  offersLoaded: false,
+  sortValue: SortType.POPULAR,
 };
 
 const ActionType = {
+  OFFERS_LOADED: `OFFERS_LOADED`,
   LOAD_OFFERS: `LOAD_OFFERS`,
   CHANGE_CITY: `CHANGE_CITY`,
-  SET_CURRENT_OFFER: `SET_CURRENT_OFFER`,
-  POST_TO_FAVORITE: `POST_TO_FAVORITE`,
+  UPDATE_OFFER: `UPDATE_OFFER`,
+  SORT_OFFERS: `SORT_OFFERS`,
 };
 
 const ActionCreator = {
+  offersLoaded: (status) => ({
+    type: ActionType.OFFERS_LOADED,
+    payload: status,
+  }),
+
   loadOffers: (rentalOffers) => ({
     type: ActionType.LOAD_OFFERS,
     payload: rentalOffers,
@@ -22,32 +31,39 @@ const ActionCreator = {
     payload: currentCity,
   }),
 
-  changeOffer: (currentOffer) => ({
-    type: ActionType.SET_CURRENT_OFFER,
-    payload: currentOffer,
+  updateOffer: (offer) => ({
+    type: ActionType.UPDATE_OFFER,
+    payload: offer,
   }),
 
-  postFavorite: (rentalOffers) => ({
-    type: ActionType.POST_TO_FAVORITE,
-    payload: rentalOffers,
+  sortOffers: (sortValue) => ({
+    type: ActionType.SORT_OFFERS,
+    payload: sortValue,
   }),
 };
 
 const Operation = {
   loadOffers: () => (dispatch, getState, api) => {
     return api.get(`/hotels`)
-    .then((response) => {
-      dispatch(ActionCreator.loadOffers(response.data));
-    });
+      .then((response) => {
+        dispatch(ActionCreator.loadOffers(response.data));
+        dispatch(ActionCreator.offersLoaded(true));
+      })
+      .catch((error) => {
+        throw error;
+      });
   },
-  postFavoriteOffer: (id, status) => (dispatch, getState, api) => {
+
+  changeFavorites: (offer) => (dispatch, getState, api) => {
+    const id = offer.id;
+    const status = offer.is_favorite ? `0` : `1`;
     return api.post(`/favorite/${id}/${status}`)
-    .then((response) => {
-      dispatch(ActionCreator.postFavorite(response.data));
-    })
-    .catch((error) => {
-      throw error;
-    });
+      .then((response) => {
+        dispatch(ActionCreator.updateOffer(response.data));
+      })
+      .catch((error) => {
+        throw error;
+      });
   },
 };
 
@@ -63,13 +79,24 @@ const reducer = (state = initialState, action) => {
         currentCity: action.payload,
       });
 
-    case ActionType.SET_CURRENT_OFFER:
+    case ActionType.OFFERS_LOADED:
       return Object.assign({}, state, {
-        currentOffer: action.payload,
+        offersLoaded: action.payload,
       });
-    case ActionType.POST_TO_FAVORITE:
+
+    case ActionType.SORT_OFFERS:
       return Object.assign({}, state, {
-        rentalOffers: action.payload,
+        sortValue: action.payload,
+      });
+
+    case ActionType.UPDATE_OFFER:
+      return Object.assign({}, state, {
+        rentalOffers: state.rentalOffers.map((offer) => {
+          if (offer.id === action.payload.id) {
+            return action.payload;
+          }
+          return offer;
+        })
       });
   }
 
