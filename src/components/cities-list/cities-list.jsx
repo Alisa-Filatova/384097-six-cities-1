@@ -5,16 +5,19 @@ import CityTab from '../city-tab/city-tab.jsx';
 const CitiesList = ({cities, onCityClick, currentCity}) => (
   <div className="cities tabs">
     <section className="locations container">
-      <ul className="locations__list tabs__list">
+      <div className="locations__list tabs__list">
         {cities.map((city) => (
           <CityTab
             key={city.name}
-            city={city}
-            onCityClick={onCityClick}
+            city={city.name}
+            onCityClick={(event) => {
+              event.preventDefault();
+              onCityClick(city);
+            }}
             isActive={city.name === currentCity.name}
           />
         ))}
-      </ul>
+      </div>
     </section>
   </div>
 );

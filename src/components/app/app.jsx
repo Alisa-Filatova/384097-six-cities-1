@@ -1,187 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Switch, Route, Redirect} from 'react-router-dom';
-import {ActionCreator, Operation} from '../../reducers/data/data';
-import {ActionCreator as UserActionCreator} from '../../reducers/user/user';
-import {
-  getOffers,
-  getCurrentCity,
-  getCityOffers,
-  getCities,
-  getCurrentOffer,
-  sortOffersByLowToHigh,
-  sortOffersByHighToLow,
-  sortOffersByRating,
-  sortOffersById,
-} from '../../reducers/data/selectors';
-import {getAuthorizationStatus, getUser} from '../../reducers/user/selectors';
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import {getAuthorizationStatus, getUser, getPendingAuthStatus} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
-import AppFooter from '../app-footer/app-footer.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
 import MainPage from '../main-page/main-page.jsx';
 import Favorites from '../favorites/favorites.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
-import {PageType} from '../../types/page-type';
-import {SortType} from '../../types/sort-type';
+import {ROUTES} from '../../constants/constants';
 
-class App extends React.PureComponent {
-  constructor(props) {
-    super(props);
+const App = (props) => {
+  const {pendingAuthorization, isAuthenticated, user} = props;
 
-    this.state = {
-      activeOfferId: null,
-      activeFilter: SortType.POPULAR,
-    };
-  }
-
-  render() {
-    const {
-      cityOffers,
-      isAuthorizationRequired,
-      login,
-      user,
-      onCardTitleClick,
-    } = this.props;
-
-    const {activeOfferId, activeFilter} = this.state;
-
-    return (
-      <PageWrapper pageType={isAuthorizationRequired ? PageType.MAIN : PageType.LOGIN}>
-        <AppHeader
-          isAuthenticated={isAuthorizationRequired}
-          user={user}
-        />
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={() =>
-              <MainPage
-                {...this.props}
-                setActiveItem={this._handleGetActiveOffer.bind(this)}
-                activeOfferId={activeOfferId}
-                onHighToLowClick={() => sortOffersByHighToLow(cityOffers)}
-                onLowToHighClick={() => sortOffersByLowToHigh(cityOffers)}
-                onTopRatedClick={() => sortOffersByRating(cityOffers)}
-                onPopularClick={() => sortOffersById(cityOffers)}
-                onOfferTitleClick={onCardTitleClick}
-                setActiveFilter={this._handleGetActiveFilter.bind(this)}
-                currentFilter={activeFilter}
-              />
-            }
+  return (
+    <>
+      {pendingAuthorization ? <div>Loading...</div> : (
+        <PageWrapper location={props.location.pathname}>
+          <AppHeader
+            isAuthenticated={isAuthenticated}
+            user={user}
           />
-          <Route
-            path="/login"
-            exact
-            render={() => (
-              <>
-              {!isAuthorizationRequired
-                ? <SignIn signIn={login} user={user} />
-                : <Redirect to='/' />
-              }
-            </>
-            )}
-          />
-          <Route
-            path="/offer/:id"
-            render={(props) => <OfferDetails {...props} setActiveItem={this._handleGetActiveOffer.bind(this)} />}
-          />
-          <Route
-            path="/favorites"
-            render={() => (
-              <>
-                {isAuthorizationRequired
-                  ? <Favorites />
-                  : <Redirect to='/login' />
-                }
-              </>
-            )}
-          />
-        </Switch>
-        <AppFooter />
-      </PageWrapper>
-    );
-  }
-
-  _handleGetActiveOffer(offerId) {
-    this.setState((prevState) => {
-      return Object.assign({}, prevState, {activeOfferId: offerId});
-    });
-  }
-
-  _handleGetActiveFilter(filter) {
-    this.setState((prevState) => {
-      return Object.assign({}, prevState, {activeFilter: filter});
-    });
-  }
-}
+          <Switch>
+            <Route
+              path={ROUTES.HOME}
+              component={MainPage}
+              exact
+            />
+            <Route
+              path={ROUTES.LOGIN}
+              render={() => isAuthenticated ? <Redirect to={ROUTES.HOME} /> : <SignIn />}
+            />
+            <Route
+              path={`${ROUTES.OFFER}/:id`}
+              component={OfferDetails}
+            />
+            <Route
+              path={ROUTES.FAVORITES}
+              render={() => isAuthenticated ? <Favorites /> : <Redirect to={ROUTES.LOGIN} />}
+            />
+          </Switch>
+        </PageWrapper>
+      )}
+    </>
+  );
+};
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  currentCity: getCurrentCity(state),
-  rentalOffers: getOffers(state),
-  cityOffers: getCityOffers(state),
-  isAuthorizationRequired: getAuthorizationStatus(state),
+  isAuthenticated: getAuthorizationStatus(state),
   user: getUser(state),
-  cities: getCities(state),
-  currentOffer: getCurrentOffer(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onCityClick: (currentCity) => {
-    dispatch(ActionCreator.changeCity(currentCity));
-  },
-  onCardTitleClick: (offer) => {
-    dispatch(ActionCreator.changeOffer(offer));
-  },
-  login: (data) => {
-    dispatch(UserActionCreator.login(data));
-  },
-  toggleFavorite: (id, status) => {
-    dispatch(Operation.postFavoriteOffer(id, status));
-  }
+  pendingAuthorization: getPendingAuthStatus(state),
 });
 
 App.propTypes = {
-  rentalOffers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    [`preview_image`]: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    [`is_premium`]: PropTypes.bool,
-    [`is_favorite`]: PropTypes.bool,
-    bedrooms: PropTypes.number,
-    goods: PropTypes.arrayOf(PropTypes.string),
-    description: PropTypes.string,
-    price: PropTypes.number,
-    rating: PropTypes.number,
-    type: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-    city: PropTypes.shape({
-      name: PropTypes.string,
-      location: PropTypes.shape({
-        latitude: PropTypes.number,
-        longitude: PropTypes.number,
-        zoom: PropTypes.number,
-      }),
-    }),
-    host: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      [`is_pro`]: PropTypes.bool,
-      [`avatar_url`]: PropTypes.string,
-    }),
-  })).isRequired,
-  onCityClick: PropTypes.func.isRequired,
-  currentCity: PropTypes.object.isRequired,
-  cityOffers: PropTypes.array.isRequired,
-  isAuthorizationRequired: PropTypes.bool,
-  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -189,15 +62,9 @@ App.propTypes = {
     [`avatar_url`]: PropTypes.string,
     [`is_pro`]: PropTypes.bool,
   }),
-  cities: PropTypes.arrayOf(PropTypes.object),
-  onCardTitleClick: PropTypes.func,
-  currentOffer: PropTypes.object,
-  onLowToHighClick: PropTypes.func,
-  onHighToLowClick: PropTypes.func,
-  onTopRatedClick: PropTypes.func,
-  onPopularClick: PropTypes.func,
-  favoriteOffers: PropTypes.arrayOf(PropTypes.object),
+  pendingAuthorization: PropTypes.bool,
+  location: PropTypes.any,
 };
 
 export {App};
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

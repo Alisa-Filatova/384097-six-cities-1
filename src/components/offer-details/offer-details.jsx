@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Operation} from '../../reducers/review/review';
+import {Operation as DataOperation} from '../../reducers/data/data';
 import {getReviews} from '../../reducers/review/selectors';
 import {getOfferById, getCloserOffers} from '../../reducers/data/selectors';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
@@ -12,7 +13,7 @@ import ReviewForm from '../review-form/review-form.jsx';
 import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
 import {PlaceType} from '../../types/place-type';
-import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG} from '../../constants/constants';
+import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG, ROUTES} from '../../constants/constants';
 import {redirectToUrl} from '../../utils/links';
 
 const CloserOffersList = withActiveItem(OffersList);
@@ -21,8 +22,10 @@ class OfferDetails extends React.Component {
 
   constructor(props) {
     super(props);
+
     this._redirectToId = this._redirectToId.bind(this);
     this._redirectToLogin = this._redirectToLogin.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +39,7 @@ class OfferDetails extends React.Component {
   }
 
   render() {
-    const {offer, offers, reviews, isAuthenticated, onFavoriteClick, setActiveItem} = this.props;
+    const {offer, offers, reviews, isAuthenticated, setActiveItem} = this.props;
 
     if (!offer) {
       return null;
@@ -65,7 +68,7 @@ class OfferDetails extends React.Component {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.is_favorite}
-                  onClick={isAuthenticated ? () => onFavoriteClick(offer.id) : this._redirectToLogin}
+                  onClick={this._handleFavoriteClick}
                   large
                 />
               </div>
@@ -95,7 +98,9 @@ class OfferDetails extends React.Component {
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {offer.goods.map((good) =>
-                    <li key={good} className="property__inside-item">{good}</li>
+                    <li key={good} className="property__inside-item">
+                      {good}
+                    </li>
                   )}
                 </ul>
               </div>
@@ -154,7 +159,17 @@ class OfferDetails extends React.Component {
 
   _redirectToLogin() {
     const {history} = this.props;
-    redirectToUrl(`/login`, history);
+    redirectToUrl(ROUTES.LOGIN, history);
+  }
+
+  _handleFavoriteClick() {
+    const {offer, onFavoriteClick, isAuthenticated} = this.props;
+
+    if (isAuthenticated) {
+      onFavoriteClick(offer);
+    } else {
+      this._redirectToLogin();
+    }
   }
 }
 
@@ -185,6 +200,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getReviews: () => {
     dispatch(Operation.getReviewsList(ownProps.match.params.id));
+  },
+  onFavoriteClick: (offer) => {
+    dispatch(DataOperation.changeFavorites(offer));
   },
 });
 
