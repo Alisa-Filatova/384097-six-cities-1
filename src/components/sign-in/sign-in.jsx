@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Operation} from '../../reducers/user/user';
+import {getUser} from '../../reducers/user/selectors';
 
 class SignIn extends React.PureComponent {
   constructor(props) {
@@ -76,10 +77,19 @@ class SignIn extends React.PureComponent {
 
 SignIn.propTypes = {
   login: PropTypes.func,
-  user: PropTypes.object,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    [`avatar_url`]: PropTypes.string,
+    [`is_pro`]: PropTypes.bool,
+  }),
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps);
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  user: getUser(state),
+});
+
 const mapDispatchToProps = (dispatch) => ({
   login: (data) => {
     dispatch(Operation.login(data));
@@ -87,5 +97,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export {SignIn};
-
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

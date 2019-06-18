@@ -65,11 +65,17 @@ const AppHeader = ({isAuthenticated, user}) => {
   );
 };
 
-export default AppHeader;
-
 AppHeader.propTypes = {
-  isAuthenticated: PropTypes.bool,
-  user: PropTypes.object,
+  isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    [`avatar_url`]: PropTypes.string,
+    [`is_pro`]: PropTypes.bool,
+  }),
 };
+
+export default AppHeader;
 
 

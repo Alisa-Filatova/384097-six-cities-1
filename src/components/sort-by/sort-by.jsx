@@ -11,7 +11,6 @@ const SortBy = (props) => {
     onHighToLowClick,
     onTopRatedClick,
     currentItem,
-    setActiveItem
   } = props;
 
   const SORT_TYPES_LIST = [
@@ -52,7 +51,6 @@ const SortBy = (props) => {
             <li
               className={`places__option ${currentItem === item.name ? `places__option--active` : ``}`}
               tabIndex="0"
-              onMouseOver={() => setActiveItem(item.name)}
               onClick={item.action}
               key={item.name}
             >
@@ -66,7 +64,6 @@ const SortBy = (props) => {
 };
 
 SortBy.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   isOpen: PropTypes.bool,
   currentItem: PropTypes.any,
@@ -74,7 +71,6 @@ SortBy.propTypes = {
   onLowToHighClick: PropTypes.func,
   onHighToLowClick: PropTypes.func,
   onTopRatedClick: PropTypes.func,
-  setActiveItem: PropTypes.func,
 };
 
 export default SortBy;

@@ -1,7 +1,10 @@
+import {SortType} from '../../types/sort-type';
+
 const initialState = {
   rentalOffers: [],
   currentCity: {},
   offersLoaded: false,
+  sortValue: SortType.POPULAR,
 };
 
 const ActionType = {
@@ -9,6 +12,7 @@ const ActionType = {
   LOAD_OFFERS: `LOAD_OFFERS`,
   CHANGE_CITY: `CHANGE_CITY`,
   UPDATE_OFFER: `UPDATE_OFFER`,
+  SORT_OFFERS: `SORT_OFFERS`,
 };
 
 const ActionCreator = {
@@ -30,6 +34,11 @@ const ActionCreator = {
   updateOffer: (offer) => ({
     type: ActionType.UPDATE_OFFER,
     payload: offer,
+  }),
+
+  sortOffers: (sortValue) => ({
+    type: ActionType.SORT_OFFERS,
+    payload: sortValue,
   }),
 };
 
@@ -68,6 +77,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.OFFERS_LOADED:
       return Object.assign({}, state, {
         offersLoaded: action.payload,
+      });
+
+    case ActionType.SORT_OFFERS:
+      return Object.assign({}, state, {
+        sortValue: action.payload,
       });
 
     case ActionType.UPDATE_OFFER:
