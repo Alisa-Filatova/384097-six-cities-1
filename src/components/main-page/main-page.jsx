@@ -50,45 +50,47 @@ class MainPage extends React.PureComponent {
 
     return (
       <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
-        <h1 className="visually-hidden">Cities</h1>
-        <CitiesList
-          cities={cities}
-          currentCity={currentCity}
-          onCityClick={onCityClick}
-        />
         {!offersLoaded && <div>Loading...</div>}
-        {offersLoaded && cityOffers.length > 0 &&
-          <div className="cities__places-wrapper" style={{height: `100vh`}}>
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">
-                  {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
-                </b>
-                <WrappedSortBy
-                  currentItem={this.props.sortValue}
-                  onPopularClick={this._handlePopularClick}
-                  onLowToHighClick={this._handleLowToHighClick}
-                  onHighToLowClick={this._handleHighToLowClick}
-                  onTopRatedClick={this._handleTopRatedClick}
-                />
-                <WrappedOffersList
-                  rentalOffers={cityOffers}
-                  setActiveItem={setActiveItem}
-                />
-              </section>
-              <div className="cities__right-section">
-                <Map
-                  key={currentCity.name}
-                  currentCity={currentCity}
-                  activeOfferId={activeOfferId}
-                  cityOffers={cityOffers}
-                  zoom
-                />
+        {offersLoaded && cityOffers.length > 0 && (
+          <>
+            <h1 className="visually-hidden">Cities</h1>
+            <CitiesList
+              cities={cities}
+              currentCity={currentCity}
+              onCityClick={onCityClick}
+            />
+            <div className="cities__places-wrapper" style={{height: `100vh`}}>
+              <div className="cities__places-container container">
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  <b className="places__found">
+                    {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
+                  </b>
+                  <WrappedSortBy
+                    currentItem={this.props.sortValue}
+                    onPopularClick={this._handlePopularClick}
+                    onLowToHighClick={this._handleLowToHighClick}
+                    onHighToLowClick={this._handleHighToLowClick}
+                    onTopRatedClick={this._handleTopRatedClick}
+                  />
+                  <WrappedOffersList
+                    rentalOffers={cityOffers}
+                    setActiveItem={setActiveItem}
+                  />
+                </section>
+                <div className="cities__right-section">
+                  <Map
+                    key={currentCity.name}
+                    currentCity={currentCity}
+                    activeOfferId={activeOfferId}
+                    cityOffers={cityOffers}
+                    zoom
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        }
+          </>
+        )}
         {offersLoaded && cityOffers.length === 0 && (
           <MainPageEmpty currentCity={currentCity} />
         )}
@@ -153,7 +155,6 @@ MainPage.propTypes = {
   cityOffers: PropTypes.array.isRequired,
   activeOfferId: PropTypes.any,
   setActiveItem: PropTypes.func,
-  setActiveFilter: PropTypes.func,
   currentFilter: PropTypes.any,
   onPopularClick: PropTypes.func,
   onLowToHighClick: PropTypes.func,
