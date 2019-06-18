@@ -45,20 +45,23 @@ const getRandomCityOffer = (offers) => {
   return offers[Math.floor(Math.random() * (max - min)) + min];
 };
 
-export const sortFavList = (list) => {
-  const HEADERS = {};
+export const sortFavoritesListByCities = (offers) => {
+  const cities = {};
 
-  list.forEach((item) => {
-    if (HEADERS[item.city.name]) return;
-    HEADERS[item.city.name] = [];
+  offers.forEach((item) => {
+    if (!cities[item.city.name]) {
+      cities[item.city.name] = [];
+    }
   });
 
-  list.forEach((it) => {
-    const key = it.city.name;
-    if (HEADERS[key]) HEADERS[key].push(it);
+  offers.forEach((item) => {
+    const key = item.city.name;
+    if (cities[key]) {
+      cities[key].push(item);
+    }
   });
 
-  return HEADERS;
+  return cities;
 };
 
 export const getOffers = (state) => {

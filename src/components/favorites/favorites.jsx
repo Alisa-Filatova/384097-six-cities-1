@@ -4,27 +4,10 @@ import {connect} from 'react-redux';
 import CityTab from '../city-tab/city-tab.jsx';
 import AppFooter from '../app-footer/app-footer.jsx';
 import OffersList from '../offers-list/offers-list.jsx';
-import {getFavoriteOffers} from '../../reducers/data/selectors';
-
-const sortFavList = (list) => {
-  const HEADERS = {};
-
-  list.forEach((item) => {
-    if (HEADERS[item.city.name]) return;
-    HEADERS[item.city.name] = [];
-  });
-
-  list.forEach((it) => {
-    const key = it.city.name;
-    if (HEADERS[key]) HEADERS[key].push(it);
-  });
-
-  return HEADERS;
-};
+import {getFavoriteOffers, sortFavoritesListByCities} from '../../reducers/data/selectors';
 
 const Favorites = ({offers}) => {
-
-  const favoriteItems = sortFavList(offers);
+  const favoriteOffers = sortFavoritesListByCities(offers);
 
   return (
     <>
@@ -34,7 +17,7 @@ const Favorites = ({offers}) => {
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
               <div className="favorites__list">
-                {Object.entries(favoriteItems).map(([key, value]) => (
+                {Object.entries(favoriteOffers).map(([key, value]) => (
                   <div
                     className="favorites__locations-items"
                     key={key}
