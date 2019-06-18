@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Switch, Route, Redirect} from 'react-router-dom';
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {getAuthorizationStatus, getUser, getPendingAuthStatus} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
@@ -9,93 +9,43 @@ import MainPage from '../main-page/main-page.jsx';
 import Favorites from '../favorites/favorites.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
-import {PageType} from '../../types/page-type';
+import {ROUTES} from '../../constants/constants';
 
-class App extends React.PureComponent {
-  constructor(props) {
-    super(props);
+const App = (props) => {
+  const {pendingAuthorization, isAuthenticated, user} = props;
 
-    this.state = {
-      activeOfferId: null,
-    };
-
-    this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
-  }
-
-  render() {
-    const {
-      pendingAuthorization,
-      isAuthenticated,
-      user,
-    } = this.props;
-
-    const {activeOfferId} = this.state;
-
-    return (
-      <>
-        {pendingAuthorization ? <div>Loading</div> : (
-          <PageWrapper pageType={isAuthenticated ? PageType.MAIN : PageType.LOGIN}>
-            <AppHeader
-              isAuthenticated={isAuthenticated}
-              user={user}
+  return (
+    <>
+      {pendingAuthorization ? <div>Loading...</div> : (
+        <PageWrapper location={props.location.pathname}>
+          <AppHeader
+            isAuthenticated={isAuthenticated}
+            user={user}
+          />
+          <Switch>
+            <Route
+              path={ROUTES.HOME}
+              component={MainPage}
+              exact
             />
-            <Switch>
-              <Route
-                path="/"
-                exact
-                render={() =>
-                  <MainPage
-                    {...this.props}
-                    setActiveItem={this._handleGetActiveOffer}
-                    activeOfferId={activeOfferId}
-                  />
-                }
-              />
-              <Route
-                path="/login"
-                exact
-                render={() => (
-                  <>
-                    {isAuthenticated
-                      ? <Redirect to="/" />
-                      : <SignIn />
-                    }
-                  </>
-                )}
-              />
-              <Route
-                path="/offer/:id"
-                render={(props) => (
-                  <OfferDetails
-                    {...props}
-                    setActiveItem={this._handleGetActiveOffer}
-                  />
-                )}
-              />
-              <Route
-                path="/favorites"
-                render={() => (
-                  <>
-                    {isAuthenticated
-                      ? <Favorites />
-                      : <Redirect to="/login" />
-                    }
-                  </>
-                )}
-              />
-            </Switch>
-          </PageWrapper>
-        )}
-      </>
-    );
-  }
-
-  _handleGetActiveOffer(offerId) {
-    this.setState((prevState) => {
-      return Object.assign({}, prevState, {activeOfferId: offerId});
-    });
-  }
-}
+            <Route
+              path={ROUTES.LOGIN}
+              render={() => isAuthenticated ? <Redirect to={ROUTES.HOME} /> : <SignIn />}
+            />
+            <Route
+              path={`${ROUTES.OFFER}/:id`}
+              component={OfferDetails}
+            />
+            <Route
+              path={ROUTES.FAVORITES}
+              render={() => isAuthenticated ? <Favorites /> : <Redirect to={ROUTES.LOGIN} />}
+            />
+          </Switch>
+        </PageWrapper>
+      )}
+    </>
+  );
+};
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   isAuthenticated: getAuthorizationStatus(state),
@@ -113,7 +63,8 @@ App.propTypes = {
     [`is_pro`]: PropTypes.bool,
   }),
   pendingAuthorization: PropTypes.bool,
+  location: PropTypes.any,
 };
 
 export {App};
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

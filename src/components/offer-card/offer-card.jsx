@@ -6,6 +6,7 @@ import {Operation} from '../../reducers/data/data';
 import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import {redirectToUrl} from '../../utils/links';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
+import {ROUTES} from '../../constants/constants';
 
 const ImageSize = {
   DEFAULT: {
@@ -67,7 +68,7 @@ class OfferCard extends React.PureComponent {
             </div>
           </div>
           <h2 className="place-card__name">
-            <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+            <Link to={`${ROUTES.OFFER}/${offer.id}`}>{offer.title}</Link>
           </h2>
           <p className="place-card__type">{offer.type}</p>
         </div>
@@ -77,7 +78,7 @@ class OfferCard extends React.PureComponent {
 
   _redirectToLogin() {
     const {history} = this.props;
-    redirectToUrl(`/login`, history);
+    redirectToUrl(ROUTES.LOGIN, history);
   }
 
   _handleImgClick(event) {
@@ -95,7 +96,7 @@ class OfferCard extends React.PureComponent {
     if (isAuthenticated) {
       onFavoriteClick(offer);
     } else {
-      this._redirectToLogin();
+      redirectToUrl(ROUTES.LOGIN, history);
     }
   }
 }

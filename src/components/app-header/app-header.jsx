@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {BASE_URL} from '../../api';
+import {ROUTES, BASE_URL} from '../../constants/constants';
 
 const AppHeader = ({isAuthenticated, user}) => {
   const userAvatar = user ? {backgroundImage: `url(${BASE_URL}${user.avatar_url})`} : {};
@@ -31,7 +31,7 @@ const AppHeader = ({isAuthenticated, user}) => {
             <div className="header__left">
               <Link
                 className="header__logo-link"
-                to="/"
+                to={ROUTES.HOME}
               >
                 <img
                   className="header__logo"
@@ -47,7 +47,7 @@ const AppHeader = ({isAuthenticated, user}) => {
                 <li className="header__nav-item user">
                   <Link
                     className="header__nav-link header__nav-link--profile"
-                    to={isAuthenticated ? `/favorites` : `/login`}
+                    to={isAuthenticated ? ROUTES.FAVORITES : ROUTES.LOGIN}
                   >
                     <div
                       className="header__avatar-wrapper user__avatar-wrapper"

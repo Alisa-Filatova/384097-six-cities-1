@@ -13,7 +13,7 @@ import ReviewForm from '../review-form/review-form.jsx';
 import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
 import {PlaceType} from '../../types/place-type';
-import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG} from '../../constants/constants';
+import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG, ROUTES} from '../../constants/constants';
 import {redirectToUrl} from '../../utils/links';
 
 const CloserOffersList = withActiveItem(OffersList);
@@ -159,7 +159,7 @@ class OfferDetails extends React.Component {
 
   _redirectToLogin() {
     const {history} = this.props;
-    redirectToUrl(`/login`, history);
+    redirectToUrl(ROUTES.LOGIN, history);
   }
 
   _handleFavoriteClick() {

@@ -31,10 +31,11 @@ class MainPage extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this._handleLowToHighClick = this._handleLowToHighClick.bind(this);
-    this._handleHighToLowClick = this._handleHighToLowClick.bind(this);
-    this._handleTopRatedClick = this._handleTopRatedClick.bind(this);
-    this._handlePopularClick = this._handlePopularClick.bind(this);
+    this.state = {
+      activeOfferId: null,
+    };
+
+    this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
   }
 
   render() {
@@ -42,11 +43,16 @@ class MainPage extends React.PureComponent {
       onCityClick,
       currentCity,
       cityOffers,
-      activeOfferId,
-      setActiveItem,
       cities,
       offersLoaded,
+      onPopularClick,
+      onLowToHighClick,
+      onHighToLowClick,
+      onTopRatedClick,
+      sortValue,
     } = this.props;
+
+    const {activeOfferId} = this.state;
 
     return (
       <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
@@ -67,15 +73,16 @@ class MainPage extends React.PureComponent {
                     {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
                   </b>
                   <WrappedSortBy
-                    currentItem={this.props.sortValue}
-                    onPopularClick={this._handlePopularClick}
-                    onLowToHighClick={this._handleLowToHighClick}
-                    onHighToLowClick={this._handleHighToLowClick}
-                    onTopRatedClick={this._handleTopRatedClick}
+                    currentItem={sortValue}
+                    onPopularClick={onPopularClick}
+                    onLowToHighClick={onLowToHighClick}
+                    onHighToLowClick={onHighToLowClick}
+                    onTopRatedClick={onTopRatedClick}
                   />
                   <WrappedOffersList
                     rentalOffers={cityOffers}
-                    setActiveItem={setActiveItem}
+                    setActiveItem={this._handleGetActiveOffer}
+                    history={this.props.history}
                   />
                 </section>
                 <div className="cities__right-section">
@@ -92,69 +99,24 @@ class MainPage extends React.PureComponent {
           </>
         )}
         {offersLoaded && cityOffers.length === 0 && (
-          <MainPageEmpty currentCity={currentCity} />
+          <MainPageEmpty currentCity={currentCity}/>
         )}
       </main>
     );
   }
 
-  _handleLowToHighClick() {
-    this.props.onLowToHighClick();
-  }
-
-  _handleHighToLowClick() {
-    this.props.onHighToLowClick();
-  }
-
-  _handleTopRatedClick() {
-    this.props.onTopRatedClick();
-  }
-
-  _handlePopularClick() {
-    this.props.onPopularClick();
+  _handleGetActiveOffer(offerId) {
+    this.setState((prevState) => {
+      return Object.assign({}, prevState, {activeOfferId: offerId});
+    });
   }
 }
 
 MainPage.propTypes = {
-  rentalOffers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    [`preview_image`]: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    [`is_premium`]: PropTypes.bool,
-    [`is_favorite`]: PropTypes.bool,
-    bedrooms: PropTypes.number,
-    goods: PropTypes.arrayOf(PropTypes.string),
-    description: PropTypes.string,
-    price: PropTypes.number,
-    rating: PropTypes.number,
-    type: PropTypes.string,
-    location: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-      zoom: PropTypes.number,
-    }),
-    city: PropTypes.shape({
-      name: PropTypes.string,
-      location: PropTypes.shape({
-        latitude: PropTypes.number,
-        longitude: PropTypes.number,
-        zoom: PropTypes.number,
-      }),
-    }),
-    host: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      [`is_pro`]: PropTypes.bool,
-      [`avatar_url`]: PropTypes.string,
-    }),
-  })).isRequired,
   cities: PropTypes.arrayOf(PropTypes.object),
   currentCity: PropTypes.object.isRequired,
   onCityClick: PropTypes.func.isRequired,
   cityOffers: PropTypes.array.isRequired,
-  activeOfferId: PropTypes.any,
-  setActiveItem: PropTypes.func,
   currentFilter: PropTypes.any,
   onPopularClick: PropTypes.func,
   onLowToHighClick: PropTypes.func,
@@ -166,7 +128,6 @@ MainPage.propTypes = {
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   currentCity: getCurrentCity(state),
-  rentalOffers: getOffers(state),
   cityOffers: sortOffers(state),
   cities: getCities(state),
   offersLoaded: getOffersLoadStatus(state),

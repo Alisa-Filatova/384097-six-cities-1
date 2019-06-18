@@ -2,11 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import CityTab from '../city-tab/city-tab.jsx';
-import OfferCard from '../offer-card/offer-card.jsx';
 import AppFooter from '../app-footer/app-footer.jsx';
+import OffersList from '../offers-list/offers-list.jsx';
 import {getFavoriteOffers} from '../../reducers/data/selectors';
 
+const sortFavList = (list) => {
+  const HEADERS = {};
+
+  list.forEach((item) => {
+    if (HEADERS[item.city.name]) return;
+    HEADERS[item.city.name] = [];
+  });
+
+  list.forEach((it) => {
+    const key = it.city.name;
+    if (HEADERS[key]) HEADERS[key].push(it);
+  });
+
+  return HEADERS;
+};
+
 const Favorites = ({offers}) => {
+
+  const favoriteItems = sortFavList(offers);
+
   return (
     <>
       {offers.length > 0 ?
@@ -15,23 +34,22 @@ const Favorites = ({offers}) => {
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
               <div className="favorites__list">
-                {offers.map((offer) =>
+                {Object.entries(favoriteItems).map(([key, value]) => (
                   <div
                     className="favorites__locations-items"
-                    key={offer.city.name + offer.id}
+                    key={key}
                   >
                     <div className="favorites__locations locations locations--current">
-                      <CityTab city={offer.city} isActive />
+                      <CityTab city={key} isActive />
                     </div>
-                    <div className="favorites__places">
-                      <OfferCard
-                        offer={offer}
-                        prefix="favorites"
-                        small
-                      />
-                    </div>
+                    <OffersList
+                      className="favorites__places"
+                      rentalOffers={value}
+                      prefix="favorites"
+                      small
+                    />
                   </div>
-                )}
+                ))}
               </div>
             </section>
           </div>

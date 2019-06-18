@@ -1,9 +1,9 @@
 import {createSelector} from 'reselect';
 import {NameSpace} from '../namespaces';
-import {SortType} from "../../types/sort-type";
+import {SortType} from '../../types/sort-type';
+import {MAX_CITIES} from '../../constants/constants';
 
 const NAMESPACE = NameSpace.DATA;
-const MAX_CITIES = 6;
 
 const sortCitiesByName = (offers) => {
   const cities = offers.map((offer) => offer.city).sort((a, b) => {
@@ -43,6 +43,22 @@ const getRandomCityOffer = (offers) => {
   const min = 0;
   const max = Math.floor(offers.length);
   return offers[Math.floor(Math.random() * (max - min)) + min];
+};
+
+export const sortFavList = (list) => {
+  const HEADERS = {};
+
+  list.forEach((item) => {
+    if (HEADERS[item.city.name]) return;
+    HEADERS[item.city.name] = [];
+  });
+
+  list.forEach((it) => {
+    const key = it.city.name;
+    if (HEADERS[key]) HEADERS[key].push(it);
+  });
+
+  return HEADERS;
 };
 
 export const getOffers = (state) => {
@@ -88,22 +104,11 @@ export const sortOffers = createSelector(
           return offers.sort((a, b) => a.price - b.price);
         case (SortType.TOP_RATED):
           return offers.sort((a, b) => b.rating - a.rating);
-        default: return offers.sort((a, b) => a.id - b.id);
+        default:
+          return offers.sort((a, b) => a.id - b.id);
       }
     }
 );
-
-export const sortOffersByLowToHigh = (offers) =>
-  offers.sort((a, b) => a.price - b.price);
-
-export const sortOffersByHighToLow = (offers) =>
-  offers.sort((a, b) => b.price - a.price);
-
-export const sortOffersByRating = (offers) =>
-  offers.sort((a, b) => b.rating - a.rating);
-
-export const sortOffersById = (offers) =>
-  offers.sort((a, b) => a.id - b.id);
 
 export const getOfferById = (state, id) =>
   getOffers(state).filter((item) => item.id === +id)[0];
@@ -118,3 +123,5 @@ export const getCloserOffers = (state, id) => {
 
 export const getFavoriteOffers = (state) =>
   getOffers(state).filter((item) => item.is_favorite);
+
+

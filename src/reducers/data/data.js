@@ -48,8 +48,12 @@ const Operation = {
       .then((response) => {
         dispatch(ActionCreator.loadOffers(response.data));
         dispatch(ActionCreator.offersLoaded(true));
+      })
+      .catch((error) => {
+        throw error;
       });
   },
+
   changeFavorites: (offer) => (dispatch, getState, api) => {
     const id = offer.id;
     const status = offer.is_favorite ? `0` : `1`;
@@ -57,9 +61,10 @@ const Operation = {
       .then((response) => {
         dispatch(ActionCreator.updateOffer(response.data));
       })
-      .catch(() => {});
+      .catch((error) => {
+        throw error;
+      });
   },
-
 };
 
 const reducer = (state = initialState, action) => {

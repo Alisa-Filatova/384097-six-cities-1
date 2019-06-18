@@ -24,6 +24,9 @@ const Operation = {
     return api.get(`/comments/${id}`)
       .then((response) => {
         dispatch(ActionCreator.getReviews(response.data));
+      })
+      .catch((error) => {
+        throw error;
       });
   },
   postReview: (id, review) => (dispatch, getState, api) => {

@@ -9,8 +9,11 @@ const CitiesList = ({cities, onCityClick, currentCity}) => (
         {cities.map((city) => (
           <CityTab
             key={city.name}
-            city={city}
-            onCityClick={onCityClick}
+            city={city.name}
+            onCityClick={(event) => {
+              event.preventDefault();
+              onCityClick(city);
+            }}
             isActive={city.name === currentCity.name}
           />
         ))}
