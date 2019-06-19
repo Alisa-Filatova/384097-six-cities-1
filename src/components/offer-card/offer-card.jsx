@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {Operation} from '../../reducers/data/data';
 import FavoriteButton from '../favorite-button/favorite-button.jsx';
 import RatingStars from '../rating-stars/rating-stars.jsx';
-import {getAuthorizationStatus} from '../../reducers/user/selectors';
 import {ROUTES} from '../../constants/constants';
 
 const ImageSize = {
@@ -75,7 +72,7 @@ class OfferCard extends React.PureComponent {
     const {offer, onImgClick} = this.props;
 
     if (onImgClick) {
-      onImgClick(offer);
+      onImgClick(offer.id);
     }
   }
 
@@ -133,16 +130,5 @@ OfferCard.propTypes = {
   history: PropTypes.any,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  isAuthenticated: getAuthorizationStatus(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onFavoriteClick: (offer) => {
-    dispatch(Operation.changeFavorites(offer));
-  },
-});
-
-export {OfferCard};
-export default connect(mapStateToProps, mapDispatchToProps)(OfferCard);
+export default OfferCard;
 

@@ -145,8 +145,9 @@ class OfferDetails extends React.Component {
             <CloserOffersList
               className="near-places__list places__list"
               rentalOffers={offers}
-              setActiveItem={setActiveItem}
               history={this.props.history}
+              onFavoriteClick={this.props.onFavoriteClick}
+              isAuthenticated={isAuthenticated}
             />
           </section>
         </div>
@@ -206,7 +207,6 @@ OfferDetails.propTypes = {
   getReviews: PropTypes.func,
   id: PropTypes.any,
   isAuthenticated: PropTypes.bool,
-  setActiveItem: PropTypes.func,
   onFavoriteClick: PropTypes.func,
   postReviewStatus: PropTypes.number,
 };

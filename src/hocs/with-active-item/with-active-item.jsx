@@ -24,16 +24,18 @@ const withActiveItem = (Component) => {
       const {currentItem} = this.state;
       const {setActiveItem} = this.props;
 
-      return <Component
-        {...this.props}
-        currentItem={currentItem}
-        setActiveItem={(item) => {
-          setActiveItem(item);
-          this.setState({
-            currentItem: item,
-          });
-        }}
-      />;
+      return (
+        <Component
+          {...this.props}
+          currentItem={currentItem}
+          setActiveItem={(item) => {
+            setActiveItem(item);
+            this.setState({
+              currentItem: item,
+            });
+          }}
+        />
+      );
     }
   }
 

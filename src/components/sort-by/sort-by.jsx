@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {SortType} from '../../types/sort-type';
+import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
 
 const SortBy = (props) => {
   const {
@@ -73,4 +75,7 @@ SortBy.propTypes = {
   onTopRatedClick: PropTypes.func,
 };
 
-export default SortBy;
+export default withToggle(withTransformProps(
+    (props) => Object.assign({}, props, {
+      isOpen: props.toggleStatus,
+    }))(SortBy));

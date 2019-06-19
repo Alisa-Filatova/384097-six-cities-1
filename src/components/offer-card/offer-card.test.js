@@ -6,37 +6,51 @@ import OfferCard from './offer-card.jsx';
 
 configure({adapter: new Adapter()});
 
-const mock = {
-  id: 123,
-  title: `Beautiful & luxurious apartment at great location`,
-  [`preview_image`]: `img/apartment-01.jpg`,
-  isPremium: true,
-  price: 120,
-  rating: 4,
-  type: `Apartment`,
-  isInBookmarks: false,
-  coordinates: [52.3909553943508, 4.929309666406198],
-  city: {
-    name: `Amsterdam`,
-    coordinates: [52.38333, 4.9],
-  },
-};
+const mock = [
+  {
+    id: 1,
+    city: {
+      name: `Amsterdam`,
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10,
+      }
+    },
+    previewImage: `img/1.png`,
+    images: [`img/1.png`, `img/2.png`],
+    title: `Beautiful & luxurious studio at great location`,
+    isFavorite: false,
+    isPremium: false,
+    rating: 4.8,
+    type: `apartment`,
+    bedrooms: 3,
+    maxAdults: 4,
+    price: 120,
+    goods: [`Heating`, `Kitchen`, `Cable TV`, `Washing machine`, `Coffee machine`, `Dishwasher`],
+    host: {
+      id: 3,
+      isPro: true,
+      name: `Angelina`,
+      avatarUrl: `img/1.png`
+    },
+    description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
+    location: {
+      latitude: 52.35514938496378,
+      longitude: 4.673877537499948,
+      zoom: 8,
+    }
+  }
+];
 
 describe(`OfferCard`, () => {
   it(`renders correctly`, () => {
-    const onTitleClickHandler = jest.fn();
-    const onImageClickHandler = jest.fn();
-    const mouseOverHandler = jest.fn();
-    const mouseLeaveHandler = jest.fn();
-
     const card = shallow(
         <OfferCard
           activeItem={1}
           offer={mock}
-          onOfferTitleClick={onTitleClickHandler}
-          onOfferImgClick={onImageClickHandler}
-          onMouseOver={mouseOverHandler}
-          onMouseOut={mouseLeaveHandler}
+          onImgClick={jest.fn()}
+          onFavoriteClick={jest.fn()}
         />
     );
 

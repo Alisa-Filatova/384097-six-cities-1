@@ -13,9 +13,9 @@ export const createAPI = (onLoginFail, onServerError) => {
 
   const onSuccess = (response) => response;
   const onFail = (error) => {
-    if (error.response.status === ResponseStatus.FORBIDDEN) {
+    if (error.response && error.response.status === ResponseStatus.FORBIDDEN) {
       onLoginFail();
-    } else if (error.response.status >= ResponseStatus.INTERNAL_SERVER_ERROR
+    } else if (error.response && error.response.status >= ResponseStatus.INTERNAL_SERVER_ERROR
       && error.response.status < ResponseStatus.INVALID_REQUEST) {
       onServerError();
     }

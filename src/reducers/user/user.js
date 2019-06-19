@@ -36,6 +36,7 @@ const Operation = {
           dispatch(ActionCreator.requireAuthorization(true));
         }
       })
+      .catch(() => {})
       .finally(() => {
         dispatch(ActionCreator.pendingAuthorization(false));
       });
@@ -49,6 +50,7 @@ const Operation = {
           dispatch(ActionCreator.login(response.data));
         }
       })
+      .catch(() => {})
       .finally(() => {
         dispatch(ActionCreator.pendingAuthorization(false));
       });

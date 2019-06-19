@@ -11,6 +11,7 @@ export const ROUTES = {
   LOGIN: `/login`,
   OFFER: `/offer`,
   FAVORITES: `/favorites`,
+  ERROR: `/error`,
 };
 
 export const RATING_ITEMS = [

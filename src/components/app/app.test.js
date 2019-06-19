@@ -7,12 +7,11 @@ import {App} from './app.jsx';
 configure({adapter: new Adapter()});
 
 const userMock = {
-  user: {
-    id: 4,
-    isPro: false,
-    name: `Max`,
-    avatarUrl: `img/1.png`
-  },
+  avatarUrl: `/static/avatar/4.jpg`,
+  email: `alicefill@y888.ru`,
+  id: 1,
+  isPro: false,
+  name: `alicefill`,
 };
 
 describe(`App`, () => {

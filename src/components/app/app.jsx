@@ -9,9 +9,10 @@ import MainPage from '../main-page/main-page.jsx';
 import Favorites from '../favorites/favorites.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
+import NotFound from '../not-found/not-found.jsx';
+import ErrorMessage from '../error-message/error-message.jsx';
 import Loader from '../loader/loader.jsx';
 import {ROUTES} from '../../constants/constants';
-import NotFound from '../not-found/not-found.jsx';
 
 const App = (props) => {
   const {pendingAuthorization, isAuthenticated, user} = props;
@@ -20,10 +21,12 @@ const App = (props) => {
     <>
       {pendingAuthorization ? <Loader /> : (
         <PageWrapper location={props.location.pathname}>
-          <AppHeader
-            isAuthenticated={isAuthenticated}
-            user={user}
-          />
+          {props.location.pathname !== ROUTES.ERROR &&
+            <AppHeader
+              isAuthenticated={isAuthenticated}
+              user={user}
+            />
+          }
           <Switch>
             <Route
               path={ROUTES.HOME}
@@ -41,6 +44,10 @@ const App = (props) => {
             <Route
               path={ROUTES.FAVORITES}
               render={() => isAuthenticated ? <Favorites /> : <Redirect to={ROUTES.LOGIN} />}
+            />
+            <Route
+              path={ROUTES.ERROR}
+              component={ErrorMessage}
             />
             <Route component={NotFound} />
           </Switch>

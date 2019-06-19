@@ -6,7 +6,7 @@ const NotFound = () => {
       <div className="cities__places-container cities__places-container--empty container">
         <section className="cities__no-places">
           <div className="cities__status-wrapper tabs__content">
-            <b className="cities__status">Page not found</b>
+            <b className="cities__status">Page not found (404)</b>
             <p className="cities__status-description">
               Oops! The page you were looking for does not exist
             </p>
