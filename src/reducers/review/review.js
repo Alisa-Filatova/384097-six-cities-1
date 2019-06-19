@@ -1,10 +1,14 @@
+import {ResponseStatus} from '../../enums/response-status';
+
 const initialState = {
   reviewsList: [],
+  postReviewStatus: null,
 };
 
 const ActionsType = {
   GET_REVIEWS: `GET_REVIEWS`,
   POST_REVIEW: `POST_REVIEW`,
+  GET_POST_REVIEW_STATUS: `GET_POST_REVIEW_STATUS`,
 };
 
 const ActionCreator = {
@@ -17,6 +21,11 @@ const ActionCreator = {
     type: ActionsType.POST_REVIEW,
     payload: reviews,
   }),
+
+  getPostReviewStatus: (postReviewStatus) => ({
+    type: ActionsType.GET_POST_REVIEW_STATUS,
+    payload: postReviewStatus,
+  }),
 };
 
 const Operation = {
@@ -25,17 +34,20 @@ const Operation = {
       .then((response) => {
         dispatch(ActionCreator.getReviews(response.data));
       })
-      .catch((error) => {
-        throw error;
-      });
+      .catch(() => {});
   },
   postReview: (id, review) => (dispatch, getState, api) => {
     return api.post(`/comments/${id}`, review)
       .then((response) => {
         dispatch(ActionCreator.postReview(response.data));
+        dispatch(ActionCreator.getPostReviewStatus(response.status));
       })
       .catch((error) => {
-        throw error;
+        if (error.response.status === ResponseStatus.BAD_REQUEST) {
+          dispatch(ActionCreator.getPostReviewStatus(error.response.status));
+        } else if (error.response.status === ResponseStatus.FORBIDDEN) {
+          dispatch(ActionCreator.getPostReviewStatus(error.response.status));
+        }
       });
   },
 };
@@ -49,6 +61,10 @@ const reducer = (state = initialState, action) => {
     case ActionsType.POST_REVIEW:
       return Object.assign({}, state, {
         reviewsList: action.payload,
+      });
+    case ActionsType.GET_POST_REVIEW_STATUS:
+      return Object.assign({}, state, {
+        postReviewStatus: action.payload,
       });
   }
   return state;

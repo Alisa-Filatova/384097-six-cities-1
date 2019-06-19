@@ -10,10 +10,7 @@ const CitiesList = ({cities, onCityClick, currentCity}) => (
           <CityTab
             key={city.name}
             city={city.name}
-            onCityClick={(event) => {
-              event.preventDefault();
-              onCityClick(city);
-            }}
+            onCityClick={() => onCityClick(city)}
             isActive={city.name === currentCity.name}
           />
         ))}

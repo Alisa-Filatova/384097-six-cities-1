@@ -9,14 +9,16 @@ import MainPage from '../main-page/main-page.jsx';
 import Favorites from '../favorites/favorites.jsx';
 import SignIn from '../sign-in/sign-in.jsx';
 import OfferDetails from '../offer-details/offer-details.jsx';
+import Loader from '../loader/loader.jsx';
 import {ROUTES} from '../../constants/constants';
+import NotFound from '../not-found/not-found.jsx';
 
 const App = (props) => {
   const {pendingAuthorization, isAuthenticated, user} = props;
 
   return (
     <>
-      {pendingAuthorization ? <div>Loading...</div> : (
+      {pendingAuthorization ? <Loader /> : (
         <PageWrapper location={props.location.pathname}>
           <AppHeader
             isAuthenticated={isAuthenticated}
@@ -40,6 +42,7 @@ const App = (props) => {
               path={ROUTES.FAVORITES}
               render={() => isAuthenticated ? <Favorites /> : <Redirect to={ROUTES.LOGIN} />}
             />
+            <Route component={NotFound} />
           </Switch>
         </PageWrapper>
       )}
@@ -59,8 +62,8 @@ App.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    [`avatar_url`]: PropTypes.string,
-    [`is_pro`]: PropTypes.bool,
+    avatarUrl: PropTypes.string,
+    isPro: PropTypes.bool,
   }),
   pendingAuthorization: PropTypes.bool,
   location: PropTypes.any,

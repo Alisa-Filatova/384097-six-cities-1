@@ -68,8 +68,9 @@ exports[`SignIn page renders correctly 1`] = `
         className="locations__item"
       >
         <a
-          className="locations__item-link"
-          href="/"
+          className="locations__item-link tabs__item "
+          href="#"
+          onClick={[Function]}
         >
           <span>
             Amsterdam

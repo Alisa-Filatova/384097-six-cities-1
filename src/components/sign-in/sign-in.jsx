@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Operation} from '../../reducers/user/user';
 import {getUser} from '../../reducers/user/selectors';
+import CityTab from '../city-tab/city-tab.jsx';
 
 class SignIn extends React.PureComponent {
   constructor(props) {
@@ -52,11 +53,7 @@ class SignIn extends React.PureComponent {
             </form>
           </section>
           <section className="locations locations--login locations--current">
-            <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
-            </div>
+            <CityTab city="Amsterdam" />
           </section>
         </div>
       </main>
@@ -81,8 +78,8 @@ SignIn.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    [`avatar_url`]: PropTypes.string,
-    [`is_pro`]: PropTypes.bool,
+    avatarUrl: PropTypes.string,
+    isPro: PropTypes.bool,
   }),
 };
 

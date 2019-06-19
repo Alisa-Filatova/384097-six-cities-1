@@ -12,9 +12,15 @@ import {getRandomOffer} from './reducers/data/selectors';
 import {createAPI} from './api';
 import App from './components/app/app.jsx';
 
-const api = createAPI(() => {
-  store.dispatch(UserActions.requireAuthorization(false));
-});
+const api = createAPI(
+    () => {
+      store.dispatch(UserActions.requireAuthorization(false));
+    },
+    () => {
+      // TODO
+      store.dispatch(UserActions.requireAuthorization(false));
+    }
+);
 
 const store = createStore(
     reducer,

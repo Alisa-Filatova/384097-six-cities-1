@@ -50,14 +50,15 @@ const withPostComment = (Component) => {
 
       const {rating, comment} = this.state;
 
-      this.setState({rating: 0, comment: ``});
       this.props.postReview({rating, comment}, this.props.offerId);
+      this.setState({rating: 0, comment: ``});
     }
   }
 
   WithPostComment.propTypes = {
     offerId: PropTypes.number.isRequired,
-    postReview: PropTypes.func.isRequired
+    postReview: PropTypes.func.isRequired,
+    postReviewStatus: PropTypes.number,
   };
 
   return WithPostComment;

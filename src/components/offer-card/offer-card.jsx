@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Operation} from '../../reducers/data/data';
 import FavoriteButton from '../favorite-button/favorite-button.jsx';
-import {redirectToUrl} from '../../utils/links';
+import RatingStars from '../rating-stars/rating-stars.jsx';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
 import {ROUTES} from '../../constants/constants';
 
@@ -24,7 +24,6 @@ class OfferCard extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this._redirectToLogin = this._redirectToLogin.bind(this);
     this._handleImgClick = this._handleImgClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
@@ -34,7 +33,7 @@ class OfferCard extends React.PureComponent {
 
     return (
       <article className={`${prefix}__place-card ${prefix}__card place-card`}>
-        {offer.is_premium &&
+        {offer.isPremium &&
           <div className="place-card__mark">
             <span>Premium</span>
           </div>
@@ -43,7 +42,7 @@ class OfferCard extends React.PureComponent {
           <a onClick={this._handleImgClick}>
             <img
               className="place-card__image"
-              src={offer.preview_image}
+              src={offer.previewImage}
               width={small ? ImageSize.SMALL.width : ImageSize.DEFAULT.width}
               height={small ? ImageSize.SMALL.height : ImageSize.DEFAULT.height}
               alt={offer.title}
@@ -57,16 +56,11 @@ class OfferCard extends React.PureComponent {
               <span className="place-card__price-text">&#47;&nbsp;night</span>
             </div>
             <FavoriteButton
-              isActive={offer.is_favorite}
+              isActive={offer.isFavorite}
               onClick={this._handleFavoriteClick}
             />
           </div>
-          <div className="place-card__rating rating">
-            <div className="place-card__stars rating__stars">
-              <span style={{width: (offer.rating * 10) * 2 + `%`}}/>
-              <span className="visually-hidden">Rating</span>
-            </div>
-          </div>
+          <RatingStars rating={offer.rating} />
           <h2 className="place-card__name">
             <Link to={`${ROUTES.OFFER}/${offer.id}`}>{offer.title}</Link>
           </h2>
@@ -74,11 +68,6 @@ class OfferCard extends React.PureComponent {
         </div>
       </article>
     );
-  }
-
-  _redirectToLogin() {
-    const {history} = this.props;
-    redirectToUrl(ROUTES.LOGIN, history);
   }
 
   _handleImgClick(event) {
@@ -91,12 +80,12 @@ class OfferCard extends React.PureComponent {
   }
 
   _handleFavoriteClick() {
-    const {offer, onFavoriteClick, isAuthenticated} = this.props;
+    const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
 
     if (isAuthenticated) {
       onFavoriteClick(offer);
     } else {
-      redirectToUrl(ROUTES.LOGIN, history);
+      history.push(ROUTES.LOGIN);
     }
   }
 }
@@ -105,10 +94,11 @@ OfferCard.propTypes = {
   offer: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
-    [`preview_image`]: PropTypes.string,
+    previewImage: PropTypes.string,
     images: PropTypes.arrayOf(PropTypes.string),
-    [`is_premium`]: PropTypes.bool,
-    [`is_favorite`]: PropTypes.bool,
+    isPremium: PropTypes.bool,
+    isFavorite: PropTypes.bool,
+    maxAdults: PropTypes.number,
     bedrooms: PropTypes.number,
     goods: PropTypes.arrayOf(PropTypes.string),
     description: PropTypes.string,
@@ -131,10 +121,10 @@ OfferCard.propTypes = {
     host: PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
-      [`is_pro`]: PropTypes.bool,
-      [`avatar_url`]: PropTypes.string,
+      isPro: PropTypes.bool,
+      avatarUrl: PropTypes.string,
     }),
-  }).isRequired,
+  }),
   onImgClick: PropTypes.func,
   onFavoriteClick: PropTypes.func,
   small: PropTypes.bool,

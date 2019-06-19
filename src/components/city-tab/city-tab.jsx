@@ -6,8 +6,11 @@ const CityTab = ({city, onCityClick, isActive}) => {
     <div className="locations__item">
       <a
         className={`locations__item-link tabs__item ${isActive ? `tabs__item--active` : ``}`}
-        onClick={onCityClick}
-        href=""
+        onClick={(event) => {
+          event.preventDefault();
+          onCityClick();
+        }}
+        href="#"
       >
         <span>{city}</span>
       </a>

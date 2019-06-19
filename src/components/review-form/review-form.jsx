@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withPostComment from '../../hocs/with-post-comment/with-post-comment.jsx';
 import {MAX_CHAR_COMMENT, MIN_CHAR_COMMENT, RATING_ITEMS} from '../../constants/constants';
+import {ResponseStatus} from '../../enums/response-status';
 
-const ReviewForm = ({rating, comment, disabled, onRatingChange, onCommentChange, onSubmit}) => {
+const ReviewForm = ({rating, comment, disabled, onRatingChange, onCommentChange, onSubmit, postReviewStatus}) => {
   return (
     <form
       className="reviews__form form"
@@ -47,9 +48,17 @@ const ReviewForm = ({rating, comment, disabled, onRatingChange, onCommentChange,
         maxLength={MAX_CHAR_COMMENT}
         value={comment}
         onChange={onCommentChange}
+        style={{borderColor: postReviewStatus === ResponseStatus.BAD_REQUEST ? `red` : ``}}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
+          {postReviewStatus === ResponseStatus.BAD_REQUEST && (
+            <>
+              <span style={{color: `red`}}>
+                Ooops, something went wrong! Try again later.
+              </span><br/>
+            </>
+          )}
           To submit review please make sure to set <span className="reviews__star">rating</span> and
           describe your
           stay with at least <b className="reviews__text-amount">50 characters</b>.
@@ -73,6 +82,7 @@ ReviewForm.propTypes = {
   onCommentChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  postReviewStatus: PropTypes.number,
 };
 
 export {ReviewForm};

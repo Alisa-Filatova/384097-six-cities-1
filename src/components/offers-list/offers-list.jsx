@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import OfferCard from '../offer-card/offer-card.jsx';
 
-const OffersList = ({rentalOffers, setActiveItem, className, prefix = `cities`, small}) => (
+const OffersList = ({rentalOffers, setActiveItem, className, prefix = `cities`, small, history}) => (
   <div className={className ? className : `${prefix}__places-list places__list tabs__content`}>
     {rentalOffers.map((offer, idx) => (
       <OfferCard
@@ -11,6 +11,7 @@ const OffersList = ({rentalOffers, setActiveItem, className, prefix = `cities`, 
         key={idx}
         prefix={prefix}
         small={small}
+        history={history}
         {...rentalOffers}
       />
     ))}
@@ -23,6 +24,7 @@ OffersList.propTypes = {
   className: PropTypes.string,
   prefix: PropTypes.string,
   small: PropTypes.bool,
+  history: PropTypes.any,
 };
 
 export default OffersList;

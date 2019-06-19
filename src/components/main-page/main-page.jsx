@@ -6,7 +6,6 @@ import {
   getCurrentCity,
   getCities,
   getOffersLoadStatus,
-  getOffers,
   getSortValue,
   sortOffers,
 } from '../../reducers/data/selectors';
@@ -15,6 +14,7 @@ import Map from '../map/map.jsx';
 import CitiesList from '../cities-list/cities-list.jsx';
 import SortBy from '../sort-by/sort-by.jsx';
 import MainPageEmpty from '../main-page-empty/main-page-empty.jsx';
+import Loader from '../loader/loader.jsx';
 import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
 import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
 import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
@@ -55,53 +55,55 @@ class MainPage extends React.PureComponent {
     const {activeOfferId} = this.state;
 
     return (
-      <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
-        {!offersLoaded && <div>Loading...</div>}
-        {offersLoaded && cityOffers.length > 0 && (
-          <>
-            <h1 className="visually-hidden">Cities</h1>
-            <CitiesList
-              cities={cities}
-              currentCity={currentCity}
-              onCityClick={onCityClick}
-            />
-            <div className="cities__places-wrapper" style={{height: `100vh`}}>
-              <div className="cities__places-container container">
-                <section className="cities__places places">
-                  <h2 className="visually-hidden">Places</h2>
-                  <b className="places__found">
-                    {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
-                  </b>
-                  <WrappedSortBy
-                    currentItem={sortValue}
-                    onPopularClick={onPopularClick}
-                    onLowToHighClick={onLowToHighClick}
-                    onHighToLowClick={onHighToLowClick}
-                    onTopRatedClick={onTopRatedClick}
-                  />
-                  <WrappedOffersList
-                    rentalOffers={cityOffers}
-                    setActiveItem={this._handleGetActiveOffer}
-                    history={this.props.history}
-                  />
-                </section>
-                <div className="cities__right-section">
-                  <Map
-                    key={currentCity.name}
-                    currentCity={currentCity}
-                    activeOfferId={activeOfferId}
-                    cityOffers={cityOffers}
-                    zoom
-                  />
+      <>
+        <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
+          {!offersLoaded && <Loader />}
+          {offersLoaded && cityOffers.length > 0 && (
+            <>
+              <h1 className="visually-hidden">Cities</h1>
+              <CitiesList
+                cities={cities}
+                currentCity={currentCity}
+                onCityClick={onCityClick}
+              />
+              <div className="cities__places-wrapper" style={{height: `100vh`}}>
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">
+                      {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
+                    </b>
+                    <WrappedSortBy
+                      currentItem={sortValue}
+                      onPopularClick={onPopularClick}
+                      onLowToHighClick={onLowToHighClick}
+                      onHighToLowClick={onHighToLowClick}
+                      onTopRatedClick={onTopRatedClick}
+                    />
+                    <WrappedOffersList
+                      rentalOffers={cityOffers}
+                      setActiveItem={this._handleGetActiveOffer}
+                      history={this.props.history}
+                    />
+                  </section>
+                  <div className="cities__right-section">
+                    <Map
+                      key={currentCity.name}
+                      currentCity={currentCity}
+                      activeOfferId={activeOfferId}
+                      cityOffers={cityOffers}
+                      zoom
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        )}
-        {offersLoaded && cityOffers.length === 0 && (
-          <MainPageEmpty currentCity={currentCity}/>
-        )}
-      </main>
+            </>
+          )}
+          {offersLoaded && cityOffers.length === 0 && (
+            <MainPageEmpty currentCity={currentCity} />
+          )}
+        </main>
+      </>
     );
   }
 
@@ -124,6 +126,7 @@ MainPage.propTypes = {
   onTopRatedClick: PropTypes.func,
   offersLoaded: PropTypes.bool,
   sortValue: PropTypes.string,
+  history: PropTypes.any,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {

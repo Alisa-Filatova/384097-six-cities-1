@@ -1,4 +1,5 @@
 import {NameSpace} from '../namespaces';
+import {keysToCamel} from '../../utils/objectSnakeKeysToCamel';
 
 const NAMESPACE = NameSpace.USER;
 
@@ -7,7 +8,7 @@ export const getAuthorizationStatus = (state) => {
 };
 
 export const getUser = (state) => {
-  return state[NAMESPACE].user;
+  return keysToCamel(state[NAMESPACE].user);
 };
 
 export const getPendingAuthStatus = (state) => {
