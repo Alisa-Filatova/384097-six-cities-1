@@ -75,6 +75,7 @@ SortBy.propTypes = {
   onTopRatedClick: PropTypes.func,
 };
 
+export {SortBy};
 export default withToggle(withTransformProps(
     (props) => Object.assign({}, props, {
       isOpen: props.toggleStatus,

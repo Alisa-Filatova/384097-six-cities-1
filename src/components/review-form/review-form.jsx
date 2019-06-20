@@ -4,7 +4,15 @@ import withPostComment from '../../hocs/with-post-comment/with-post-comment.jsx'
 import {MAX_CHAR_COMMENT, MIN_CHAR_COMMENT, RATING_ITEMS} from '../../constants/constants';
 import {ResponseStatus} from '../../enums/response-status';
 
-const ReviewForm = ({rating, comment, disabled, onRatingChange, onCommentChange, onSubmit, postReviewStatus}) => {
+const ReviewForm = ({
+  rating,
+  comment,
+  disabled,
+  onRatingChange,
+  onCommentChange,
+  onSubmit,
+  postReviewStatus,
+}) => {
   return (
     <form
       className="reviews__form form"

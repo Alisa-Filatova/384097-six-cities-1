@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import {Switch, Route, withRouter} from 'react-router-dom';
 import {getAuthorizationStatus, getUser, getPendingAuthStatus} from '../../reducers/user/selectors';
 import AppHeader from '../app-header/app-header.jsx';
 import PageWrapper from '../page-wrapper/page-wrapper.jsx';
@@ -12,6 +12,7 @@ import OfferDetails from '../offer-details/offer-details.jsx';
 import NotFound from '../not-found/not-found.jsx';
 import ErrorMessage from '../error-message/error-message.jsx';
 import Loader from '../loader/loader.jsx';
+import withRedirectRoute from '../../hocs/with-redirect-route/with-redirect-route.jsx';
 import {ROUTES} from '../../constants/constants';
 
 const App = (props) => {
@@ -35,7 +36,7 @@ const App = (props) => {
             />
             <Route
               path={ROUTES.LOGIN}
-              render={() => isAuthenticated ? <Redirect to={ROUTES.HOME} /> : <SignIn />}
+              component={withRedirectRoute(SignIn, isAuthenticated, ROUTES.HOME, true)}
             />
             <Route
               path={`${ROUTES.OFFER}/:id`}
@@ -43,7 +44,7 @@ const App = (props) => {
             />
             <Route
               path={ROUTES.FAVORITES}
-              render={() => isAuthenticated ? <Favorites /> : <Redirect to={ROUTES.LOGIN} />}
+              component={withRedirectRoute(Favorites, isAuthenticated, ROUTES.LOGIN)}
             />
             <Route
               path={ROUTES.ERROR}

@@ -2,7 +2,7 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {configure, shallow} from 'enzyme';
 import {shallowToJson} from 'enzyme-to-json';
-import {MainPage} from './main-page.jsx';
+import {Favorites} from './favorites.jsx';
 
 configure({adapter: new Adapter()});
 
@@ -43,23 +43,13 @@ const mock = [
   }
 ];
 
-describe(`MainPage`, () => {
+describe(`Favorites`, () => {
   it(`renders correctly`, () => {
     const page = shallow(
-        <MainPage
-          cityOffers={mock}
-          currentCity={mock[0].city}
-          onCityClick={jest.fn()}
-          cities={mock}
-          offersLoaded={false}
-          onPopularClick={jest.fn()}
-          onLowToHighClick={jest.fn()}
-          onHighToLowClick={jest.fn()}
-          onTopRatedClick={jest.fn()}
-          onFavoriteClick={jest.fn()}
-          sortValue={`Popular`}
-          history={{}}
+        <Favorites
+          offers={mock}
           isAuthenticated={true}
+          onFavoriteClick={jest.fn()}
         />
     );
 

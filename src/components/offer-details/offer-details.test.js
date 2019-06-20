@@ -2,11 +2,11 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {configure, shallow} from 'enzyme';
 import {shallowToJson} from 'enzyme-to-json';
-import OfferCard from './offer-card.jsx';
+import {OfferDetails} from './offer-details.jsx';
 
 configure({adapter: new Adapter()});
 
-const mock = {
+const mock = [{
   id: 1,
   city: {
     name: `Amsterdam`,
@@ -39,20 +39,53 @@ const mock = {
     longitude: 4.673877537499948,
     zoom: 8,
   }
-};
+}];
 
-describe(`OfferCard`, () => {
+const reviewsMock = [
+  {
+    id: 1,
+    user: {
+      id: 4,
+      isPro: false,
+      name: `Max`,
+      avatarUrl: `img/1.png`
+    },
+    rating: 4,
+    comment: `A quiet cozy and picturesque that hides behind ` +
+      `a a river by the unique lightness of Amsterdam.`,
+    date: `2019-05-08T14:13:56.569Z`,
+  },
+  {
+    id: 2,
+    user: {
+      id: 5,
+      isPro: false,
+      name: `Max`,
+      avatarUrl: `img/1.png`
+    },
+    rating: 4,
+    comment: `A quiet cozy and picturesque that hides behind ` +
+      `a a river by the unique lightness of Amsterdam.`,
+    date: `2019-05-08T14:13:56.569Z`,
+  },
+];
+
+describe(`OfferDetails`, () => {
   it(`renders correctly`, () => {
-    const card = shallow(
-        <OfferCard
-          offer={mock}
-          onImgClick={jest.fn()}
+    const page = shallow(
+        <OfferDetails
+          offers={mock}
+          reviews={reviewsMock}
+          offer={mock[0]}
           onFavoriteClick={jest.fn()}
           isAuthenticated={true}
+          getReviews={jest.fn()}
+          postReviewStatus={0}
           history={{}}
+          id={4}
         />
     );
 
-    expect(shallowToJson(card)).toMatchSnapshot();
+    expect(shallowToJson(page)).toMatchSnapshot();
   });
 });

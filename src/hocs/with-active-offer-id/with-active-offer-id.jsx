@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const withActiveOfferId = (Component) => {
-  class WithActiveOfferId extends React.Component {
+  class WithActiveOfferId extends React.PureComponent {
     constructor(props) {
       super(props);
 

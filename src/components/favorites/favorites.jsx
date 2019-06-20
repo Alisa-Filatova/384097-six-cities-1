@@ -31,10 +31,10 @@ const Favorites = ({offers, isAuthenticated, onFavoriteClick}) => {
                     <OffersList
                       className="favorites__places"
                       rentalOffers={value}
-                      prefix="favorites"
-                      small
                       onFavoriteClick={onFavoriteClick}
                       isAuthenticated={isAuthenticated}
+                      prefix="favorites"
+                      small
                     />
                   </div>
                 ))}

@@ -5,7 +5,7 @@ const initialState = {
   postReviewStatus: null,
 };
 
-const ActionsType = {
+const ActionType = {
   GET_REVIEWS: `GET_REVIEWS`,
   POST_REVIEW: `POST_REVIEW`,
   GET_POST_REVIEW_STATUS: `GET_POST_REVIEW_STATUS`,
@@ -13,17 +13,17 @@ const ActionsType = {
 
 const ActionCreator = {
   getReviews: (reviews) => ({
-    type: ActionsType.GET_REVIEWS,
+    type: ActionType.GET_REVIEWS,
     payload: reviews,
   }),
 
   postReview: (reviews) => ({
-    type: ActionsType.POST_REVIEW,
+    type: ActionType.POST_REVIEW,
     payload: reviews,
   }),
 
   getPostReviewStatus: (postReviewStatus) => ({
-    type: ActionsType.GET_POST_REVIEW_STATUS,
+    type: ActionType.GET_POST_REVIEW_STATUS,
     payload: postReviewStatus,
   }),
 };
@@ -54,15 +54,15 @@ const Operation = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionsType.GET_REVIEWS:
+    case ActionType.GET_REVIEWS:
       return Object.assign({}, state, {
         reviewsList: action.payload,
       });
-    case ActionsType.POST_REVIEW:
+    case ActionType.POST_REVIEW:
       return Object.assign({}, state, {
         reviewsList: action.payload,
       });
-    case ActionsType.GET_POST_REVIEW_STATUS:
+    case ActionType.GET_POST_REVIEW_STATUS:
       return Object.assign({}, state, {
         postReviewStatus: action.payload,
       });
@@ -70,4 +70,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export {reducer, ActionCreator, Operation};
+export {reducer, ActionCreator, Operation, ActionType};
