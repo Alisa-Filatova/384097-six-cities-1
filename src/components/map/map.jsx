@@ -20,10 +20,10 @@ class Map extends React.PureComponent {
     this._initMap();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const {zoom, activeOfferId} = this.props;
 
-    if (this.map && this.markersLayer) {
+    if (this.map && this.markersLayer && prevProps.activeOfferId !== activeOfferId) {
       const {location} = this.props.currentCity;
       const center = [location.latitude, location.longitude];
 
@@ -34,7 +34,7 @@ class Map extends React.PureComponent {
         leaflet.marker([place.location.latitude, place.location.longitude],
             {icon: activeOfferId === place.id ? activePin : pin}).addTo(this.markersLayer);
 
-        if (zoom && activeOfferId === place.id) {
+        if (zoom && activeOfferId === place.id && prevProps.activeOfferId !== activeOfferId) {
           this.map.flyTo([place.location.latitude, place.location.longitude], place.location.zoom);
         }
       });

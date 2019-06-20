@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RatingStars renders correctly 1`] = `
+<div
+  className="place-card__rating rating"
+>
+  <div
+    className="place-card__stars rating__stars"
+  >
+    <span
+      style={
+        Object {
+          "width": "80%",
+        }
+      }
+    />
+    <span
+      className="visually-hidden"
+    >
+      Rating
+    </span>
+  </div>
+  <span
+    className="place-card__rating-value rating__value"
+  >
+    4
+  </span>
+</div>
+`;

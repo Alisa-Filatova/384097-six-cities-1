@@ -56,8 +56,10 @@ describe(`MainPage`, () => {
           onLowToHighClick={jest.fn()}
           onHighToLowClick={jest.fn()}
           onTopRatedClick={jest.fn()}
+          onFavoriteClick={jest.fn()}
           sortValue={`Popular`}
           history={{}}
+          isAuthenticated={true}
         />
     );
 

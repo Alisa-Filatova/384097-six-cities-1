@@ -121,7 +121,7 @@ OfferCard.propTypes = {
       isPro: PropTypes.bool,
       avatarUrl: PropTypes.string,
     }),
-  }),
+  }).isRequired,
   onImgClick: PropTypes.func,
   onFavoriteClick: PropTypes.func,
   small: PropTypes.bool,

@@ -37,7 +37,7 @@ class OfferDetails extends React.Component {
   }
 
   render() {
-    const {offer, offers, reviews, isAuthenticated, setActiveItem} = this.props;
+    const {offer, offers, reviews, isAuthenticated} = this.props;
 
     if (!offer) {
       return null;
@@ -77,7 +77,7 @@ class OfferDetails extends React.Component {
               />
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {PlaceType[offer.type]}
+                  {PlaceType[offer.type.toUpperCase()]}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                   {offer.bedrooms} {offer.bedrooms === 1 ? `Bedroom` : `Bedrooms`}

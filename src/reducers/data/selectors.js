@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {keysToCamel} from '../../utils/objectSnakeKeysToCamel';
+import {keysToCamel} from '../../utils/snake-keys-to-camel';
 import {NameSpace} from '../namespaces';
 import {SortType} from '../../types/sort-type';
 import {MAX_CITIES} from '../../constants/constants';
