@@ -47,6 +47,10 @@ exports[`App renders correctly 1`] = `
       />
       <Route
         component={[Function]}
+        path="/error"
+      />
+      <Route
+        component={[Function]}
       />
     </Switch>
   </PageWrapper>
