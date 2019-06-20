@@ -1,62 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../reducers/data/data';
+import {ActionCreator, Operation} from '../../reducers/data/data';
 import {
   getCurrentCity,
   getCities,
   getOffersLoadStatus,
-  getOffers,
   getSortValue,
-  sortOffers,
+  sortOffers, getOfferById,
 } from '../../reducers/data/selectors';
 import OffersList from '../offers-list/offers-list.jsx';
 import Map from '../map/map.jsx';
 import CitiesList from '../cities-list/cities-list.jsx';
 import SortBy from '../sort-by/sort-by.jsx';
 import MainPageEmpty from '../main-page-empty/main-page-empty.jsx';
-import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
-import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
-import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
+import Loader from '../loader/loader.jsx';
 import {SortType} from '../../types/sort-type';
+import {getAuthorizationStatus} from '../../reducers/user/selectors';
+import withActiveOfferId from '../../hocs/with-active-offer-id/with-active-offer-id.jsx';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
 
-const WrappedOffersList = withActiveItem(OffersList);
-const WrappedSortBy = withToggle(
-    withTransformProps((props) => Object.assign({}, props, {
-      isOpen: props.toggleStatus,
-    }))(SortBy));
+const MainPage = (props) => {
+  const {
+    onCityClick,
+    currentCity,
+    cityOffers,
+    cities,
+    offersLoaded,
+    onPopularClick,
+    onLowToHighClick,
+    onHighToLowClick,
+    onTopRatedClick,
+    onFavoriteClick,
+    sortValue,
+    isAuthenticated,
+    history,
+    onImgClick,
+    activeOfferId,
+  } = props;
 
-class MainPage extends React.PureComponent {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeOfferId: null,
-    };
-
-    this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
-  }
-
-  render() {
-    const {
-      onCityClick,
-      currentCity,
-      cityOffers,
-      cities,
-      offersLoaded,
-      onPopularClick,
-      onLowToHighClick,
-      onHighToLowClick,
-      onTopRatedClick,
-      sortValue,
-    } = this.props;
-
-    const {activeOfferId} = this.state;
-
-    return (
+  return (
+    <>
       <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
-        {!offersLoaded && <div>Loading...</div>}
+        {!offersLoaded && <Loader />}
         {offersLoaded && cityOffers.length > 0 && (
           <>
             <h1 className="visually-hidden">Cities</h1>
@@ -72,17 +58,19 @@ class MainPage extends React.PureComponent {
                   <b className="places__found">
                     {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
                   </b>
-                  <WrappedSortBy
+                  <SortBy
                     currentItem={sortValue}
                     onPopularClick={onPopularClick}
                     onLowToHighClick={onLowToHighClick}
                     onHighToLowClick={onHighToLowClick}
                     onTopRatedClick={onTopRatedClick}
                   />
-                  <WrappedOffersList
+                  <OffersList
                     rentalOffers={cityOffers}
-                    setActiveItem={this._handleGetActiveOffer}
-                    history={this.props.history}
+                    onImgClick={onImgClick}
+                    history={history}
+                    onFavoriteClick={onFavoriteClick}
+                    isAuthenticated={isAuthenticated}
                   />
                 </section>
                 <div className="cities__right-section">
@@ -99,31 +87,30 @@ class MainPage extends React.PureComponent {
           </>
         )}
         {offersLoaded && cityOffers.length === 0 && (
-          <MainPageEmpty currentCity={currentCity}/>
+          <MainPageEmpty currentCity={currentCity} />
         )}
       </main>
-    );
-  }
-
-  _handleGetActiveOffer(offerId) {
-    this.setState((prevState) => {
-      return Object.assign({}, prevState, {activeOfferId: offerId});
-    });
-  }
-}
+    </>
+  );
+};
 
 MainPage.propTypes = {
-  cities: PropTypes.arrayOf(PropTypes.object),
+  cities: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentCity: PropTypes.object.isRequired,
   onCityClick: PropTypes.func.isRequired,
   cityOffers: PropTypes.array.isRequired,
-  currentFilter: PropTypes.any,
-  onPopularClick: PropTypes.func,
-  onLowToHighClick: PropTypes.func,
-  onHighToLowClick: PropTypes.func,
-  onTopRatedClick: PropTypes.func,
-  offersLoaded: PropTypes.bool,
+  onPopularClick: PropTypes.func.isRequired,
+  onLowToHighClick: PropTypes.func.isRequired,
+  onHighToLowClick: PropTypes.func.isRequired,
+  onTopRatedClick: PropTypes.func.isRequired,
+  offersLoaded: PropTypes.bool.isRequired,
   sortValue: PropTypes.string,
+  history: PropTypes.any,
+  onFavoriteClick: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  offer: PropTypes.object,
+  activeOfferId: PropTypes.number,
+  onImgClick: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
@@ -132,6 +119,8 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   cities: getCities(state),
   offersLoaded: getOffersLoadStatus(state),
   sortValue: getSortValue(state),
+  offer: getOfferById(state, ownProps.activeOfferId),
+  isAuthenticated: getAuthorizationStatus(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -150,7 +139,15 @@ const mapDispatchToProps = (dispatch) => ({
   onTopRatedClick: () => {
     dispatch(ActionCreator.sortOffers(SortType.TOP_RATED));
   },
+  onFavoriteClick: (offer) => {
+    dispatch(Operation.changeFavorites(offer));
+  },
 });
 
 export {MainPage};
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default withActiveOfferId(
+    withTransformProps((props) => Object.assign({}, props, {
+      onImgClick: props.setActiveId,
+    })
+    )(connect(mapStateToProps, mapDispatchToProps)(MainPage))
+);

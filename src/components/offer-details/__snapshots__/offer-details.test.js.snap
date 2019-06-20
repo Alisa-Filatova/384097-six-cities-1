@@ -1,0 +1,410 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OfferDetails renders correctly 1`] = `
+<main
+  className="page__main page__main--property"
+>
+  <section
+    className="property"
+  >
+    <div
+      className="property__gallery-container container"
+    >
+      <div
+        className="property__gallery"
+      >
+        <div
+          className="property__image-wrapper"
+          key="img/1.png0"
+        >
+          <img
+            alt="Photo studio"
+            className="property__image"
+            src="img/1.png"
+          />
+        </div>
+        <div
+          className="property__image-wrapper"
+          key="img/2.png1"
+        >
+          <img
+            alt="Photo studio"
+            className="property__image"
+            src="img/2.png"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="property__container container"
+    >
+      <div
+        className="property__wrapper"
+      >
+        <div
+          className="property__name-wrapper"
+        >
+          <h1
+            className="property__name"
+          >
+            Beautiful & luxurious studio at great location
+          </h1>
+          <FavoriteButton
+            isActive={false}
+            large={true}
+            onClick={[Function]}
+          />
+        </div>
+        <RatingStars
+          prefix="property"
+          rating={4.8}
+          showValue={true}
+        />
+        <ul
+          className="property__features"
+        >
+          <li
+            className="property__feature property__feature--entire"
+          >
+            Apartment
+          </li>
+          <li
+            className="property__feature property__feature--bedrooms"
+          >
+            3
+             
+            Bedrooms
+          </li>
+          <li
+            className="property__feature property__feature--adults"
+          >
+            Max 
+            4
+             
+            adults
+          </li>
+        </ul>
+        <div
+          className="property__price"
+        >
+          <b
+            className="property__price-value"
+          >
+            €
+            120
+          </b>
+          <span
+            className="property__price-text"
+          >
+             night
+          </span>
+        </div>
+        <div
+          className="property__inside"
+        >
+          <h2
+            className="property__inside-title"
+          >
+            What's inside
+          </h2>
+          <ul
+            className="property__inside-list"
+          >
+            <li
+              className="property__inside-item"
+              key="Heating"
+            >
+              Heating
+            </li>
+            <li
+              className="property__inside-item"
+              key="Kitchen"
+            >
+              Kitchen
+            </li>
+            <li
+              className="property__inside-item"
+              key="Cable TV"
+            >
+              Cable TV
+            </li>
+            <li
+              className="property__inside-item"
+              key="Washing machine"
+            >
+              Washing machine
+            </li>
+            <li
+              className="property__inside-item"
+              key="Coffee machine"
+            >
+              Coffee machine
+            </li>
+            <li
+              className="property__inside-item"
+              key="Dishwasher"
+            >
+              Dishwasher
+            </li>
+          </ul>
+        </div>
+        <div
+          className="property__host"
+        >
+          <h2
+            className="property__host-title"
+          >
+            Meet the host
+          </h2>
+          <div
+            className="property__host-user user"
+          >
+            <div
+              className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper"
+            >
+              <img
+                alt="Host avatar"
+                className="property__avatar user__avatar"
+                height="74"
+                src="/img/1.png"
+                width="74"
+              />
+            </div>
+            <span
+              className="property__user-name"
+            >
+              Angelina
+            </span>
+            <span
+              className="property__user-status"
+            >
+              Pro
+            </span>
+          </div>
+          <div
+            className="property__description"
+          >
+            <p
+              className="property__text"
+            >
+              A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
+            </p>
+          </div>
+        </div>
+        <section
+          className="property__reviews reviews"
+        >
+          <ReviewsList
+            reviews={
+              Array [
+                Object {
+                  "comment": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+                  "date": "2019-05-08T14:13:56.569Z",
+                  "id": 1,
+                  "rating": 4,
+                  "user": Object {
+                    "avatarUrl": "img/1.png",
+                    "id": 4,
+                    "isPro": false,
+                    "name": "Max",
+                  },
+                },
+                Object {
+                  "comment": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+                  "date": "2019-05-08T14:13:56.569Z",
+                  "id": 2,
+                  "rating": 4,
+                  "user": Object {
+                    "avatarUrl": "img/1.png",
+                    "id": 5,
+                    "isPro": false,
+                    "name": "Max",
+                  },
+                },
+              ]
+            }
+          />
+          <ConnectFunction
+            offerId={1}
+            postReviewStatus={0}
+          />
+        </section>
+      </div>
+    </div>
+    <Map
+      activeOfferId={1}
+      cityOffers={
+        Array [
+          Object {
+            "bedrooms": 3,
+            "city": Object {
+              "location": Object {
+                "latitude": 52.370216,
+                "longitude": 4.895168,
+                "zoom": 10,
+              },
+              "name": "Amsterdam",
+            },
+            "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+            "goods": Array [
+              "Heating",
+              "Kitchen",
+              "Cable TV",
+              "Washing machine",
+              "Coffee machine",
+              "Dishwasher",
+            ],
+            "host": Object {
+              "avatarUrl": "img/1.png",
+              "id": 3,
+              "isPro": true,
+              "name": "Angelina",
+            },
+            "id": 1,
+            "images": Array [
+              "img/1.png",
+              "img/2.png",
+            ],
+            "isFavorite": false,
+            "isPremium": false,
+            "location": Object {
+              "latitude": 52.35514938496378,
+              "longitude": 4.673877537499948,
+              "zoom": 8,
+            },
+            "maxAdults": 4,
+            "previewImage": "img/1.png",
+            "price": 120,
+            "rating": 4.8,
+            "title": "Beautiful & luxurious studio at great location",
+            "type": "apartment",
+          },
+          Object {
+            "bedrooms": 3,
+            "city": Object {
+              "location": Object {
+                "latitude": 52.370216,
+                "longitude": 4.895168,
+                "zoom": 10,
+              },
+              "name": "Amsterdam",
+            },
+            "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+            "goods": Array [
+              "Heating",
+              "Kitchen",
+              "Cable TV",
+              "Washing machine",
+              "Coffee machine",
+              "Dishwasher",
+            ],
+            "host": Object {
+              "avatarUrl": "img/1.png",
+              "id": 3,
+              "isPro": true,
+              "name": "Angelina",
+            },
+            "id": 1,
+            "images": Array [
+              "img/1.png",
+              "img/2.png",
+            ],
+            "isFavorite": false,
+            "isPremium": false,
+            "location": Object {
+              "latitude": 52.35514938496378,
+              "longitude": 4.673877537499948,
+              "zoom": 8,
+            },
+            "maxAdults": 4,
+            "previewImage": "img/1.png",
+            "price": 120,
+            "rating": 4.8,
+            "title": "Beautiful & luxurious studio at great location",
+            "type": "apartment",
+          },
+        ]
+      }
+      className="property__map map"
+      currentCity={
+        Object {
+          "location": Object {
+            "latitude": 52.370216,
+            "longitude": 4.895168,
+            "zoom": 10,
+          },
+          "name": "Amsterdam",
+        }
+      }
+      key="Amsterdam"
+    />
+  </section>
+  <div
+    className="container"
+  >
+    <section
+      className="near-places places"
+    >
+      <h2
+        className="near-places__title"
+      >
+        Other places in the neighbourhood
+      </h2>
+      <WithActiveItem
+        className="near-places__list places__list"
+        history={Object {}}
+        isAuthenticated={true}
+        onFavoriteClick={[MockFunction]}
+        rentalOffers={
+          Array [
+            Object {
+              "bedrooms": 3,
+              "city": Object {
+                "location": Object {
+                  "latitude": 52.370216,
+                  "longitude": 4.895168,
+                  "zoom": 10,
+                },
+                "name": "Amsterdam",
+              },
+              "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+              "goods": Array [
+                "Heating",
+                "Kitchen",
+                "Cable TV",
+                "Washing machine",
+                "Coffee machine",
+                "Dishwasher",
+              ],
+              "host": Object {
+                "avatarUrl": "img/1.png",
+                "id": 3,
+                "isPro": true,
+                "name": "Angelina",
+              },
+              "id": 1,
+              "images": Array [
+                "img/1.png",
+                "img/2.png",
+              ],
+              "isFavorite": false,
+              "isPremium": false,
+              "location": Object {
+                "latitude": 52.35514938496378,
+                "longitude": 4.673877537499948,
+                "zoom": 8,
+              },
+              "maxAdults": 4,
+              "previewImage": "img/1.png",
+              "price": 120,
+              "rating": 4.8,
+              "title": "Beautiful & luxurious studio at great location",
+              "type": "apartment",
+            },
+          ]
+        }
+      />
+    </section>
+  </div>
+</main>
+`;

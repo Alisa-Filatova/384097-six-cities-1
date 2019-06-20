@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import RatingStars from '../rating-stars/rating-stars.jsx';
 
 const Review = ({review}) => {
   return (
@@ -8,7 +9,7 @@ const Review = ({review}) => {
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img
             className="reviews__avatar user__avatar"
-            src={review.user.avatar_url}
+            src={review.user.avatarUrl}
             width="54"
             height="54"
             alt="Reviews avatar"
@@ -17,12 +18,10 @@ const Review = ({review}) => {
         <span className="reviews__user-name">{review.user.name}</span>
       </div>
       <div className="reviews__info">
-        <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            <span style={{width: (review.rating * 10) * 2 + `%`}} />
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <RatingStars
+          rating={review.rating}
+          prefix="reviews"
+        />
         <p className="reviews__text">{review.comment}</p>
         <time className="reviews__time" dateTime={review.date}>
           {new Date(review.date).toLocaleDateString(`en-US`, {month: `long`, year: `numeric`})}

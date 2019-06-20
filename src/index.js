@@ -4,17 +4,25 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
-import {BrowserRouter} from 'react-router-dom';
+import {Router} from 'react-router-dom';
+import history from './utils/history';
 import reducer from './reducers/index';
 import {Operation, ActionCreator} from './reducers/data/data';
 import {Operation as UserOperation, ActionCreator as UserActions} from './reducers/user/user';
 import {getRandomOffer} from './reducers/data/selectors';
 import {createAPI} from './api';
+import {ROUTES} from './constants/constants';
 import App from './components/app/app.jsx';
 
-const api = createAPI(() => {
-  store.dispatch(UserActions.requireAuthorization(false));
-});
+const api = createAPI(
+    () => {
+      store.dispatch(UserActions.requireAuthorization(false));
+    },
+    () => {
+      store.dispatch(UserActions.requireAuthorization(false));
+      history.push(ROUTES.ERROR);
+    }
+);
 
 const store = createStore(
     reducer,
@@ -38,9 +46,9 @@ store.dispatch(Operation.loadOffers())
 
 ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={history}>
         <App />
-      </BrowserRouter>
+      </Router>
     </Provider>,
     document.querySelector(`#root`)
 );

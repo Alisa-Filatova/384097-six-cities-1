@@ -1,3 +1,5 @@
+import {ResponseStatus} from "../../enums/response-status";
+
 const initialState = {
   isAuthenticated: false,
   pendingAuthorization: true,
@@ -36,6 +38,11 @@ const Operation = {
           dispatch(ActionCreator.requireAuthorization(true));
         }
       })
+      .catch((error) => {
+        if (error) {
+          dispatch(ActionCreator.requireAuthorization(false));
+        }
+      })
       .finally(() => {
         dispatch(ActionCreator.pendingAuthorization(false));
       });
@@ -47,6 +54,11 @@ const Operation = {
         if (response.data) {
           dispatch(ActionCreator.requireAuthorization(true));
           dispatch(ActionCreator.login(response.data));
+        }
+      })
+      .catch((error) => {
+        if (error) {
+          dispatch(ActionCreator.requireAuthorization(false));
         }
       })
       .finally(() => {

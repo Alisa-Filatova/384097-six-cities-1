@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const withActiveItem = (Component) => {
-  class WithActiveItem extends React.Component {
+  class WithActiveItem extends React.PureComponent {
     constructor(props) {
       super(props);
 
-      const {currentItem = null} = props;
       this.state = {
-        currentItem,
+        currentItem: null,
       };
+
+      this._setActiveItem = this._setActiveItem.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -22,18 +23,19 @@ const withActiveItem = (Component) => {
 
     render() {
       const {currentItem} = this.state;
-      const {setActiveItem} = this.props;
 
-      return <Component
-        {...this.props}
-        currentItem={currentItem}
-        setActiveItem={(item) => {
-          setActiveItem(item);
-          this.setState({
-            currentItem: item,
-          });
-        }}
-      />;
+      return (
+        <Component
+          {...this.props}
+          currentItem={currentItem}
+          setActiveItem={this._setActiveItem}
+        />
+      );
+    }
+
+    _setActiveItem(item) {
+      this.setState({currentItem: item});
+      return item;
     }
   }
 
