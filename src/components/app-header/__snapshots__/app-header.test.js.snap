@@ -87,6 +87,7 @@ Array [
                   style={
                     Object {
                       "backgroundImage": "url(https://es31-server.appspot.com/six-cities/static/avatar/4.jpg)",
+                      "borderRadius": "50%",
                     }
                   }
                 />

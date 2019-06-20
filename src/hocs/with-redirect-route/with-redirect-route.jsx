@@ -5,9 +5,9 @@ import {Redirect} from 'react-router-dom';
 const withRedirectRoute = (Component, isAuthenticated, url, reverse) => {
   const WithRedirectRoute = (props) => {
     if (isAuthenticated) {
-      return reverse ? <Redirect to={url}/> : <Component {...props} />;
+      return reverse ? <Redirect to={url} /> : <Component {...props} />;
     } else {
-      return reverse ? <Component {...props} /> : <Redirect to={url}/>;
+      return reverse ? <Component {...props} /> : <Redirect to={url} />;
     }
   };
 

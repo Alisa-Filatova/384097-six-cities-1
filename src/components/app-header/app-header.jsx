@@ -5,7 +5,8 @@ import AppLogo from '../app-logo/app-logo.jsx';
 import {ROUTES, BASE_URL} from '../../constants/constants';
 
 const AppHeader = ({isAuthenticated, user}) => {
-  const userAvatar = isAuthenticated && user ? {backgroundImage: `url(${BASE_URL}${user.avatarUrl})`} : {};
+  const userAvatar =
+    isAuthenticated && user ? {backgroundImage: `url(${BASE_URL}${user.avatarUrl})`, borderRadius: `50%`} : {};
 
   return (
     <>

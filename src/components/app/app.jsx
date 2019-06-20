@@ -48,7 +48,7 @@ const App = (props) => {
             />
             <Route
               path={ROUTES.ERROR}
-              component={ErrorMessage}
+              component={withRedirectRoute(ErrorMessage, isAuthenticated, ROUTES.HOME, true)}
             />
             <Route component={NotFound} />
           </Switch>

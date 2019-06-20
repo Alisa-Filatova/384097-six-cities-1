@@ -1,5 +1,3 @@
-import {ResponseStatus} from '../../enums/response-status';
-
 const initialState = {
   reviewsList: [],
   postReviewStatus: null,
@@ -43,9 +41,7 @@ const Operation = {
         dispatch(ActionCreator.getPostReviewStatus(response.status));
       })
       .catch((error) => {
-        if (error.response.status === ResponseStatus.BAD_REQUEST) {
-          dispatch(ActionCreator.getPostReviewStatus(error.response.status));
-        } else if (error.response.status === ResponseStatus.FORBIDDEN) {
+        if (error) {
           dispatch(ActionCreator.getPostReviewStatus(error.response.status));
         }
       });

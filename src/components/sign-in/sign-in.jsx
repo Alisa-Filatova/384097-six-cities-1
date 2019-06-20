@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Operation} from '../../reducers/user/user';
 import {getUser} from '../../reducers/user/selectors';
 import CityTab from '../city-tab/city-tab.jsx';
+import {BASE_COLOR, ERROR_COLOR, EMAIL_REGEXP} from '../../constants/constants';
 
 class SignIn extends React.PureComponent {
   constructor(props) {
@@ -12,6 +13,7 @@ class SignIn extends React.PureComponent {
     this._emailInput = React.createRef();
     this._passwordInput = React.createRef();
     this._handleCheckDataLogin = this._handleCheckDataLogin.bind(this);
+    this._handleValidateFields = this._handleValidateFields.bind(this);
   }
 
   render() {
@@ -30,6 +32,7 @@ class SignIn extends React.PureComponent {
                   name="email"
                   placeholder="Email"
                   required=""
+                  onChange={this._handleValidateFields}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -41,6 +44,7 @@ class SignIn extends React.PureComponent {
                   name="password"
                   placeholder="Password"
                   required=""
+                  onChange={this._handleValidateFields}
                 />
               </div>
               <button
@@ -60,12 +64,26 @@ class SignIn extends React.PureComponent {
     );
   }
 
+  _handleValidateFields() {
+    const [email, password] = [this._emailInput.current.value, this._passwordInput.current.value];
+
+    if (!EMAIL_REGEXP.test(email)) {
+      this._emailInput.current.style.borderColor = ERROR_COLOR;
+    } else if (!password) {
+      this._passwordInput.current.style.borderColor = ERROR_COLOR;
+    } else {
+      this._emailInput.current.style.borderColor = BASE_COLOR;
+      this._passwordInput.current.style.borderColor = BASE_COLOR;
+    }
+  }
+
   _handleCheckDataLogin(event) {
     event.preventDefault();
 
     if (this._emailInput && this._passwordInput) {
       const [email, password] = [this._emailInput.current.value, this._passwordInput.current.value];
-      if (email && password) {
+
+      if (email && password && EMAIL_REGEXP.test(email)) {
         this.props.login({email, password});
       }
     }
@@ -73,7 +91,7 @@ class SignIn extends React.PureComponent {
 }
 
 SignIn.propTypes = {
-  login: PropTypes.func,
+  login: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
