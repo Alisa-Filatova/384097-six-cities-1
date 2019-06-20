@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import AppLogo from '../app-logo/app-logo.jsx';
 import {ROUTES, BASE_URL} from '../../constants/constants';
 
 const AppHeader = ({isAuthenticated, user}) => {
-  const userAvatar = user ? {backgroundImage: `url(${BASE_URL}${user.avatar_url})`} : {};
+  const userAvatar =
+    isAuthenticated && user ? {backgroundImage: `url(${BASE_URL}${user.avatarUrl})`, borderRadius: `50%`} : {};
 
   return (
     <>
@@ -29,18 +31,7 @@ const AppHeader = ({isAuthenticated, user}) => {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link
-                className="header__logo-link"
-                to={ROUTES.HOME}
-              >
-                <img
-                  className="header__logo"
-                  src="/img/logo.svg"
-                  alt="6 cities logo"
-                  width="81"
-                  height="41"
-                />
-              </Link>
+              <AppLogo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -53,7 +44,9 @@ const AppHeader = ({isAuthenticated, user}) => {
                       className="header__avatar-wrapper user__avatar-wrapper"
                       style={userAvatar}
                     />
-                    <span className="header__login">{isAuthenticated ? user.email : `Sign in`}</span>
+                    <span className="header__login">
+                      {isAuthenticated ? user.email : `Sign in`}
+                    </span>
                   </Link>
                 </li>
               </ul>
@@ -71,8 +64,8 @@ AppHeader.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    [`avatar_url`]: PropTypes.string,
-    [`is_pro`]: PropTypes.bool,
+    avatarUrl: PropTypes.string,
+    isPro: PropTypes.bool,
   }),
 };
 

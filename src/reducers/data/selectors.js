@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect';
+import {keysToCamel} from '../../utils/snake-keys-to-camel';
 import {NameSpace} from '../namespaces';
 import {SortType} from '../../types/sort-type';
 import {MAX_CITIES} from '../../constants/constants';
@@ -65,7 +66,7 @@ export const sortFavoritesListByCities = (offers) => {
 };
 
 export const getOffers = (state) => {
-  return state[NAMESPACE].rentalOffers;
+  return keysToCamel(state[NAMESPACE].rentalOffers);
 };
 
 export const getCurrentCity = (state) => {
@@ -125,6 +126,6 @@ export const getCloserOffers = (state, id) => {
 };
 
 export const getFavoriteOffers = (state) =>
-  getOffers(state).filter((item) => item.is_favorite);
+  getOffers(state).filter((item) => item.isFavorite);
 
 

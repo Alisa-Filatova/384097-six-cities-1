@@ -1,4 +1,5 @@
 import React from 'react';
+import {MemoryRouter as Router} from 'react-router-dom';
 import Adapter from 'enzyme-adapter-react-16';
 import {mount, configure} from 'enzyme';
 import OfferCard from './offer-card.jsx';
@@ -6,54 +7,57 @@ import OfferCard from './offer-card.jsx';
 configure({adapter: new Adapter()});
 
 const mock = {
-  id: 123,
-  title: `Nice place`,
-  isPremium: true,
-  price: 120,
-  rating: 2.4,
-  [`is_favorite`]: false,
-  description: `asd asd`,
-  type: `Apartment`,
-  [`preview_image`]: `photo.jpg`,
-  images: [``],
-  goods: [``],
-  bedrooms: 2,
-  [`max_adults`]: 2,
-  host: {},
-  location: {
-    latitude: 1288999,
-    longitude: 87676689,
-    zoom: 17,
-  },
+  id: 1,
   city: {
     name: `Amsterdam`,
     location: {
-      latitude: 1288999,
-      longitude: 1288999,
-      zoom: 13,
-    },
+      latitude: 52.370216,
+      longitude: 4.895168,
+      zoom: 10,
+    }
+  },
+  previewImage: `img/1.png`,
+  images: [`img/1.png`, `img/2.png`],
+  title: `Beautiful & luxurious studio at great location`,
+  isFavorite: false,
+  isPremium: false,
+  rating: 4.8,
+  type: `apartment`,
+  bedrooms: 3,
+  maxAdults: 4,
+  price: 120,
+  goods: [`Heating`, `Kitchen`, `Cable TV`, `Washing machine`, `Coffee machine`, `Dishwasher`],
+  host: {
+    id: 3,
+    isPro: true,
+    name: `Angelina`,
+    avatarUrl: `img/1.png`
+  },
+  description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
+  location: {
+    latitude: 52.35514938496378,
+    longitude: 4.673877537499948,
+    zoom: 8,
   }
 };
 
 describe(`OfferCard`, () => {
-  it(`get card offer id on OfferImgClick handler`, () => {
-    const onClickTitleHandler = jest.fn();
-    const mouseOverHandler = jest.fn();
-    const mouseOutHandler = jest.fn();
-    const onOfferImgCallback = jest.fn(() => card.props().offer.id);
+  it(`get card offer id onImgClick handler`, () => {
+    const onImgCallback = jest.fn(() => card.props().offer);
 
     const card = mount(
-        <OfferCard
-          activeItem={1}
-          offer={mock}
-          onOfferTitleClick={onClickTitleHandler}
-          onOfferImgClick={onOfferImgCallback}
-          onMouseOver={mouseOverHandler}
-          onMouseOut={mouseOutHandler}
-        />
+        <Router>
+          <OfferCard
+            offer={mock}
+            onImgClick={onImgCallback}
+            onFavoriteClick={jest.fn()}
+            isAuthenticated={true}
+            history={{}}
+          />
+        </Router>
     );
 
     card.find(`.cities__image-wrapper > a`).simulate(`click`);
-    expect(onOfferImgCallback.mock.results[0].value).toBe(card.props().offer.id);
+    expect(onImgCallback.mock.results[0].value).toBe(card.props().offer);
   });
 });

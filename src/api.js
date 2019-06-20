@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {BASE_URL} from './constants/constants';
+import {ResponseStatus} from './enums/response-status';
 
-const STATUS_FORBIDDEN = 403;
 const TIMEOUT = 5000;
 
-export const createAPI = (onLoginFail) => {
+export const createAPI = (onLoginFail, onServerError) => {
   const api = axios.create({
     baseURL: BASE_URL,
     timeout: TIMEOUT,
@@ -13,11 +13,12 @@ export const createAPI = (onLoginFail) => {
 
   const onSuccess = (response) => response;
   const onFail = (error) => {
-    if (error.response.status === STATUS_FORBIDDEN) {
+    if (error.response && error.response.status === ResponseStatus.FORBIDDEN) {
       onLoginFail();
+    } else if (error.response && error.response.status >= ResponseStatus.INTERNAL_SERVER_ERROR
+      && error.response.status < ResponseStatus.INVALID_REQUEST) {
+      onServerError();
     }
-
-    throw error;
   };
 
   api.interceptors.response.use(onSuccess, onFail);
