@@ -2,7 +2,7 @@
 
 exports[`PageWrapper renders correctly 1`] = `
 <div
-  className="page page--gray page--login"
+  className="page page--gray page--onLogin"
 >
   <div>
     Some page

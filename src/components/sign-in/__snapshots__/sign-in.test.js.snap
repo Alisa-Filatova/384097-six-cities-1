@@ -2,13 +2,13 @@
 
 exports[`SignIn page renders correctly 1`] = `
 <main
-  className="page__main page__main--login"
+  className="page__main page__main--onLogin"
 >
   <div
     className="page__login-container container"
   >
     <section
-      className="login"
+      className="onLogin"
     >
       <h1
         className="login__title"
@@ -64,7 +64,7 @@ exports[`SignIn page renders correctly 1`] = `
       </form>
     </section>
     <section
-      className="locations locations--login locations--current"
+      className="locations locations--onLogin locations--current"
     >
       <div
         className="locations__item"
