@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import RatingStars from './rating-stars.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import RatingStars from './rating-stars';
 
 describe(`RatingStars`, () => {
   it(`renders correctly`, () => {

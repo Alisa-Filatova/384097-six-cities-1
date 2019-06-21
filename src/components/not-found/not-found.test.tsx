@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import NotFound from './not-found.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import NotFound from './not-found';
 
 describe(`NotFound`, () => {
   it(`renders correctly`, () => {

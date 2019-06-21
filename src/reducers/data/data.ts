@@ -1,43 +1,62 @@
-import {SortType} from '../../types/enums/sort-type';
+import SortType from '../../types/enums/sort-type';
+import {keysToCamel} from '../../utils/snake-keys-to-camel';
 
 const initialState = {
   rentalOffers: [],
   currentCity: {},
+  favoriteOffers: [],
   offersLoaded: false,
   sortValue: SortType.POPULAR,
 };
 
-const ActionType = {
-  OFFERS_LOADED: `OFFERS_LOADED`,
-  LOAD_OFFERS: `LOAD_OFFERS`,
-  CHANGE_CITY: `CHANGE_CITY`,
-  UPDATE_OFFER: `UPDATE_OFFER`,
-  SORT_OFFERS: `SORT_OFFERS`,
-};
+interface ActionType {
+  type: DataAction,
+  payload: any,
+}
+
+enum DataAction {
+  OFFERS_LOADED = 'OFFERS_LOADED',
+  LOAD_OFFERS = 'LOAD_OFFERS',
+  LOAD_FAVORITE_OFFERS = 'LOAD_FAVORITE_OFFERS',
+  CHANGE_CITY = 'CHANGE_CITY',
+  SORT_OFFERS = 'SORT_OFFERS',
+  ADD_FAVORITE_OFFER = 'ADD_FAVORITE_OFFER',
+  REMOVE_FAVORITE_OFFER = 'REMOVE_FAVORITE_OFFER',
+}
 
 const ActionCreator = {
   offersLoaded: (status) => ({
-    type: ActionType.OFFERS_LOADED,
+    type: DataAction.OFFERS_LOADED,
     payload: status,
   }),
 
   loadOffers: (rentalOffers) => ({
-    type: ActionType.LOAD_OFFERS,
+    type: DataAction.LOAD_OFFERS,
     payload: rentalOffers,
   }),
 
+  loadFavoriteOffers: (favoriteOffers) => ({
+    type: DataAction.LOAD_FAVORITE_OFFERS,
+    payload: favoriteOffers,
+  }),
+
   changeCity: (currentCity) => ({
-    type: ActionType.CHANGE_CITY,
+    type: DataAction.CHANGE_CITY,
     payload: currentCity,
   }),
 
-  updateOffer: (offer) => ({
-    type: ActionType.UPDATE_OFFER,
+  addFavoriteOffer: (offer) => ({
+    type: DataAction.ADD_FAVORITE_OFFER,
+    payload: offer,
+  }),
+
+  removeFavoriteOffer: (offer) => ({
+    type: DataAction.REMOVE_FAVORITE_OFFER,
     payload: offer,
   }),
 
   sortOffers: (sortValue) => ({
-    type: ActionType.SORT_OFFERS,
+    type: DataAction.SORT_OFFERS,
     payload: sortValue,
   }),
 };
@@ -52,51 +71,90 @@ const Operation = {
       .catch(() => {});
   },
 
-  changeFavorites: (offer) => (dispatch, getState, api) => {
-    const id = offer.id;
+  loadFavoriteOffers: () => (dispatch, getState, api) => {
+    return api.get(`/favorite`)
+      .then((response) => {
+        dispatch(ActionCreator.loadFavoriteOffers(response.data));
+      })
+      .catch(() => {});
+  },
+
+  toggleFavorite: (offer) => (dispatch, getState, api) => {
+    const {id} = offer;
     const status = offer.isFavorite ? `0` : `1`;
+
     return api.post(`/favorite/${id}/${status}`)
       .then((response) => {
-        dispatch(ActionCreator.updateOffer(response.data));
+        const updatedOffer = keysToCamel(response.data);
+
+        if (updatedOffer.isFavorite) {
+          dispatch(ActionCreator.addFavoriteOffer(updatedOffer));
+        } else {
+          dispatch(ActionCreator.removeFavoriteOffer(updatedOffer));
+        }
       })
       .catch(() => {});
   },
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
-    case ActionType.LOAD_OFFERS:
-      return Object.assign({}, state, {
+    case DataAction.LOAD_OFFERS:
+      return {
+        ...state,
         rentalOffers: action.payload,
-      });
+      };
 
-    case ActionType.CHANGE_CITY:
-      return Object.assign({}, state, {
+    case DataAction.LOAD_FAVORITE_OFFERS:
+      return {
+        ...state,
+        favoriteOffers: action.payload,
+      };
+
+    case DataAction.CHANGE_CITY:
+      return {
+        ...state,
         currentCity: action.payload,
-      });
+      };
 
-    case ActionType.OFFERS_LOADED:
-      return Object.assign({}, state, {
+    case DataAction.OFFERS_LOADED:
+      return {
+        ...state,
         offersLoaded: action.payload,
-      });
+      };
 
-    case ActionType.SORT_OFFERS:
-      return Object.assign({}, state, {
+    case DataAction.SORT_OFFERS:
+      return {
+        ...state,
         sortValue: action.payload,
-      });
+      };
 
-    case ActionType.UPDATE_OFFER:
-      return Object.assign({}, state, {
-        rentalOffers: state.rentalOffers.map((offer) => {
-          if (offer.id === action.payload.id) {
-            return action.payload;
-          }
-          return offer;
-        })
-      });
+    case DataAction.ADD_FAVORITE_OFFER:
+      return {
+        ...state,
+        rentalOffers: state.rentalOffers.map((offer) => (
+          offer.id === action.payload.id ? action.payload : offer
+        )),
+        favoriteOffers: [
+          ...state.favoriteOffers,
+          action.payload,
+        ],
+      };
+
+    case DataAction.REMOVE_FAVORITE_OFFER:
+      return {
+        ...state,
+        rentalOffers: state.rentalOffers.map((offer) => (
+          offer.id === action.payload.id ? action.payload : offer
+        )),
+        favoriteOffers: state.favoriteOffers.filter((offer) => (
+          offer.id !== action.payload.id
+        )),
+      };
+
+    default:
+      return state;
   }
-
-  return state;
 };
 
-export {reducer, ActionCreator, ActionType, Operation};
+export {reducer, ActionCreator, Operation, initialState, DataAction};

@@ -38,3 +38,7 @@ export interface Offer {
   description: string;
   location: OfferLocation;
 }
+
+export interface CityOffersGroup {
+  [key: string]: Offer[];
+}

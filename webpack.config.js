@@ -22,8 +22,10 @@ module.exports = {
         },
       },
       {
-        test: /\.(tsx|ts)?$/,
-        loader: `ts-loader`,
+        test: /\.(ts|tsx)$/,
+        use: {
+          loader: `ts-loader`,
+        },
       },
     ],
   },

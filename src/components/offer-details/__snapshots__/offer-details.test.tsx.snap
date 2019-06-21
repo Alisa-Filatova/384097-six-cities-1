@@ -160,7 +160,8 @@ exports[`OfferDetails renders correctly 1`] = `
             className="property__host-user user"
           >
             <div
-              className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper"
+              className="property__avatar-wrapper property__avatar-wrapper--pro 
+                    user__avatar-wrapper"
             >
               <img
                 alt="Host avatar"
@@ -209,24 +210,12 @@ exports[`OfferDetails renders correctly 1`] = `
                     "name": "Max",
                   },
                 },
-                Object {
-                  "comment": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
-                  "date": "2019-05-08T14:13:56.569Z",
-                  "id": 2,
-                  "rating": 4,
-                  "user": Object {
-                    "avatarUrl": "img/1.png",
-                    "id": 5,
-                    "isPro": false,
-                    "name": "Max",
-                  },
-                },
               ]
             }
           />
           <ConnectFunction
             offerId={1}
-            postReviewStatus={0}
+            saveReviewStatus={0}
           />
         </section>
       </div>
@@ -261,6 +250,50 @@ exports[`OfferDetails renders correctly 1`] = `
               "name": "Angelina",
             },
             "id": 1,
+            "images": Array [
+              "img/1.png",
+              "img/2.png",
+            ],
+            "isFavorite": false,
+            "isPremium": false,
+            "location": Object {
+              "latitude": 52.35514938496378,
+              "longitude": 4.673877537499948,
+              "zoom": 8,
+            },
+            "maxAdults": 4,
+            "previewImage": "img/1.png",
+            "price": 120,
+            "rating": 4.8,
+            "title": "Beautiful & luxurious studio at great location",
+            "type": "apartment",
+          },
+          Object {
+            "bedrooms": 3,
+            "city": Object {
+              "location": Object {
+                "latitude": 52.370216,
+                "longitude": 4.895168,
+                "zoom": 10,
+              },
+              "name": "Paris",
+            },
+            "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+            "goods": Array [
+              "Heating",
+              "Kitchen",
+              "Cable TV",
+              "Washing machine",
+              "Coffee machine",
+              "Dishwasher",
+            ],
+            "host": Object {
+              "avatarUrl": "img/1.png",
+              "id": 4,
+              "isPro": true,
+              "name": "Angelina",
+            },
+            "id": 2,
             "images": Array [
               "img/1.png",
               "img/2.png",
@@ -352,7 +385,6 @@ exports[`OfferDetails renders correctly 1`] = `
       </h2>
       <WithActiveItem
         className="near-places__list places__list"
-        history={Object {}}
         isAuthenticated={true}
         onFavoriteClick={[MockFunction]}
         rentalOffers={
@@ -383,6 +415,50 @@ exports[`OfferDetails renders correctly 1`] = `
                 "name": "Angelina",
               },
               "id": 1,
+              "images": Array [
+                "img/1.png",
+                "img/2.png",
+              ],
+              "isFavorite": false,
+              "isPremium": false,
+              "location": Object {
+                "latitude": 52.35514938496378,
+                "longitude": 4.673877537499948,
+                "zoom": 8,
+              },
+              "maxAdults": 4,
+              "previewImage": "img/1.png",
+              "price": 120,
+              "rating": 4.8,
+              "title": "Beautiful & luxurious studio at great location",
+              "type": "apartment",
+            },
+            Object {
+              "bedrooms": 3,
+              "city": Object {
+                "location": Object {
+                  "latitude": 52.370216,
+                  "longitude": 4.895168,
+                  "zoom": 10,
+                },
+                "name": "Paris",
+              },
+              "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+              "goods": Array [
+                "Heating",
+                "Kitchen",
+                "Cable TV",
+                "Washing machine",
+                "Coffee machine",
+                "Dishwasher",
+              ],
+              "host": Object {
+                "avatarUrl": "img/1.png",
+                "id": 4,
+                "isPro": true,
+                "name": "Angelina",
+              },
+              "id": 2,
               "images": Array [
                 "img/1.png",
                 "img/2.png",

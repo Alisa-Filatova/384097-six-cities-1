@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {Subtract} from 'utility-types';
 
-interface Props {
-  currentItem?: any;
-  setActiveItem: () => void;
+interface InjectedProps {
+  setActiveItem: (item: any) => void;
 }
 
 interface State {
@@ -10,24 +10,16 @@ interface State {
 }
 
 const withActiveItem = (Component) => {
-  class WithActiveItem extends React.PureComponent<Props, State> {
+  type P = React.ComponentProps<typeof Component>;
+  type T = Subtract<P, InjectedProps>;
+
+  return class WithActiveItem extends React.PureComponent<T, State> {
 
     constructor(props) {
       super(props);
 
-      this.state = {
-        currentItem: null,
-      };
-
-      this.setActiveItem = this.setActiveItem.bind(this);
-    }
-
-    componentDidUpdate(prevProps) {
-      if (this.props.currentItem !== prevProps.currentItem) {
-        this.setState({
-          currentItem: this.props.currentItem,
-        });
-      }
+      this.state = {currentItem: null};
+      this.setActiveItemHandle = this.setActiveItemHandle.bind(this);
     }
 
     render() {
@@ -35,18 +27,15 @@ const withActiveItem = (Component) => {
         <Component
           {...this.props}
           currentItem={this.state.currentItem}
-          setActiveItem={this.setActiveItem}
+          setActiveItem={this.setActiveItemHandle}
         />
       );
     }
 
-    private setActiveItem(item) {
+    private setActiveItemHandle(item) {
       this.setState({currentItem: item});
-      return item;
     }
-  }
-
-  return WithActiveItem;
+  };
 };
 
 export default withActiveItem;

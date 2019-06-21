@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import FavoriteButton from '../favorite-button/favorite-button.jsx';
-import RatingStars from '../rating-stars/rating-stars.jsx';
+import FavoriteButton from '../favorite-button/favorite-button';
+import RatingStars from '../rating-stars/rating-stars';
 import {ROUTES} from '../../constants/constants';
 import {Offer} from '../../types/offer';
 
-const ImageSize = {
+const imageSize = {
   DEFAULT: {
     width: 260,
     height: 200,
@@ -20,38 +20,49 @@ interface Props {
   offer: Offer;
   isAuthenticated: boolean;
   onFavoriteClick: (Offer) => void;
-  history: History;
+  history?: any[];
   onImgClick?: (id: number) => void;
   prefix?: string;
   small?: boolean;
 }
 
-class OfferCard extends React.PureComponent<Props> {
+interface DefaultProps {
+  prefix: string;
+}
+
+class OfferCard extends React.PureComponent<Props & DefaultProps> {
+
+  static defaultProps = {
+    prefix: `cities`,
+  };
 
   constructor(props) {
     super(props);
 
-    this._handleImgClick = this._handleImgClick.bind(this);
-    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this.handleImgClick = this.handleImgClick.bind(this);
+    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
 
   render() {
-    const {offer, prefix = `cities`, small} = this.props;
+    const {offer, prefix, small, onImgClick} = this.props;
 
     return (
       <article className={`${prefix}__place-card ${prefix}__card place-card`}>
-        {offer.isPremium &&
+        {offer.isPremium && (
           <div className="place-card__mark">
             <span>Premium</span>
           </div>
-        }
+        )}
         <div className={`${prefix}__image-wrapper place-card__image-wrapper`}>
-          <a onClick={this._handleImgClick}>
+          <a
+            onClick={this.handleImgClick}
+            style={{cursor: onImgClick ? `pointer` : `default`}}
+          >
             <img
               className="place-card__image"
               src={offer.previewImage}
-              width={small ? ImageSize.SMALL.width : ImageSize.DEFAULT.width}
-              height={small ? ImageSize.SMALL.height : ImageSize.DEFAULT.height}
+              width={small ? imageSize.SMALL.width : imageSize.DEFAULT.width}
+              height={small ? imageSize.SMALL.height : imageSize.DEFAULT.height}
               alt={offer.title}
             />
           </a>
@@ -64,7 +75,7 @@ class OfferCard extends React.PureComponent<Props> {
             </div>
             <FavoriteButton
               isActive={offer.isFavorite}
-              onClick={this._handleFavoriteClick}
+              onClick={this.handleFavoriteClick}
             />
           </div>
           <RatingStars rating={offer.rating} />
@@ -77,7 +88,7 @@ class OfferCard extends React.PureComponent<Props> {
     );
   }
 
-  _handleImgClick(event) {
+  private handleImgClick(event) {
     event.preventDefault();
     const {offer, onImgClick} = this.props;
 
@@ -86,7 +97,7 @@ class OfferCard extends React.PureComponent<Props> {
     }
   }
 
-  _handleFavoriteClick() {
+  private handleFavoriteClick() {
     const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
 
     if (isAuthenticated) {

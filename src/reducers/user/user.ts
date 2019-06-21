@@ -4,42 +4,49 @@ const initialState = {
   user: {},
 };
 
-const ActionType = {
-  PENDING_AUTHORIZATION: `PENDING_AUTHORIZATION`,
-  REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  LOGIN: `LOGIN`,
-};
+export interface ActionType {
+  type: UserAction,
+  payload: any,
+}
+
+enum UserAction {
+  PENDING_AUTHORIZATION = 'PENDING_AUTHORIZATION',
+  AUTHORIZATION_STATUS = 'AUTHORIZATION_STATUS',
+  LOGIN = 'LOGIN',
+}
 
 const ActionCreator = ({
-  pendingAuthorization: (status) => ({
-    type: ActionType.PENDING_AUTHORIZATION,
+  pendingAuthorization: (status: boolean) => ({
+    type: UserAction.PENDING_AUTHORIZATION,
     payload: status,
   }),
 
-  requireAuthorization: (status) => ({
-    type: ActionType.REQUIRED_AUTHORIZATION,
+  /**
+   * @param {Boolean} status - true, если пользователь авторизованы
+   * @return {Object}
+   */
+  setAuthorizationStatus: (status: boolean) => ({
+    type: UserAction.AUTHORIZATION_STATUS,
     payload: status,
   }),
 
   login: (user) => ({
-    type: ActionType.LOGIN,
+    type: UserAction.LOGIN,
     payload: user,
   })
 });
 
 const Operation = {
   login: (data) => (dispatch, getState, api) => {
+    dispatch(ActionCreator.pendingAuthorization(true));
+
     return api.post(`/login`, data)
       .then((response) => {
-        if (response.data) {
-          dispatch(ActionCreator.login(response.data));
-          dispatch(ActionCreator.requireAuthorization(true));
-        }
+        dispatch(ActionCreator.login(response.data));
+        dispatch(ActionCreator.setAuthorizationStatus(true));
       })
-      .catch((error) => {
-        if (error) {
-          dispatch(ActionCreator.requireAuthorization(false));
-        }
+      .catch(() => {
+        dispatch(ActionCreator.setAuthorizationStatus(false));
       })
       .finally(() => {
         dispatch(ActionCreator.pendingAuthorization(false));
@@ -47,17 +54,15 @@ const Operation = {
   },
 
   checkAuthorization: () => (dispatch, getState, api) => {
+    dispatch(ActionCreator.pendingAuthorization(true));
+
     return api.get(`/login`)
       .then((response) => {
-        if (response.data) {
-          dispatch(ActionCreator.requireAuthorization(true));
-          dispatch(ActionCreator.login(response.data));
-        }
+        dispatch(ActionCreator.login(response.data));
+        dispatch(ActionCreator.setAuthorizationStatus(true));
       })
-      .catch((error) => {
-        if (error) {
-          dispatch(ActionCreator.requireAuthorization(false));
-        }
+      .catch(() => {
+        dispatch(ActionCreator.setAuthorizationStatus(false));
       })
       .finally(() => {
         dispatch(ActionCreator.pendingAuthorization(false));
@@ -65,23 +70,29 @@ const Operation = {
   }
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
-    case ActionType.REQUIRED_AUTHORIZATION:
-      return Object.assign({}, state, {
+    case UserAction.AUTHORIZATION_STATUS:
+      return {
+        ...state,
         isAuthenticated: action.payload,
-      });
-    case ActionType.LOGIN:
-      return Object.assign({}, state, {
-        user: action.payload,
-      });
-    case ActionType.PENDING_AUTHORIZATION:
-      return Object.assign({}, state, {
-        pendingAuthorization: action.payload,
-      });
-  }
+      };
 
-  return state;
+    case UserAction.LOGIN:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case UserAction.PENDING_AUTHORIZATION:
+      return {
+        ...state,
+        pendingAuthorization: action.payload,
+      };
+
+    default:
+      return state;
+  }
 };
 
-export {reducer, ActionCreator, Operation, ActionType};
+export {reducer, ActionCreator, Operation, UserAction, initialState};

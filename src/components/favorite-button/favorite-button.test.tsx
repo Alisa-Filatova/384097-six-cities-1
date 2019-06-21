@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import FavoriteButton from './favorite-button.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import FavoriteButton from './favorite-button';
 
 describe(`FavoriteButton`, () => {
   it(`renders correctly`, () => {

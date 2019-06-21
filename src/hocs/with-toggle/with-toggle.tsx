@@ -1,6 +1,7 @@
 import * as React from 'react';
+import {Subtract} from 'utility-types';
 
-interface Props {
+interface InjectedProps {
   onToggle: () => void;
   toggleStatus: boolean;
 }
@@ -9,20 +10,30 @@ interface State {
   toggleStatus: boolean;
 }
 
-const withToggle = (PassedComponent) => {
-  class WithToggle extends React.PureComponent<Props, State> {
+const withToggle = (Component) => {
+  // Получаем пропсы переданного компонента
+  type P = React.ComponentProps<typeof Component>;
+
+  // Вычисляем реальные пропсы, которые нужно передать снаружи в обернутый компонент.
+  // P - пропсы компонента, InjectedProps - добавляемые хоком пропсы.
+  // T - пропсы, которые нужно передать в обернутый хоком компонент.
+  // Условно: T = P - InjectedProps
+  // Например: P = {foo: string, bar: string}, InjectedProps = {bar: string}
+  // Тогда: T = {foo: string}
+  type T = Subtract<P, InjectedProps>;
+
+  return class WithToggle extends React.PureComponent<T, State> {
 
     constructor(props) {
       super(props);
 
-      this.handleToggle = this.handleToggle.bind(this);
-
       this.state = {toggleStatus: false};
+      this.handleToggle = this.handleToggle.bind(this);
     }
 
     render() {
       return (
-        <PassedComponent
+        <Component
           {...this.props}
           onToggle={this.handleToggle}
           toggleStatus={this.state.toggleStatus}
@@ -32,12 +43,10 @@ const withToggle = (PassedComponent) => {
 
     private handleToggle() {
       this.setState({
-        toggleStatus: !this.state.toggleStatus
+        toggleStatus: !this.state.toggleStatus,
       });
     }
-  }
-
-  return WithToggle;
+  };
 };
 
 export default withToggle;

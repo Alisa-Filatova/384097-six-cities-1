@@ -12,8 +12,8 @@ const commentMock = `What an amazing view! The house is stunning and in an amazi
 describe(`withPostComment`, () => {
   it(`changed state and submit form`, () => {
     const WrappedReviewForm = withPostComment(ReviewForm);
-    const postReviewHandler = jest.fn(() => Promise.resolve());
-    const form = mount(<WrappedReviewForm postReview={postReviewHandler} offerId={1} />);
+    const saveReviewHandler = jest.fn(() => Promise.resolve());
+    const form = mount(<WrappedReviewForm saveReview={saveReviewHandler} offerId={1} />);
 
     expect(form.state(`comment`)).toEqual(``);
     expect(form.state(`rating`)).toEqual(0);
@@ -36,7 +36,7 @@ describe(`withPostComment`, () => {
     const reviewForm = form.find(`form.reviews__form`);
     reviewForm.simulate(`submit`);
 
-    expect(postReviewHandler).toHaveBeenCalledTimes(1);
-    expect(postReviewHandler).toHaveBeenNthCalledWith(1, {rating: 5, comment: commentMock}, 1);
+    expect(saveReviewHandler).toHaveBeenCalledTimes(1);
+    expect(saveReviewHandler).toHaveBeenNthCalledWith(1, {rating: 5, comment: commentMock}, 1);
   });
 });

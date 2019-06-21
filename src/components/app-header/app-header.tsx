@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import AppLogo from '../app-logo/app-logo.jsx';
+import AppLogo from '../app-logo/app-logo';
 import {ROUTES, BASE_URL} from '../../constants/constants';
 import {User} from '../../types/user';
 
@@ -10,8 +10,9 @@ interface Props {
 }
 
 const AppHeader: React.FunctionComponent<Props> = ({isAuthenticated, user}) => {
-  const userAvatar =
-    isAuthenticated && user ? {backgroundImage: `url(${BASE_URL}${user.avatarUrl})`, borderRadius: `50%`} : {};
+  const userAvatar = isAuthenticated && user
+    ? {backgroundImage: `url(${BASE_URL}${user.avatarUrl})`, borderRadius: `50%`}
+    : {};
 
   return (
     <>

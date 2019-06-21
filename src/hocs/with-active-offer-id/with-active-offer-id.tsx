@@ -1,26 +1,25 @@
 import * as React from 'react';
+import {ComponentType} from 'react';
+import {Subtract} from 'utility-types';
 
 interface Props {
-  setActiveId: () => void;
-  activeOfferId: number;
+  setActiveId: (offerId: number | string) => void;
 }
 
 interface State {
   activeOfferId: number;
 }
 
-const withActiveOfferId = (Component) => {
-  class WithActiveOfferId extends React.PureComponent<Props, State> {
+function withActiveOfferId<T extends Props>(Component: ComponentType<T>) {
+  return class WithActiveOfferId extends React.PureComponent<Subtract<T, Props>, State> {
+
     constructor(props) {
       super(props);
 
       const {activeOfferId = null} = props;
 
-      this.state = {
-        activeOfferId,
-      };
-
-      this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
+      this.state = {activeOfferId};
+      this.handleGetActiveOffer = this.handleGetActiveOffer.bind(this);
     }
 
     render() {
@@ -28,21 +27,20 @@ const withActiveOfferId = (Component) => {
 
       return (
         <Component
-          {...this.props}
+          {...this.props as T}
           activeOfferId={activeOfferId}
-          setActiveId={this._handleGetActiveOffer}
+          setActiveId={this.handleGetActiveOffer}
         />
       );
     }
 
-    _handleGetActiveOffer(offerId) {
-      this.setState((prevState) => {
-        return Object.assign({}, prevState, {activeOfferId: offerId});
-      });
+    private handleGetActiveOffer(offerId) {
+      this.setState((prevState) => ({
+        ...prevState,
+        activeOfferId: offerId,
+      }));
     }
-  }
-
-  return WithActiveOfferId;
-};
+  };
+}
 
 export default withActiveOfferId;

@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import MainPageEmpty from './main-page-empty.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import MainPageEmpty from './main-page-empty';
 
 const mock = {
   name: `Amsterdam`,

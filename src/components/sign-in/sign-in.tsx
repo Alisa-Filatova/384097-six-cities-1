@@ -3,13 +3,14 @@ import {RefObject} from 'react';
 import {connect} from 'react-redux';
 import {Operation} from '../../reducers/user/user';
 import {getUser} from '../../reducers/user/selectors';
-import CityTab from '../city-tab/city-tab.jsx';
+import CityTab from '../city-tab/city-tab';
+import withRedirectRoute from '../../hocs/with-redirect-route/with-redirect-route';
 import {BASE_COLOR, ERROR_COLOR, EMAIL_REGEXP} from '../../constants/constants';
 import {User} from '../../types/user';
 
 interface Props {
   onLogin: (User) => void;
-  user: User;
+  user?: User;
 }
 
 class SignIn extends React.PureComponent<Props> {
@@ -75,7 +76,8 @@ class SignIn extends React.PureComponent<Props> {
   }
 
   private handleValidateFields() {
-    const [email, password] = [this._emailInput.current.value, this._passwordInput.current.value];
+    const email = this._emailInput.current.value;
+    const password = this._passwordInput.current.value;
 
     if (!EMAIL_REGEXP.test(email)) {
       this._emailInput.current.style.borderColor = ERROR_COLOR;
@@ -91,7 +93,8 @@ class SignIn extends React.PureComponent<Props> {
     event.preventDefault();
 
     if (this._emailInput && this._passwordInput) {
-      const [email, password] = [this._emailInput.current.value, this._passwordInput.current.value];
+      const email = this._emailInput.current.value;
+      const password = this._passwordInput.current.value;
 
       if (email && password && EMAIL_REGEXP.test(email)) {
         this.props.onLogin({email, password});
@@ -100,7 +103,8 @@ class SignIn extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+const mapStateToProps = (state, ownProps) => ({
+  ...ownProps,
   user: getUser(state),
 });
 
@@ -111,4 +115,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export {SignIn};
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default withRedirectRoute(connect(mapStateToProps, mapDispatchToProps)(SignIn));

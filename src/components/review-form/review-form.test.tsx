@@ -1,5 +1,5 @@
 import * as React from 'react';
-import renderer from 'react-test-renderer';
+import * as renderer from 'react-test-renderer';
 import {ReviewForm} from './review-form';
 
 describe(`ReviewForm`, () => {
@@ -12,7 +12,9 @@ describe(`ReviewForm`, () => {
           onRatingChange={jest.fn()}
           onCommentChange={jest.fn()}
           onSubmit={jest.fn()}
-          postReviewStatus={0}
+          saveReviewStatus={0}
+          offerId={1}
+          saveReview={jest.fn()}
         />
     ).toJSON();
     expect(form).toMatchSnapshot();

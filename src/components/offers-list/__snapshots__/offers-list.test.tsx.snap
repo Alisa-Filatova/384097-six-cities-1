@@ -12,6 +12,11 @@ exports[`OffersList renders correctly 1`] = `
     >
       <a
         onClick={[Function]}
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
       >
         <img
           alt="Beautiful & luxurious studio at great location"
@@ -109,6 +114,11 @@ exports[`OffersList renders correctly 1`] = `
     >
       <a
         onClick={[Function]}
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
       >
         <img
           alt="Beautiful & luxurious studio at great location"

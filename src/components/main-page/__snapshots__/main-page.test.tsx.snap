@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainPage renders correctly 1`] = `
+<main
+  className="page__main page__main--index "
+>
+  <Loader />
+</main>
+`;

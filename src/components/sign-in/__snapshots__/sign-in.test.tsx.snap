@@ -2,13 +2,13 @@
 
 exports[`SignIn page renders correctly 1`] = `
 <main
-  className="page__main page__main--onLogin"
+  className="page__main page__main--login"
 >
   <div
     className="page__login-container container"
   >
     <section
-      className="onLogin"
+      className="login"
     >
       <h1
         className="login__title"
@@ -33,7 +33,7 @@ exports[`SignIn page renders correctly 1`] = `
             name="email"
             onChange={[Function]}
             placeholder="Email"
-            required=""
+            required={true}
             type="email"
           />
         </div>
@@ -50,7 +50,7 @@ exports[`SignIn page renders correctly 1`] = `
             name="password"
             onChange={[Function]}
             placeholder="Password"
-            required=""
+            required={true}
             type="password"
           />
         </div>
@@ -64,7 +64,7 @@ exports[`SignIn page renders correctly 1`] = `
       </form>
     </section>
     <section
-      className="locations locations--onLogin locations--current"
+      className="locations locations--login locations--current"
     >
       <div
         className="locations__item"
@@ -73,6 +73,11 @@ exports[`SignIn page renders correctly 1`] = `
           className="locations__item-link tabs__item "
           href="#"
           onClick={[Function]}
+          style={
+            Object {
+              "pointerEvents": "none",
+            }
+          }
         >
           <span>
             Amsterdam

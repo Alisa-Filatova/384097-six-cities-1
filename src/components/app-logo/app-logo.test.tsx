@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import {MemoryRouter as Router} from 'react-router-dom';
-import renderer from 'react-test-renderer';
-import AppLogo from './app-logo.jsx';
+import * as renderer from 'react-test-renderer';
+import AppLogo from './app-logo';
 
 describe(`AppLogo`, () => {
   it(`renders correctly`, () => {

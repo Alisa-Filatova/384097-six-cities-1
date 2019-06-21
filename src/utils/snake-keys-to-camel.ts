@@ -5,10 +5,8 @@ const toCamel = (string) => {
   });
 };
 
-const isArray = (array) => Array.isArray(array);
-
 const isObject = (object) =>
-  object === Object(object) && !isArray(object) && typeof object !== `function`;
+  object === Object(object) && !Array.isArray(object) && typeof object !== `function`;
 
 export const keysToCamel = (object) => {
   if (isObject(object)) {
@@ -20,7 +18,9 @@ export const keysToCamel = (object) => {
       });
 
     return newObject;
-  } else if (isArray(object)) {
+  }
+
+  if (Array.isArray(object)) {
     return object.map((item) => {
       return keysToCamel(item);
     });
@@ -28,4 +28,3 @@ export const keysToCamel = (object) => {
 
   return object;
 };
-

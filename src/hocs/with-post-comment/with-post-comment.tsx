@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {Subtract} from 'utility-types';
 import {Operation} from '../../reducers/review/review';
 import {MAX_CHAR_COMMENT, MIN_CHAR_COMMENT} from '../../constants/constants';
 import {Comment} from '../../types/user';
 
-interface Props {
+interface InjectedProps {
   offerId: number;
-  postReview: (obj: Comment, id: number) => void;
+  saveReview: (id: number, data: Comment) => void;
 }
 
 interface State {
@@ -16,7 +17,10 @@ interface State {
 }
 
 const withPostComment = (Component) => {
-  class WithPostComment extends React.PureComponent<Props, State> {
+  type P = React.ComponentProps<typeof Component>;
+  type T = Subtract<P, InjectedProps>;
+
+  class WithPostComment extends React.PureComponent<T, State> {
 
     constructor(props) {
       super(props);
@@ -26,9 +30,9 @@ const withPostComment = (Component) => {
         comment: ``,
       };
 
-      this._handleRatingChange = this._handleRatingChange.bind(this);
-      this._handleCommentChange = this._handleCommentChange.bind(this);
-      this._handleSubmitReview = this._handleSubmitReview.bind(this);
+      this.handleRatingChange = this.handleRatingChange.bind(this);
+      this.handleCommentChange = this.handleCommentChange.bind(this);
+      this.handleSubmitReview = this.handleSubmitReview.bind(this);
     }
 
     render() {
@@ -39,28 +43,28 @@ const withPostComment = (Component) => {
           {...this.props}
           rating={rating}
           comment={comment}
-          onSubmit={this._handleSubmitReview}
-          onRatingChange={this._handleRatingChange}
-          onCommentChange={this._handleCommentChange}
+          onSubmit={this.handleSubmitReview}
+          onRatingChange={this.handleRatingChange}
+          onCommentChange={this.handleCommentChange}
           disabled={!(comment.length > MIN_CHAR_COMMENT && comment.length < MAX_CHAR_COMMENT && rating > 0)}
         />
       );
     }
 
-    _handleRatingChange(event) {
+    private handleRatingChange(event) {
       this.setState({rating: +event.target.value});
     }
 
-    _handleCommentChange(event) {
+    private handleCommentChange(event) {
       this.setState({comment: event.target.value});
     }
 
-    _handleSubmitReview(event) {
+    private handleSubmitReview(event) {
       event.preventDefault();
 
       const {rating, comment} = this.state;
 
-      this.props.postReview({rating, comment}, this.props.offerId);
+      this.props.saveReview({rating, comment}, this.props.offerId);
       this.setState({rating: 0, comment: ``});
     }
   }
@@ -68,9 +72,9 @@ const withPostComment = (Component) => {
   return WithPostComment;
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps);
+const mapStateToProps = (state, ownProps) => ({...ownProps});
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  postReview: (data) => dispatch(Operation.postReview(ownProps.offerId, data))
+  saveReview: (data) => dispatch(Operation.saveReview(ownProps.offerId, data))
 });
 
 export {withPostComment};

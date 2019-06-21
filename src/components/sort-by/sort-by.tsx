@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {SortType} from '../../types/enums/sort-type';
-import withToggle from '../../hocs/with-toggle/with-toggle.jsx';
-import withTransformProps from '../../hocs/with-transform-props/with-transform-props.jsx';
+import SortType from '../../types/enums/sort-type';
+import withToggle from '../../hocs/with-toggle/with-toggle';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 
 interface Props {
   onToggle: () => void;
   isOpen: boolean;
-  currentItem: string;
+  currentItem: SortType;
   onPopularClick: () => void;
   onLowToHighClick: () => void;
   onHighToLowClick:() => void;
@@ -24,7 +24,7 @@ const SortBy: React.FunctionComponent<Props> = (props) => {
     currentItem,
   } = props;
 
-  const SORT_TYPES_LIST = [
+  const sortTypesList = [
     {
       name: SortType.POPULAR,
       action: onPopularClick,
@@ -58,14 +58,14 @@ const SortBy: React.FunctionComponent<Props> = (props) => {
       </span>
       {isOpen &&
         <ul className="places__options places__options--custom places__options--opened">
-          {SORT_TYPES_LIST.map((item) =>
+          {sortTypesList.map((sortType) =>
             <li
-              className={`places__option ${currentItem === item.name ? `places__option--active` : ``}`}
+              className={`places__option ${currentItem === sortType.name ? `places__option--active` : ``}`}
               tabIndex={0}
-              onClick={item.action}
-              key={item.name}
+              onClick={sortType.action}
+              key={sortType.name}
             >
-              {item.name}
+              {sortType.name}
             </li>
           )}
         </ul>
@@ -75,7 +75,11 @@ const SortBy: React.FunctionComponent<Props> = (props) => {
 };
 
 export {SortBy};
-export default withToggle(withTransformProps(
-    (props) => Object.assign({}, props, {
-      isOpen: props.toggleStatus,
-    }))(SortBy));
+export default withToggle(
+    withTransformProps(
+        (props) => ({
+          ...props,
+          isOpen: props.toggleStatus,
+        })
+    )(SortBy)
+);

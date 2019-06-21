@@ -1,4 +1,5 @@
 import * as React from 'react';
+import withRedirectRoute from '../../hocs/with-redirect-route/with-redirect-route';
 
 const ErrorMessage = () => {
   return (
@@ -21,4 +22,5 @@ const ErrorMessage = () => {
   );
 };
 
-export default ErrorMessage;
+export {ErrorMessage};
+export default withRedirectRoute(ErrorMessage);

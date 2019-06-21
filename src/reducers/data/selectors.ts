@@ -1,15 +1,15 @@
 import {createSelector} from 'reselect';
 import {keysToCamel} from '../../utils/snake-keys-to-camel';
-import {NameSpace} from '../namespaces';
-import {SortType} from '../../types/enums/sort-type';
+import NameSpace from '../namespaces';
+import SortType from '../../types/enums/sort-type';
 import {MAX_CITIES} from '../../constants/constants';
 
 const NAMESPACE = NameSpace.DATA;
 
-const sortCitiesByName = (offers) => {
-  const cities = offers.map((offer) => offer.city).sort((a, b) => {
-    const nameA = a.name.toUpperCase();
-    const nameB = b.name.toUpperCase();
+const getUniqueCitiesFromOffers = (offers) => {
+  const sortedCities = offers.map(({city}) => city).sort((cityA, cityB) => {
+    const nameA = cityA.name.toLowerCase();
+    const nameB = cityB.name.toLowerCase();
 
     if (nameA < nameB) {
       return -1;
@@ -20,46 +20,28 @@ const sortCitiesByName = (offers) => {
     }
   });
 
-  return cities.reduce((prev, current) => {
-    if (!prev.includes(current)) {
-      prev.push(current);
-    }
-    return prev;
-  }, []);
-};
+  const uniqueCities = [];
 
-const getUnicCities = (arr) => {
-  const unicCities = [];
-
-  for (let i = 0; i < arr.length; i++) {
-    if (i === 0 || arr[i].name !== arr[i - 1].name) {
-      unicCities.push(arr[i]);
-    }
-  }
-
-  return unicCities;
-};
-
-const getRandomCityOffer = (offers) => {
-  const min = 0;
-  const max = Math.floor(offers.length);
-  return offers[Math.floor(Math.random() * (max - min)) + min];
-};
-
-export const sortFavoritesListByCities = (offers) => {
-  const cities = {};
-
-  offers.forEach((item) => {
-    if (!cities[item.city.name]) {
-      cities[item.city.name] = [];
+  sortedCities.forEach((city, i, cities) => {
+    if (i === 0 || city.name !== cities[i - 1].name) {
+      uniqueCities.push(city);
     }
   });
 
-  offers.forEach((item) => {
-    const key = item.city.name;
-    if (cities[key]) {
-      cities[key].push(item);
+  return uniqueCities;
+};
+
+export const groupFavoriteOffersByCity = (offers) => {
+  const cities = {};
+
+  offers.forEach((offer) => {
+    const {name} = offer.city;
+
+    if (!cities[name]) {
+      cities[name] = [];
     }
+
+    cities[name].push(offer);
   });
 
   return cities;
@@ -68,6 +50,15 @@ export const sortFavoritesListByCities = (offers) => {
 export const getOffers = (state) => {
   return keysToCamel(state[NAMESPACE].rentalOffers);
 };
+
+export const getFavoriteOffers = (state) => {
+  return keysToCamel(state[NAMESPACE].favoriteOffers);
+};
+
+export const getFavoriteOffersGroupedByCity = createSelector(
+    getFavoriteOffers,
+    (favoriteOffers) => groupFavoriteOffersByCity(favoriteOffers),
+);
 
 export const getCurrentCity = (state) => {
   return state[NAMESPACE].currentCity;
@@ -83,7 +74,7 @@ export const getOffersLoadStatus = (state) => {
 
 export const getCities = createSelector(
     [getOffers],
-    (offers) => getUnicCities(sortCitiesByName(offers)).slice(0, MAX_CITIES)
+    (offers) => getUniqueCitiesFromOffers(offers).slice(0, MAX_CITIES)
 );
 
 export const getCityOffers = createSelector(
@@ -94,7 +85,12 @@ export const getCityOffers = createSelector(
 
 export const getRandomOffer = createSelector(
     [getOffers],
-    (state) => getRandomCityOffer(state)
+    (offers) => {
+      const min = 0;
+      const max = offers.length;
+
+      return offers[Math.floor(Math.random() * (max - min)) + min];
+    }
 );
 
 export const sortOffers = createSelector(
@@ -102,12 +98,15 @@ export const sortOffers = createSelector(
     getSortValue,
     (offers, state) => {
       switch (state) {
-        case (SortType.HIGH_TO_LOW):
+        case SortType.HIGH_TO_LOW:
           return offers.sort((a, b) => b.price - a.price);
-        case (SortType.LOW_TO_HIGH):
+
+        case SortType.LOW_TO_HIGH:
           return offers.sort((a, b) => a.price - b.price);
-        case (SortType.TOP_RATED):
+
+        case SortType.TOP_RATED:
           return offers.sort((a, b) => b.rating - a.rating);
+
         default:
           return offers.sort((a, b) => a.id - b.id);
       }
@@ -115,17 +114,12 @@ export const sortOffers = createSelector(
 );
 
 export const getOfferById = (state, id) =>
-  getOffers(state).filter((item) => item.id === +id)[0];
+  getOffers(state).filter((offer) => offer.id === +id)[0];
 
 export const getCloserOffers = (state, id) => {
-  const offer = getOfferById(state, id);
+  const currentOffer = getOfferById(state, id);
 
-  return getOffers(state)
-    .filter((item) => item.city.name === offer.city.name)
-    .filter((item) => item.id !== +id);
+  return getOffers(state).filter((offer) => (
+    offer.city.name === currentOffer.city.name && offer.id !== +id
+  ));
 };
-
-export const getFavoriteOffers = (state) =>
-  getOffers(state).filter((item) => item.isFavorite);
-
-

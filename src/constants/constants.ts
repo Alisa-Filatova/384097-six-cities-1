@@ -24,5 +24,3 @@ export const RATING_ITEMS = [
   {value: 2, title: `badly`},
   {value: 1, title: `terribly`},
 ];
-
-

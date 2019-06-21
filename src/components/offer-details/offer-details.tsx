@@ -2,16 +2,16 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Operation} from '../../reducers/review/review';
 import {Operation as DataOperation} from '../../reducers/data/data';
-import {sortReviewsByDate, getPostReviewStatus} from '../../reducers/review/selectors';
+import {sortReviewsByDate, getSaveReviewStatus} from '../../reducers/review/selectors';
 import {getOfferById, getCloserOffers} from '../../reducers/data/selectors';
 import {getAuthorizationStatus} from '../../reducers/user/selectors';
-import ReviewsList from '../reviews-list/reviews-list.jsx';
-import Map from '../map/map.jsx';
-import OffersList from '../offers-list/offers-list.jsx';
-import ReviewForm from '../review-form/review-form.jsx';
-import FavoriteButton from '../favorite-button/favorite-button.jsx';
-import RatingStars from '../rating-stars/rating-stars.jsx';
-import withActiveItem from '../../hocs/with-active-item/with-active-item.jsx';
+import ReviewsList from '../reviews-list/reviews-list';
+import Map from '../map/map';
+import OffersList from '../offers-list/offers-list';
+import ReviewForm from '../review-form/review-form';
+import FavoriteButton from '../favorite-button/favorite-button';
+import RatingStars from '../rating-stars/rating-stars';
+import withActiveItem from '../../hocs/with-active-item/with-active-item';
 import PlaceType from '../../types/enums/place-type';
 import {MAX_CLOSER_OFFERS, MAX_PLACE_IMG, ROUTES} from '../../constants/constants';
 import {Offer} from '../../types/offer';
@@ -26,17 +26,17 @@ interface Props {
   getReviews: () => void;
   reviews: Review[];
   isAuthenticated: boolean;
-  postReviewStatus: number;
+  saveReviewStatus: number;
   onFavoriteClick: (Offer) => void;
-  history: History;
+  history?: any[];
 }
 
-class OfferDetails extends React.Component<Props> {
+class OfferDetails extends React.PureComponent<Props> {
 
   constructor(props) {
     super(props);
 
-    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +57,7 @@ class OfferDetails extends React.Component<Props> {
       isAuthenticated,
       onFavoriteClick,
       history,
-      postReviewStatus
+      saveReviewStatus,
     } = this.props;
 
     if (!offer) {
@@ -87,7 +87,7 @@ class OfferDetails extends React.Component<Props> {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.isFavorite}
-                  onClick={this._handleFavoriteClick}
+                  onClick={this.handleFavoriteClick}
                   large
                 />
               </div>
@@ -125,7 +125,9 @@ class OfferDetails extends React.Component<Props> {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div
-                    className={`property__avatar-wrapper ${offer.host.isPro ? `property__avatar-wrapper--pro` : ``} user__avatar-wrapper`}>
+                    className={`property__avatar-wrapper ${offer.host.isPro ? `property__avatar-wrapper--pro` : ``} 
+                    user__avatar-wrapper`}
+                  >
                     <img
                       className="property__avatar user__avatar"
                       src={`/${offer.host.avatarUrl}`}
@@ -146,7 +148,7 @@ class OfferDetails extends React.Component<Props> {
                 {isAuthenticated && (
                   <ReviewForm
                     offerId={offer.id}
-                    postReviewStatus={postReviewStatus}
+                    saveReviewStatus={saveReviewStatus}
                   />
                 )}
               </section>
@@ -176,7 +178,7 @@ class OfferDetails extends React.Component<Props> {
     );
   }
 
-  _handleFavoriteClick() {
+  private handleFavoriteClick() {
     const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
 
     if (isAuthenticated) {
@@ -188,16 +190,17 @@ class OfferDetails extends React.Component<Props> {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const id = ownProps.match.params.id;
+  const {id} = ownProps.match.params;
 
-  return Object.assign({}, ownProps, {
+  return {
+    ...ownProps,
     id,
     offer: getOfferById(state, id),
     nearOffers: getCloserOffers(state, id).slice(0, MAX_CLOSER_OFFERS),
     reviews: sortReviewsByDate(state),
     isAuthenticated: getAuthorizationStatus(state),
-    postReviewStatus: getPostReviewStatus(state),
-  });
+    saveReviewStatus: getSaveReviewStatus(state),
+  };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -205,7 +208,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(Operation.getReviewsList(ownProps.match.params.id));
   },
   onFavoriteClick: (offer) => {
-    dispatch(DataOperation.changeFavorites(offer));
+    dispatch(DataOperation.toggleFavorite(offer));
   },
 });
 

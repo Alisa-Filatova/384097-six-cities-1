@@ -2,7 +2,9 @@
 
 exports[`App renders correctly 1`] = `
 <Fragment>
-  <PageWrapper>
+  <PageWrapper
+    location="/"
+  >
     <AppHeader
       isAuthenticated={true}
       user={
@@ -22,8 +24,16 @@ exports[`App renders correctly 1`] = `
         path="/"
       />
       <Route
-        component={[Function]}
-        path="/onLogin"
+        component={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(WithRedirectRoute)",
+            "type": [Function],
+          }
+        }
+        path="/login"
       />
       <Route
         component={
@@ -38,11 +48,27 @@ exports[`App renders correctly 1`] = `
         path="/offer/:id"
       />
       <Route
-        component={[Function]}
+        component={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(WithRedirectRoute)",
+            "type": [Function],
+          }
+        }
         path="/favorites"
       />
       <Route
-        component={[Function]}
+        component={
+          Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(WithRedirectRoute)",
+            "type": [Function],
+          }
+        }
         path="/error"
       />
       <Route

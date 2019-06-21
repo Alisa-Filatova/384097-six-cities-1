@@ -1,4 +1,4 @@
-import {NameSpace} from '../namespaces';
+import NameSpace from '../namespaces';
 import {keysToCamel} from '../../utils/snake-keys-to-camel';
 
 const NAMESPACE = NameSpace.USER;

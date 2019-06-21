@@ -1,41 +1,43 @@
 import MockAdapter from 'axios-mock-adapter';
 import {createAPI} from '../../api';
-import {Operation, reducer, ActionCreator, ActionType} from './review';
-import {ResponseStatus} from '../../types/enums/response-status';
+import {Operation, reducer, ActionCreator, ReviewAction, initialState} from './review';
+import ResponseStatus from '../../types/enums/response-status';
+import {reviewsListMock} from '../../mocks/reviews-list';
+import {reviewMock} from '../../mocks/review';
 
 describe(`Test API works correctly`, () => {
   it(`API correctly get to /comments/id`, function () {
     const dispatch = jest.fn();
-    const api = createAPI(dispatch,  jest.fn());
+    const api = createAPI(dispatch, jest.fn());
     const apiMock = new MockAdapter(api);
     const getReviews = Operation.getReviewsList(1);
 
     apiMock.onGet(`/comments/1`)
-      .reply(ResponseStatus.OK, []);
+      .reply(ResponseStatus.OK, reviewsListMock);
 
     return getReviews(dispatch, jest.fn(), api)
       .then(() => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.GET_REVIEWS,
-          payload: [],
+          type: ReviewAction.GET_REVIEWS,
+          payload: reviewsListMock,
         });
       });
   });
 
   it(`API correctly post to /comments/id`, function () {
     const dispatch = jest.fn();
-    const api = createAPI(dispatch);
+    const api = createAPI(dispatch, dispatch);
     const apiMock = new MockAdapter(api);
-    const postReview = Operation.postReview(1, {});
+    const saveReview = Operation.saveReview(1, {});
 
     apiMock.onPost(`/comments/1`)
-      .reply(ResponseStatus.OK, []);
+      .reply(ResponseStatus.OK, reviewMock);
 
-    return postReview(dispatch, jest.fn(), api)
+    return saveReview(dispatch, jest.fn(), api)
       .then(() => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.POST_REVIEW,
-          payload: [],
+          type: ReviewAction.ADD_REVIEW,
+          payload: reviewMock,
         });
       });
   });
@@ -43,48 +45,55 @@ describe(`Test API works correctly`, () => {
 
 describe(`Test ActionCreator reducer data`, () => {
   it(`set reviewsList`, () => {
-    expect(ActionCreator.getReviews([])).toEqual({
-      type: ActionType.GET_REVIEWS,
-      payload: [],
+    expect(ActionCreator.getReviews(reviewsListMock)).toEqual({
+      type: ReviewAction.GET_REVIEWS,
+      payload: reviewsListMock,
     });
   });
-  it(`set postReview`, () => {
-    expect(ActionCreator.postReview([])).toEqual({
-      type: ActionType.POST_REVIEW,
-      payload: [],
+
+  it(`set saveReview`, () => {
+    expect(ActionCreator.addReview(reviewMock)).toEqual({
+      type: ReviewAction.ADD_REVIEW,
+      payload: reviewMock,
     });
   });
-  it(`set postReview status status`, () => {
-    expect(ActionCreator.getPostReviewStatus(true)).toEqual({
-      type: ActionType.GET_POST_REVIEW_STATUS,
-      payload: true,
+
+  it(`set saveReview status status`, () => {
+    expect(ActionCreator.setSaveReviewStatus(ResponseStatus.OK)).toEqual({
+      type: ReviewAction.SET_SAVE_REVIEW_STATUS,
+      payload: ResponseStatus.OK,
     });
   });
 });
 
 describe(`Test reducer data`, () => {
   it(`get reviewsList`, () => {
-    expect(reducer({reviewsList: []}, {
-      type: ActionType.GET_REVIEWS,
-      payload: [{}],
+    expect(reducer({...initialState}, {
+      type: ReviewAction.GET_REVIEWS,
+      payload: reviewsListMock,
     })).toEqual({
-      reviewsList: [{}],
+      reviewsList: reviewsListMock,
+      saveReviewStatus: null,
     });
   });
-  it(`post review`, () => {
-    expect(reducer({reviewsList: []}, {
-      type: ActionType.POST_REVIEW,
-      payload: [{}],
+
+  it(`add review`, () => {
+    expect(reducer({...initialState}, {
+      type: ReviewAction.ADD_REVIEW,
+      payload: reviewsListMock,
     })).toEqual({
-      reviewsList: [{}],
+      reviewsList: reviewsListMock,
+      saveReviewStatus: null,
     });
   });
-  it(`get postReview status`, () => {
-    expect(reducer({postReviewStatus: false}, {
-      type: ActionType.GET_POST_REVIEW_STATUS,
-      payload: true,
+
+  it(`get saveReview status`, () => {
+    expect(reducer({...initialState}, {
+      type: ReviewAction.SET_SAVE_REVIEW_STATUS,
+      payload: ResponseStatus.OK,
     })).toEqual({
-      postReviewStatus: true,
+      reviewsList: [],
+      saveReviewStatus: ResponseStatus.OK,
     });
   });
 });

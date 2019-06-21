@@ -8,6 +8,11 @@ exports[`CityTab renders correctly 1`] = `
     className="locations__item-link tabs__item "
     href="#"
     onClick={[Function]}
+    style={
+      Object {
+        "pointerEvents": "auto",
+      }
+    }
   >
     <span>
       Amsterdam

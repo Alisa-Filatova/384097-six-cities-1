@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import {configure, shallow} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import withActiveItem from './with-active-offer-id.jsx';
+import * as Adapter from 'enzyme-adapter-react-16';
+import withActiveItem from './with-active-offer-id';
 
 configure({adapter: new Adapter()});
 

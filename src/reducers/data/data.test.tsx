@@ -1,13 +1,16 @@
 import MockAdapter from 'axios-mock-adapter';
 import {createAPI} from '../../api';
-import {Operation, reducer, ActionCreator, ActionType} from './data';
-import {ResponseStatus} from '../../types/enums/response-status';
-import {SortType} from '../../types/enums/sort-type';
+import {Operation, reducer, ActionCreator, DataAction, initialState} from './data';
+import ResponseStatus from '../../types/enums/response-status';
+import SortType from '../../types/enums/sort-type';
+import {offerMock} from '../../mocks/offer';
+import {offersMock} from '../../mocks/offers';
+import {cityMock} from '../../mocks/city';
 
 describe(`Test API works correctly`, () => {
   it(`make a correct API call to /hotels`, function () {
     const dispatch = jest.fn();
-    const api = createAPI(dispatch);
+    const api = createAPI(dispatch, jest.fn());
     const apiMock = new MockAdapter(api);
     const offersLoader = Operation.loadOffers();
 
@@ -18,8 +21,45 @@ describe(`Test API works correctly`, () => {
       .then(() => {
         expect(dispatch).toHaveBeenCalledTimes(2);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.LOAD_OFFERS,
+          type: DataAction.LOAD_OFFERS,
           payload: [],
+        });
+      });
+  });
+
+  it(`make a correct API call to /favorite`, function () {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch, jest.fn());
+    const apiMock = new MockAdapter(api);
+    const favoriteOffersLoader = Operation.loadFavoriteOffers();
+
+    apiMock.onGet(`/favorite`)
+      .reply(ResponseStatus.OK, offersMock);
+
+    return favoriteOffersLoader(dispatch, jest.fn(), api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: DataAction.LOAD_FAVORITE_OFFERS,
+          payload: offersMock,
+        });
+      });
+  });
+
+  it(`make a correct post to /favorite/:id/:status`, function () {
+    const dispatch = jest.fn();
+    const api = createAPI(dispatch, dispatch);
+    const apiMock = new MockAdapter(api);
+    const toggleFavorite = Operation.toggleFavorite(offerMock);
+
+    apiMock.onPost(`/favorite/1/1`)
+      .reply(ResponseStatus.OK, offerMock);
+
+    return toggleFavorite(dispatch, jest.fn(), api)
+      .then(() => {
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: DataAction.REMOVE_FAVORITE_OFFER,
+          payload: offerMock,
         });
       });
   });
@@ -29,76 +69,143 @@ describe(`Test ActionCreator reducer data`, () => {
   it(`set offersLoaded status`, () => {
     expect(ActionCreator.offersLoaded(true)).toEqual({
       payload: true,
-      type: ActionType.OFFERS_LOADED,
+      type: DataAction.OFFERS_LOADED,
     });
   });
+
   it(`set loadOffers`, () => {
-    expect(ActionCreator.loadOffers([])).toEqual({
-      payload: [],
-      type: ActionType.LOAD_OFFERS,
+    expect(ActionCreator.loadOffers(offerMock)).toEqual({
+      payload: offerMock,
+      type: DataAction.LOAD_OFFERS,
     });
   });
+
+  it(`set favoriteOffers`, () => {
+    expect(ActionCreator.loadFavoriteOffers(offerMock)).toEqual({
+      payload: offerMock,
+      type: DataAction.LOAD_FAVORITE_OFFERS,
+    });
+  });
+
   it(`set sortOffers`, () => {
     expect(ActionCreator.sortOffers(SortType.POPULAR)).toEqual({
       payload: SortType.POPULAR,
-      type: ActionType.SORT_OFFERS,
+      type: DataAction.SORT_OFFERS,
     });
   });
+
   it(`set currentCity`, () => {
-    expect(ActionCreator.changeCity({})).toEqual({
-      payload: {},
-      type: ActionType.CHANGE_CITY,
+    expect(ActionCreator.changeCity(cityMock)).toEqual({
+      payload: cityMock,
+      type: DataAction.CHANGE_CITY,
     });
   });
-  it(`update offer`, () => {
-    expect(ActionCreator.updateOffer({})).toEqual({
-      payload: {},
-      type: ActionType.UPDATE_OFFER,
+
+  it(`add favorite offer`, () => {
+    expect(ActionCreator.addFavoriteOffer(offerMock)).toEqual({
+      payload: offerMock,
+      type: DataAction.ADD_FAVORITE_OFFER,
+    });
+  });
+
+  it(`remove favorite offer`, () => {
+    expect(ActionCreator.removeFavoriteOffer(offerMock)).toEqual({
+      payload: offerMock,
+      type: DataAction.REMOVE_FAVORITE_OFFER,
     });
   });
 });
 
 describe(`Test reducer data`, () => {
   it(`get offersLoaded status`, () => {
-    expect(reducer({offersLoaded: null}, {
-      type: ActionType.OFFERS_LOADED,
+    expect(reducer({...initialState}, {
+      type: DataAction.OFFERS_LOADED,
       payload: true,
     })).toEqual({
+      currentCity: {},
       offersLoaded: true,
-    });
-  });
-  it(`load offers`, () => {
-    expect(reducer({rentalOffers: []}, {
-      type: ActionType.LOAD_OFFERS,
-      payload: [{}, {}, {}],
-    })).toEqual({
-      rentalOffers: [{}, {}, {}],
-    });
-  });
-  it(`sorting offers`, () => {
-    expect(reducer({sortValue: SortType.POPULAR}, {
-      type: ActionType.SORT_OFFERS,
-      payload: SortType.TOP_RATED,
-    })).toEqual({
-      sortValue: SortType.TOP_RATED,
-    });
-  });
-  it(`change currentCity`, () => {
-    expect(reducer({currentCity: {}}, {
-      type: ActionType.CHANGE_CITY,
-      payload: {name: `Amsterdam`},
-    })).toEqual({
-      currentCity: {name: `Amsterdam`},
-    });
-  });
-  it(`update offer`, () => {
-    expect(reducer({rentalOffers: [{name: `Amsterdam`, isFavorite: false}]}, {
-      type: ActionType.UPDATE_OFFER,
-      payload: {name: `Amsterdam`, isFavorite: true},
-    })).toEqual({
-      rentalOffers: [{name: `Amsterdam`, isFavorite: true}],
+      favoriteOffers: [],
+      rentalOffers: [],
+      sortValue: SortType.POPULAR,
     });
   });
 
+  it(`load offers`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.LOAD_OFFERS,
+      payload: offersMock,
+    })).toEqual({
+      currentCity: {},
+      offersLoaded: false,
+      favoriteOffers: [],
+      rentalOffers: offersMock,
+      sortValue: SortType.POPULAR,
+    });
+  });
+
+  it(`load favorite offers`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.LOAD_FAVORITE_OFFERS,
+      payload: offersMock,
+    })).toEqual({
+      currentCity: {},
+      offersLoaded: false,
+      rentalOffers: [],
+      favoriteOffers: offersMock,
+      sortValue: SortType.POPULAR,
+    });
+  });
+
+  it(`sorting offers`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.SORT_OFFERS,
+      payload: SortType.TOP_RATED,
+    })).toEqual({
+      currentCity: {},
+      offersLoaded: false,
+      favoriteOffers: [],
+      rentalOffers: [],
+      sortValue: SortType.TOP_RATED,
+    });
+  });
+
+  it(`change currentCity`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.CHANGE_CITY,
+      payload: cityMock,
+    })).toEqual({
+      currentCity: cityMock,
+      offersLoaded: false,
+      favoriteOffers: [],
+      rentalOffers: [],
+      sortValue: SortType.POPULAR,
+    });
+  });
+
+  it(`add favorite offer`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.ADD_FAVORITE_OFFER,
+      payload: offerMock,
+    })).toEqual({
+      currentCity: {},
+      offersLoaded: false,
+      favoriteOffers: [offerMock],
+      rentalOffers: [],
+      sortValue: SortType.POPULAR,
+    });
+  });
+
+  it(`remove favorite offer`, () => {
+    expect(reducer({...initialState}, {
+      type: DataAction.REMOVE_FAVORITE_OFFER,
+      payload: offerMock,
+    })).toEqual({
+      currentCity: {},
+      offersLoaded: false,
+      favoriteOffers: [],
+      rentalOffers: [],
+      sortValue: SortType.POPULAR,
+    });
+  });
 });
 

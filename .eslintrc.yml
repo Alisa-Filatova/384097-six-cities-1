@@ -6,6 +6,19 @@ env:
 
 extends: ['htmlacademy/es6', 'plugin:react/recommended']
 
+parser: '@typescript-eslint/parser'
+
+overrides:
+  -
+    files: ['*.ts', '*.tsx']
+    rules:
+      # see https://github.com/typescript-eslint/typescript-eslint/issues/46
+      no-unused-vars: 'off'
+      # TypeScript's enum does not accept backtick quotes
+      quotes: 'off'
+      # TypeScript's interfaces used instead
+      react/prop-types: 'off'
+
 parserOptions:
   ecmaFeatures:
     jsx: true

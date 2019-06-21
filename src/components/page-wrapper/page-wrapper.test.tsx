@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import PageWrapper from './page-wrapper.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import PageWrapper from './page-wrapper';
 
 describe(`PageWrapper`, () => {
   it(`renders correctly`, () => {

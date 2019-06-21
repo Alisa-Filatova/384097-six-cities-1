@@ -1,16 +1,18 @@
 import * as React from 'react';
-import {withPostComment} from '../../hocs/with-post-comment/with-post-comment';
-import { MAX_CHAR_COMMENT, MIN_CHAR_COMMENT, RATING_ITEMS, ERROR_COLOR } from '../../constants/constants';
-import {ResponseStatus} from '../../types/enums/response-status';
+import withPostComment from '../../hocs/with-post-comment/with-post-comment';
+import {MAX_CHAR_COMMENT, MIN_CHAR_COMMENT, RATING_ITEMS, ERROR_COLOR} from '../../constants/constants';
+import ResponseStatus from '../../types/enums/response-status';
 
 interface Props {
+  offerId: number;
   rating: number;
   comment: string;
-  disabled: boolean;
   onRatingChange: () => void;
   onCommentChange: () => void;
   onSubmit: () => void;
-  postReviewStatus: number;
+  saveReviewStatus: number;
+  disabled: boolean;
+  saveReview: () => void;
 }
 
 const ReviewForm: React.FunctionComponent<Props> = ({
@@ -20,8 +22,12 @@ const ReviewForm: React.FunctionComponent<Props> = ({
   onRatingChange,
   onCommentChange,
   onSubmit,
-  postReviewStatus,
+  saveReviewStatus,
 }) => {
+  const errorStyle = {
+    borderColor: saveReviewStatus !== ResponseStatus.OK && saveReviewStatus !== null ? ERROR_COLOR : ``
+  };
+
   return (
     <form
       className="reviews__form form"
@@ -65,11 +71,11 @@ const ReviewForm: React.FunctionComponent<Props> = ({
         maxLength={MAX_CHAR_COMMENT}
         value={comment}
         onChange={onCommentChange}
-        style={{borderColor: postReviewStatus === ResponseStatus.BAD_REQUEST ? ERROR_COLOR : ``}}
+        style={errorStyle}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          {postReviewStatus === ResponseStatus.BAD_REQUEST && (
+          {saveReviewStatus !== ResponseStatus.OK && saveReviewStatus !== null && (
             <>
               <span style={{color: ERROR_COLOR}}>
                 Ooops, something went wrong! Try again later.

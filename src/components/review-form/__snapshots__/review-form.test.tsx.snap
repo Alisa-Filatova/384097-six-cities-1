@@ -147,7 +147,7 @@ exports[`ReviewForm renders correctly 1`] = `
     placeholder="Tell how was your stay, what you like and what can be improved"
     style={
       Object {
-        "borderColor": "",
+        "borderColor": "red",
       }
     }
     value="asd"
@@ -158,6 +158,16 @@ exports[`ReviewForm renders correctly 1`] = `
     <p
       className="reviews__help"
     >
+      <span
+        style={
+          Object {
+            "color": "red",
+          }
+        }
+      >
+        Ooops, something went wrong! Try again later.
+      </span>
+      <br />
       To submit review please make sure to set 
       <span
         className="reviews__star"

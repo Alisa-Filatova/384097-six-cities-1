@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CityTab from '../city-tab/city-tab.jsx';
+import CityTab from '../city-tab/city-tab';
 import {City} from '../../types/offer';
 
 interface Props {

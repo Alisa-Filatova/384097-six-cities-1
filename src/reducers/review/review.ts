@@ -1,69 +1,82 @@
 const initialState = {
   reviewsList: [],
-  postReviewStatus: null,
+  saveReviewStatus: null,
 };
 
-const ActionType = {
-  GET_REVIEWS: `GET_REVIEWS`,
-  POST_REVIEW: `POST_REVIEW`,
-  GET_POST_REVIEW_STATUS: `GET_POST_REVIEW_STATUS`,
-};
+interface ActionType {
+  type: ReviewAction,
+  payload: any,
+}
+
+enum ReviewAction {
+  GET_REVIEWS = 'GET_REVIEWS',
+  ADD_REVIEW = 'ADD_REVIEW',
+  SET_SAVE_REVIEW_STATUS = 'SET_SAVE_REVIEW_STATUS',
+}
 
 const ActionCreator = {
   getReviews: (reviews) => ({
-    type: ActionType.GET_REVIEWS,
+    type: ReviewAction.GET_REVIEWS,
     payload: reviews,
   }),
 
-  postReview: (reviews) => ({
-    type: ActionType.POST_REVIEW,
-    payload: reviews,
+  addReview: (review) => ({
+    type: ReviewAction.ADD_REVIEW,
+    payload: review,
   }),
 
-  getPostReviewStatus: (postReviewStatus) => ({
-    type: ActionType.GET_POST_REVIEW_STATUS,
-    payload: postReviewStatus,
+  setSaveReviewStatus: (saveReviewStatus) => ({
+    type: ReviewAction.SET_SAVE_REVIEW_STATUS,
+    payload: saveReviewStatus,
   }),
 };
 
 const Operation = {
-  getReviewsList: (id) => (dispatch, getState, api) => {
+  getReviewsList: (id: number) => (dispatch, getState, api) => {
     return api.get(`/comments/${id}`)
       .then((response) => {
         dispatch(ActionCreator.getReviews(response.data));
       })
       .catch(() => {});
   },
-  postReview: (id, review) => (dispatch, getState, api) => {
+
+  saveReview: (id: number, review) => (dispatch, getState, api) => {
     return api.post(`/comments/${id}`, review)
       .then((response) => {
-        dispatch(ActionCreator.postReview(response.data));
-        dispatch(ActionCreator.getPostReviewStatus(response.status));
+        dispatch(ActionCreator.addReview(response.data));
+        dispatch(ActionCreator.setSaveReviewStatus(response.status));
       })
       .catch((error) => {
         if (error) {
-          dispatch(ActionCreator.getPostReviewStatus(error.response.status));
+          dispatch(ActionCreator.setSaveReviewStatus(error.response.status));
         }
       });
   },
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
-    case ActionType.GET_REVIEWS:
-      return Object.assign({}, state, {
+    case ReviewAction.GET_REVIEWS:
+      return {
+        ...state,
         reviewsList: action.payload,
-      });
-    case ActionType.POST_REVIEW:
-      return Object.assign({}, state, {
+      };
+
+    case ReviewAction.ADD_REVIEW:
+      return {
+        ...state,
         reviewsList: action.payload,
-      });
-    case ActionType.GET_POST_REVIEW_STATUS:
-      return Object.assign({}, state, {
-        postReviewStatus: action.payload,
-      });
+      };
+
+    case ReviewAction.SET_SAVE_REVIEW_STATUS:
+      return {
+        ...state,
+        saveReviewStatus: action.payload,
+      };
+
+    default:
+      return state;
   }
-  return state;
 };
 
-export {reducer, ActionCreator, Operation, ActionType};
+export {reducer, ActionCreator, Operation, ReviewAction, initialState};

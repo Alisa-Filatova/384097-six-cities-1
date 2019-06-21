@@ -1,6 +1,6 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import CityTab from './city-tab.jsx';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import CityTab from './city-tab';
 
 describe(`CityTab`, () => {
   it(`renders correctly`, () => {

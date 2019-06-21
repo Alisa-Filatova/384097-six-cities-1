@@ -1,32 +1,15 @@
 import * as React from 'react';
-import renderer from 'react-test-renderer';
+import * as renderer from 'react-test-renderer';
 import CitiesList from './cities-list';
-
-const mock = [
-  {
-    name: `Amsterdam`,
-    location: {
-      latitude: 52.370216,
-      longitude: 4.895168,
-      zoom: 10,
-    }
-  },
-  {
-    name: `Paris`,
-    location: {
-      latitude: 52.370216,
-      longitude: 4.895168,
-      zoom: 10,
-    }
-  },
-];
+import {cityMock} from '../../mocks/city';
+import {City} from '../../types/offer';
 
 describe(`CitiesList`, () => {
   it(`renders correctly`, () => {
     const list = renderer.create(
         <CitiesList
-          cities={mock}
-          currentCity={mock[0]}
+          cities={[cityMock] as City[]}
+          currentCity={cityMock}
           onCityClick={jest.fn()}
         />
     ).toJSON();

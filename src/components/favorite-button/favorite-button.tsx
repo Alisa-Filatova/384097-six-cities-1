@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const IconSize = {
+const iconSize = {
   DEFAULT: {
     width: 18,
     height: 19,
@@ -25,8 +25,8 @@ const FavoriteButton: React.FunctionComponent<Props> = ({isActive, onClick, larg
   >
     <svg
       className="place-card__bookmark-icon"
-      width={large ? IconSize.LARGE.width : IconSize.DEFAULT.width}
-      height={large ? IconSize.LARGE.height : IconSize.DEFAULT.height}
+      width={large ? iconSize.LARGE.width : iconSize.DEFAULT.width}
+      height={large ? iconSize.LARGE.height : iconSize.DEFAULT.height}
     >
       <use xlinkHref="#icon-bookmark" />
     </svg>

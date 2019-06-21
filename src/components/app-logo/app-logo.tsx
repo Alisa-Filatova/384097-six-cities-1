@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import {ROUTES} from '../../constants/constants';
 
-const LogoSize = {
+const logoSize = {
   DEFAULT: {
     width: 81,
     height: 41,
@@ -27,8 +27,8 @@ const AppLogo: React.FunctionComponent<Props> = ({prefix = `header`, small}) => 
       className={`${prefix}__logo`}
       src="/img/logo.svg"
       alt="6 cities logo"
-      width={small ? LogoSize.SMALL.width : LogoSize.DEFAULT.width}
-      height={small ? LogoSize.SMALL.height : LogoSize.DEFAULT.height}
+      width={small ? logoSize.SMALL.width : logoSize.DEFAULT.width}
+      height={small ? logoSize.SMALL.height : logoSize.DEFAULT.height}
     />
   </Link>
 );
