@@ -10,7 +10,7 @@ class CityTab extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
+    this._handleClick = this._handleClick.bind(this);
   }
 
   render() {
@@ -21,7 +21,7 @@ class CityTab extends React.PureComponent<Props> {
         <a
           style={{pointerEvents: onCityClick ? `auto` : `none`}}
           className={`locations__item-link tabs__item ${isActive ? `tabs__item--active` : ``}`}
-          onClick={this.handleClick}
+          onClick={this._handleClick}
           href="#"
         >
           <span>{city}</span>
@@ -30,7 +30,7 @@ class CityTab extends React.PureComponent<Props> {
     );
   }
 
-  private handleClick(event) {
+  private _handleClick(event) {
     event.preventDefault();
     this.props.onCityClick();
   }

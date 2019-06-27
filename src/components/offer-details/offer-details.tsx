@@ -36,7 +36,7 @@ class OfferDetails extends React.PureComponent<Props> {
   constructor(props) {
     super(props);
 
-    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   componentDidMount() {
@@ -87,7 +87,7 @@ class OfferDetails extends React.PureComponent<Props> {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.isFavorite}
-                  onClick={this.handleFavoriteClick}
+                  onClick={this._handleFavoriteClick}
                   large
                 />
               </div>
@@ -178,7 +178,7 @@ class OfferDetails extends React.PureComponent<Props> {
     );
   }
 
-  private handleFavoriteClick() {
+  private _handleFavoriteClick() {
     const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
 
     if (isAuthenticated) {

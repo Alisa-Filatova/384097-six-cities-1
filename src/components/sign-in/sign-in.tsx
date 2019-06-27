@@ -23,8 +23,8 @@ class SignIn extends React.PureComponent<Props> {
 
     this._emailInput = React.createRef();
     this._passwordInput = React.createRef();
-    this.handleCheckDataLogin = this.handleCheckDataLogin.bind(this);
-    this.handleValidateFields = this.handleValidateFields.bind(this);
+    this._handleCheckDataLogin = this._handleCheckDataLogin.bind(this);
+    this._handleValidateFields = this._handleValidateFields.bind(this);
   }
 
   render() {
@@ -42,7 +42,7 @@ class SignIn extends React.PureComponent<Props> {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  onChange={this.handleValidateFields}
+                  onChange={this._handleValidateFields}
                   required
                 />
               </div>
@@ -54,14 +54,14 @@ class SignIn extends React.PureComponent<Props> {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  onChange={this.handleValidateFields}
+                  onChange={this._handleValidateFields}
                   required
                 />
               </div>
               <button
                 className="login__submit form__submit button"
                 type="submit"
-                onClick={this.handleCheckDataLogin}
+                onClick={this._handleCheckDataLogin}
               >
                 Sign in
               </button>
@@ -75,7 +75,7 @@ class SignIn extends React.PureComponent<Props> {
     );
   }
 
-  private handleValidateFields() {
+  private _handleValidateFields() {
     const email = this._emailInput.current.value;
     const password = this._passwordInput.current.value;
 
@@ -89,7 +89,7 @@ class SignIn extends React.PureComponent<Props> {
     }
   }
 
-  private handleCheckDataLogin(event) {
+  private _handleCheckDataLogin(event) {
     event.preventDefault();
 
     if (this._emailInput && this._passwordInput) {

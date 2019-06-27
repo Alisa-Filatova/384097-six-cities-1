@@ -39,8 +39,8 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
   constructor(props) {
     super(props);
 
-    this.handleImgClick = this.handleImgClick.bind(this);
-    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+    this._handleImgClick = this._handleImgClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   render() {
@@ -55,7 +55,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
         )}
         <div className={`${prefix}__image-wrapper place-card__image-wrapper`}>
           <a
-            onClick={this.handleImgClick}
+            onClick={this._handleImgClick}
             style={{cursor: onImgClick ? `pointer` : `default`}}
           >
             <img
@@ -75,7 +75,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
             </div>
             <FavoriteButton
               isActive={offer.isFavorite}
-              onClick={this.handleFavoriteClick}
+              onClick={this._handleFavoriteClick}
             />
           </div>
           <RatingStars rating={offer.rating} />
@@ -88,7 +88,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
     );
   }
 
-  private handleImgClick(event) {
+  private _handleImgClick(event) {
     event.preventDefault();
     const {offer, onImgClick} = this.props;
 
@@ -97,7 +97,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
     }
   }
 
-  private handleFavoriteClick() {
+  private _handleFavoriteClick() {
     const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
 
     if (isAuthenticated) {

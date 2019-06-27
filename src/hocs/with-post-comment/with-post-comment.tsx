@@ -30,9 +30,9 @@ const withPostComment = (Component) => {
         comment: ``,
       };
 
-      this.handleRatingChange = this.handleRatingChange.bind(this);
-      this.handleCommentChange = this.handleCommentChange.bind(this);
-      this.handleSubmitReview = this.handleSubmitReview.bind(this);
+      this._handleRatingChange = this._handleRatingChange.bind(this);
+      this._handleCommentChange = this._handleCommentChange.bind(this);
+      this._handleSubmitReview = this._handleSubmitReview.bind(this);
     }
 
     render() {
@@ -43,23 +43,23 @@ const withPostComment = (Component) => {
           {...this.props}
           rating={rating}
           comment={comment}
-          onSubmit={this.handleSubmitReview}
-          onRatingChange={this.handleRatingChange}
-          onCommentChange={this.handleCommentChange}
+          onSubmit={this._handleSubmitReview}
+          onRatingChange={this._handleRatingChange}
+          onCommentChange={this._handleCommentChange}
           disabled={!(comment.length > MIN_CHAR_COMMENT && comment.length < MAX_CHAR_COMMENT && rating > 0)}
         />
       );
     }
 
-    private handleRatingChange(event) {
+    private _handleRatingChange(event) {
       this.setState({rating: +event.target.value});
     }
 
-    private handleCommentChange(event) {
+    private _handleCommentChange(event) {
       this.setState({comment: event.target.value});
     }
 
-    private handleSubmitReview(event) {
+    private _handleSubmitReview(event) {
       event.preventDefault();
 
       const {rating, comment} = this.state;

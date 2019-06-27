@@ -22,25 +22,25 @@ interface Props {
 
 class Map extends React.PureComponent<Props> {
 
-  map: any;
-  markersLayer: any;
+  _map: any;
+  _markersLayer: any;
 
   componentDidMount() {
-    this.initMap();
+    this._initMap();
   }
 
   componentDidUpdate(prevProps) {
     const {zoom, activeOfferId, cityOffers} = this.props;
 
-    if (this.map && this.markersLayer && prevProps.activeOfferId !== activeOfferId) {
+    if (this._map && this._markersLayer && prevProps.activeOfferId !== activeOfferId) {
       const {location} = this.props.currentCity;
       const center = [location.latitude, location.longitude];
 
-      this.map.panTo(center);
-      this.markersLayer.clearLayers();
+      this._map.panTo(center);
+      this._markersLayer.clearLayers();
 
       cityOffers.forEach((place) => {
-        this.drawCityMarker(place, activeOfferId);
+        this._drawCityMarker(place, activeOfferId);
 
         if (zoom && activeOfferId === place.id && prevProps.activeOfferId !== activeOfferId) {
           const coordinates = [
@@ -48,14 +48,14 @@ class Map extends React.PureComponent<Props> {
             place.location.longitude,
           ];
 
-          this.map.flyTo(coordinates, place.location.zoom);
+          this._map.flyTo(coordinates, place.location.zoom);
         }
       });
     }
   }
 
   componentWillUnmount() {
-    this.map.remove();
+    this._map.remove();
   }
 
   render() {
@@ -69,7 +69,7 @@ class Map extends React.PureComponent<Props> {
     );
   }
 
-  private initMap() {
+  private _initMap() {
     const {cityOffers, currentCity, activeOfferId} = this.props;
 
     if (!cityOffers.length) {
@@ -79,7 +79,7 @@ class Map extends React.PureComponent<Props> {
     const {location} = currentCity;
     const center = [location.latitude, location.longitude];
 
-    this.map = leaflet
+    this._map = leaflet
       .map(`map`, {
         zoom: location.zoom,
         zoomControl: false,
@@ -90,14 +90,14 @@ class Map extends React.PureComponent<Props> {
 
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
-      .addTo(this.map);
+      .addTo(this._map);
 
-    this.markersLayer = leaflet.layerGroup().addTo(this.map);
+    this._markersLayer = leaflet.layerGroup().addTo(this._map);
 
-    cityOffers.forEach((city) => this.drawCityMarker(city, activeOfferId));
+    cityOffers.forEach((city) => this._drawCityMarker(city, activeOfferId));
   }
 
-  private drawCityMarker(city, activeOfferId: number) {
+  private _drawCityMarker(city, activeOfferId: number) {
     const coordinates = [
       city.location.latitude,
       city.location.longitude,
@@ -109,7 +109,7 @@ class Map extends React.PureComponent<Props> {
 
     leaflet
       .marker(coordinates, options)
-      .addTo(this.markersLayer);
+      .addTo(this._markersLayer);
   }
 }
 

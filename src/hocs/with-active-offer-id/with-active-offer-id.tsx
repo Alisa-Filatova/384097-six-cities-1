@@ -19,7 +19,7 @@ function withActiveOfferId<T extends Props>(Component: ComponentType<T>) {
       const {activeOfferId = null} = props;
 
       this.state = {activeOfferId};
-      this.handleGetActiveOffer = this.handleGetActiveOffer.bind(this);
+      this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
     }
 
     render() {
@@ -29,12 +29,12 @@ function withActiveOfferId<T extends Props>(Component: ComponentType<T>) {
         <Component
           {...this.props as T}
           activeOfferId={activeOfferId}
-          setActiveId={this.handleGetActiveOffer}
+          setActiveId={this._handleGetActiveOffer}
         />
       );
     }
 
-    private handleGetActiveOffer(offerId) {
+    private _handleGetActiveOffer(offerId) {
       this.setState((prevState) => ({
         ...prevState,
         activeOfferId: offerId,

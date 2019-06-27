@@ -28,20 +28,20 @@ const withToggle = (Component) => {
       super(props);
 
       this.state = {toggleStatus: false};
-      this.handleToggle = this.handleToggle.bind(this);
+      this._handleToggle = this._handleToggle.bind(this);
     }
 
     render() {
       return (
         <Component
           {...this.props}
-          onToggle={this.handleToggle}
+          onToggle={this._handleToggle}
           toggleStatus={this.state.toggleStatus}
         />
       );
     }
 
-    private handleToggle() {
+    private _handleToggle() {
       this.setState({
         toggleStatus: !this.state.toggleStatus,
       });

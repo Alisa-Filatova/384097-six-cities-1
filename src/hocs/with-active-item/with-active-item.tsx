@@ -19,7 +19,7 @@ const withActiveItem = (Component) => {
       super(props);
 
       this.state = {currentItem: null};
-      this.setActiveItemHandle = this.setActiveItemHandle.bind(this);
+      this._setActiveItemHandle = this._setActiveItemHandle.bind(this);
     }
 
     render() {
@@ -27,12 +27,12 @@ const withActiveItem = (Component) => {
         <Component
           {...this.props}
           currentItem={this.state.currentItem}
-          setActiveItem={this.setActiveItemHandle}
+          setActiveItem={this._setActiveItemHandle}
         />
       );
     }
 
-    private setActiveItemHandle(item) {
+    private _setActiveItemHandle(item) {
       this.setState({currentItem: item});
     }
   };
