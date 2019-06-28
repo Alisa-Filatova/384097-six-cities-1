@@ -40,7 +40,7 @@ const Operation = {
   login: (data) => (dispatch, getState, api) => {
     dispatch(ActionCreator.pendingAuthorization(true));
 
-    return api.post(`/login`, data)
+    return api.post('/login', data)
       .then((response) => {
         dispatch(ActionCreator.login(response.data));
         dispatch(ActionCreator.setAuthorizationStatus(true));
@@ -56,7 +56,7 @@ const Operation = {
   checkAuthorization: () => (dispatch, getState, api) => {
     dispatch(ActionCreator.pendingAuthorization(true));
 
-    return api.get(`/login`)
+    return api.get('/login')
       .then((response) => {
         dispatch(ActionCreator.login(response.data));
         dispatch(ActionCreator.setAuthorizationStatus(true));

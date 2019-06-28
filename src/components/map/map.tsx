@@ -3,12 +3,12 @@ import * as leaflet from 'leaflet';
 import {City, Offer} from '../../types/offer';
 
 const pin = leaflet.icon({
-  iconUrl: `/img/pin.svg`,
+  iconUrl: '/img/pin.svg',
   iconSize: [27, 39],
 });
 
 const activePin = leaflet.icon({
-  iconUrl: `/img/pin-active.svg`,
+  iconUrl: '/img/pin-active.svg',
   iconSize: [30, 42],
 });
 
@@ -22,25 +22,25 @@ interface Props {
 
 class Map extends React.PureComponent<Props> {
 
-  _map: any;
-  _markersLayer: any;
+  map: any;
+  markersLayer: any;
 
   componentDidMount() {
-    this._initMap();
+    this.initMap();
   }
 
   componentDidUpdate(prevProps) {
     const {zoom, activeOfferId, cityOffers} = this.props;
 
-    if (this._map && this._markersLayer && prevProps.activeOfferId !== activeOfferId) {
+    if (this.map && this.markersLayer && prevProps.activeOfferId !== activeOfferId) {
       const {location} = this.props.currentCity;
       const center = [location.latitude, location.longitude];
 
-      this._map.panTo(center);
-      this._markersLayer.clearLayers();
+      this.map.panTo(center);
+      this.markersLayer.clearLayers();
 
       cityOffers.forEach((place) => {
-        this._drawCityMarker(place, activeOfferId);
+        this.drawCityMarker(place, activeOfferId);
 
         if (zoom && activeOfferId === place.id && prevProps.activeOfferId !== activeOfferId) {
           const coordinates = [
@@ -48,14 +48,14 @@ class Map extends React.PureComponent<Props> {
             place.location.longitude,
           ];
 
-          this._map.flyTo(coordinates, place.location.zoom);
+          this.map.flyTo(coordinates, place.location.zoom);
         }
       });
     }
   }
 
   componentWillUnmount() {
-    this._map.remove();
+    this.map.remove();
   }
 
   render() {
@@ -63,13 +63,13 @@ class Map extends React.PureComponent<Props> {
 
     return (
       <section
-        className={className ? className : `cities__map map`}
+        className={className ? className : 'cities__map map'}
         id="map"
       />
     );
   }
 
-  private _initMap() {
+  private initMap = () => {
     const {cityOffers, currentCity, activeOfferId} = this.props;
 
     if (!cityOffers.length) {
@@ -79,8 +79,8 @@ class Map extends React.PureComponent<Props> {
     const {location} = currentCity;
     const center = [location.latitude, location.longitude];
 
-    this._map = leaflet
-      .map(`map`, {
+    this.map = leaflet
+      .map('map', {
         zoom: location.zoom,
         zoomControl: false,
         marker: true,
@@ -89,27 +89,27 @@ class Map extends React.PureComponent<Props> {
       .setView(center, location.zoom);
 
     leaflet
-      .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`)
-      .addTo(this._map);
+      .tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png')
+      .addTo(this.map);
 
-    this._markersLayer = leaflet.layerGroup().addTo(this._map);
+    this.markersLayer = leaflet.layerGroup().addTo(this.map);
 
-    cityOffers.forEach((city) => this._drawCityMarker(city, activeOfferId));
-  }
+    cityOffers.forEach((city) => this.drawCityMarker(city, activeOfferId));
+  };
 
-  private _drawCityMarker(city, activeOfferId: number) {
+  private drawCityMarker = (place: Offer, activeOfferId: number) => {
     const coordinates = [
-      city.location.latitude,
-      city.location.longitude,
+      place.location.latitude,
+      place.location.longitude,
     ];
 
     const options = {
-      icon: activeOfferId === city.id ? activePin : pin,
+      icon: activeOfferId === place.id ? activePin : pin,
     };
 
     leaflet
       .marker(coordinates, options)
-      .addTo(this._markersLayer);
+      .addTo(this.markersLayer);
   }
 }
 

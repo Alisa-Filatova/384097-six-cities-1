@@ -15,25 +15,22 @@ const withActiveItem = (Component) => {
 
   return class WithActiveItem extends React.PureComponent<T, State> {
 
-    constructor(props) {
-      super(props);
+    state: State = {
+      currentItem: null,
+    };
 
-      this.state = {currentItem: null};
-      this._setActiveItemHandle = this._setActiveItemHandle.bind(this);
-    }
+    private setActiveItemHandle = (item) => {
+      this.setState({currentItem: item});
+    };
 
     render() {
       return (
         <Component
           {...this.props}
           currentItem={this.state.currentItem}
-          setActiveItem={this._setActiveItemHandle}
+          setActiveItem={this.setActiveItemHandle}
         />
       );
-    }
-
-    private _setActiveItemHandle(item) {
-      this.setState({currentItem: item});
     }
   };
 };

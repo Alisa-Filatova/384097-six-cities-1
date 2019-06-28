@@ -8,11 +8,11 @@ configure({adapter: new Adapter()});
 const MockComponent = () => <div />;
 const WrappedMockComponent = withActiveItem(MockComponent);
 
-it(`Test withActiveItem hoc`, () => {
+it('Test withActiveItem hoc', () => {
   const wrapper = shallow(<WrappedMockComponent />);
 
   expect(wrapper.state().currentItem).toEqual(null);
 
-  wrapper.props().setActiveItem({city: `Paris`});
-  expect(wrapper.state().currentItem).toEqual({city: `Paris`});
+  wrapper.props().setActiveItem({city: 'Paris'});
+  expect(wrapper.state().currentItem).toEqual({city: 'Paris'});
 });

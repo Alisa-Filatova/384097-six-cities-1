@@ -13,14 +13,16 @@ interface State {
 function withActiveOfferId<T extends Props>(Component: ComponentType<T>) {
   return class WithActiveOfferId extends React.PureComponent<Subtract<T, Props>, State> {
 
-    constructor(props) {
-      super(props);
+    state: State = {
+      activeOfferId: null,
+    };
 
-      const {activeOfferId = null} = props;
-
-      this.state = {activeOfferId};
-      this._handleGetActiveOffer = this._handleGetActiveOffer.bind(this);
-    }
+    private handleGetActiveOffer = (offerId) => {
+      this.setState((prevState) => ({
+        ...prevState,
+        activeOfferId: offerId,
+      }));
+    };
 
     render() {
       const {activeOfferId} = this.state;
@@ -29,16 +31,9 @@ function withActiveOfferId<T extends Props>(Component: ComponentType<T>) {
         <Component
           {...this.props as T}
           activeOfferId={activeOfferId}
-          setActiveId={this._handleGetActiveOffer}
+          setActiveId={this.handleGetActiveOffer}
         />
       );
-    }
-
-    private _handleGetActiveOffer(offerId) {
-      this.setState((prevState) => ({
-        ...prevState,
-        activeOfferId: offerId,
-      }));
     }
   };
 }

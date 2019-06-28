@@ -1,12 +1,12 @@
 const toCamel = (string) => {
   return string.replace(/([-_][a-z])/ig, ($1) => {
     return $1.toUpperCase()
-      .replace(`_`, ``);
+      .replace('_', '');
   });
 };
 
 const isObject = (object) =>
-  object === Object(object) && !Array.isArray(object) && typeof object !== `function`;
+  object === Object(object) && !Array.isArray(object) && typeof object !== 'function';
 
 export const keysToCamel = (object) => {
   if (isObject(object)) {

@@ -5,7 +5,7 @@ const ErrorMessage = () => {
   return (
     <main
       className="page__main page__main--favorites page__main--favorites-empty"
-      style={{height: `100vh`}}
+      style={{height: '100vh'}}
     >
       <div className="page__favorites-container container">
         <section className="favorites favorites--empty">

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const NotFound = () => {
   return (
-    <div className="cities__places-wrapper" style={{height: `100vh`}}>
+    <div className="cities__places-wrapper" style={{height: '100vh'}}>
       <div className="cities__places-container cities__places-container--empty container">
         <section className="cities__no-places">
           <div className="cities__status-wrapper tabs__content">

@@ -7,11 +7,11 @@ interface Props {
 }
 
 class CityTab extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
 
-    this._handleClick = this._handleClick.bind(this);
-  }
+  private handleClick = (event) => {
+    event.preventDefault();
+    this.props.onCityClick();
+  };
 
   render() {
     const {city, onCityClick, isActive} = this.props;
@@ -19,20 +19,15 @@ class CityTab extends React.PureComponent<Props> {
     return (
       <div className="locations__item">
         <a
-          style={{pointerEvents: onCityClick ? `auto` : `none`}}
-          className={`locations__item-link tabs__item ${isActive ? `tabs__item--active` : ``}`}
-          onClick={this._handleClick}
+          style={{pointerEvents: onCityClick ? 'auto' : 'none'}}
+          className={`locations__item-link tabs__item ${isActive ? 'tabs__item--active' : ''}`}
+          onClick={this.handleClick}
           href="#"
         >
           <span>{city}</span>
         </a>
       </div>
     );
-  }
-
-  private _handleClick(event) {
-    event.preventDefault();
-    this.props.onCityClick();
   }
 }
 

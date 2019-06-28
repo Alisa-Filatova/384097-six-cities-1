@@ -8,8 +8,8 @@ import {offerMock} from '../../mocks/offer';
 
 configure({adapter: new Adapter()});
 
-describe(`OfferCard`, () => {
-  it(`renders correctly`, () => {
+describe('OfferCard', () => {
+  it('renders correctly', () => {
     const card = shallow(
         <OfferCard
           offer={offerMock as Offer}

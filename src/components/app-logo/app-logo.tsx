@@ -18,7 +18,7 @@ interface Props {
   small?: boolean;
 }
 
-const AppLogo: React.FunctionComponent<Props> = ({prefix = `header`, small}) => (
+const AppLogo: React.FunctionComponent<Props> = ({prefix = 'header', small}) => (
   <Link
     className={`${prefix}__logo-link`}
     to={ROUTES.HOME}

@@ -5,14 +5,14 @@ import ResponseStatus from '../../types/enums/response-status';
 import {reviewsListMock} from '../../mocks/reviews-list';
 import {reviewMock} from '../../mocks/review';
 
-describe(`Test API works correctly`, () => {
-  it(`API correctly get to /comments/id`, function () {
+describe('Test API works correctly', () => {
+  it('API correctly get to /comments/id', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, jest.fn());
     const apiMock = new MockAdapter(api);
     const getReviews = Operation.getReviewsList(1);
 
-    apiMock.onGet(`/comments/1`)
+    apiMock.onGet('/comments/1')
       .reply(ResponseStatus.OK, reviewsListMock);
 
     return getReviews(dispatch, jest.fn(), api)
@@ -24,13 +24,13 @@ describe(`Test API works correctly`, () => {
       });
   });
 
-  it(`API correctly post to /comments/id`, function () {
+  it('API correctly post to /comments/id', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, dispatch);
     const apiMock = new MockAdapter(api);
     const saveReview = Operation.saveReview(1, {});
 
-    apiMock.onPost(`/comments/1`)
+    apiMock.onPost('/comments/1')
       .reply(ResponseStatus.OK, reviewMock);
 
     return saveReview(dispatch, jest.fn(), api)
@@ -43,22 +43,22 @@ describe(`Test API works correctly`, () => {
   });
 });
 
-describe(`Test ActionCreator reducer data`, () => {
-  it(`set reviewsList`, () => {
+describe('Test ActionCreator reducer data', () => {
+  it('set reviewsList', () => {
     expect(ActionCreator.getReviews(reviewsListMock)).toEqual({
       type: ReviewAction.GET_REVIEWS,
       payload: reviewsListMock,
     });
   });
 
-  it(`set saveReview`, () => {
+  it('set saveReview', () => {
     expect(ActionCreator.addReview(reviewMock)).toEqual({
       type: ReviewAction.ADD_REVIEW,
       payload: reviewMock,
     });
   });
 
-  it(`set saveReview status status`, () => {
+  it('set saveReview status status', () => {
     expect(ActionCreator.setSaveReviewStatus(ResponseStatus.OK)).toEqual({
       type: ReviewAction.SET_SAVE_REVIEW_STATUS,
       payload: ResponseStatus.OK,
@@ -66,8 +66,8 @@ describe(`Test ActionCreator reducer data`, () => {
   });
 });
 
-describe(`Test reducer data`, () => {
-  it(`get reviewsList`, () => {
+describe('Test reducer data', () => {
+  it('get reviewsList', () => {
     expect(reducer({...initialState}, {
       type: ReviewAction.GET_REVIEWS,
       payload: reviewsListMock,
@@ -77,7 +77,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`add review`, () => {
+  it('add review', () => {
     expect(reducer({...initialState}, {
       type: ReviewAction.ADD_REVIEW,
       payload: reviewsListMock,
@@ -87,7 +87,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`get saveReview status`, () => {
+  it('get saveReview status', () => {
     expect(reducer({...initialState}, {
       type: ReviewAction.SET_SAVE_REVIEW_STATUS,
       payload: ResponseStatus.OK,

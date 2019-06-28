@@ -1,20 +1,12 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import MainPageEmpty from './main-page-empty';
+import {cityMock} from '../../mocks/city';
 
-const mock = {
-  name: `Amsterdam`,
-  location: {
-    latitude: 52.370216,
-    longitude: 4.895168,
-    zoom: 10,
-  }
-};
-
-describe(`MainPageEmpty`, () => {
-  it(`renders correctly`, () => {
+describe('MainPageEmpty', () => {
+  it('renders correctly', () => {
     const page = renderer.create(
-        <MainPageEmpty currentCity={mock} />
+        <MainPageEmpty currentCity={cityMock} />
     ).toJSON();
     expect(page).toMatchSnapshot();
   });

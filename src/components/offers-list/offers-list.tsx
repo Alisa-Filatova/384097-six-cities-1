@@ -44,7 +44,7 @@ const OffersList = (props: Props) => {
 };
 
 OffersList.defaultProps = {
-  prefix: `cities`,
+  prefix: 'cities',
 };
 
 export default OffersList;

@@ -33,15 +33,27 @@ interface DefaultProps {
 class OfferCard extends React.PureComponent<Props & DefaultProps> {
 
   static defaultProps = {
-    prefix: `cities`,
+    prefix: 'cities',
   };
 
-  constructor(props) {
-    super(props);
+  private handleImgClick = (event) => {
+    event.preventDefault();
+    const {offer, onImgClick} = this.props;
 
-    this._handleImgClick = this._handleImgClick.bind(this);
-    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-  }
+    if (onImgClick) {
+      onImgClick(offer.id);
+    }
+  };
+
+  private handleFavoriteClick = () => {
+    const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
+
+    if (isAuthenticated) {
+      onFavoriteClick(offer);
+    } else {
+      history.push(ROUTES.LOGIN);
+    }
+  };
 
   render() {
     const {offer, prefix, small, onImgClick} = this.props;
@@ -55,8 +67,8 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
         )}
         <div className={`${prefix}__image-wrapper place-card__image-wrapper`}>
           <a
-            onClick={this._handleImgClick}
-            style={{cursor: onImgClick ? `pointer` : `default`}}
+            onClick={this.handleImgClick}
+            style={{cursor: onImgClick ? 'pointer' : 'default'}}
           >
             <img
               className="place-card__image"
@@ -75,7 +87,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
             </div>
             <FavoriteButton
               isActive={offer.isFavorite}
-              onClick={this._handleFavoriteClick}
+              onClick={this.handleFavoriteClick}
             />
           </div>
           <RatingStars rating={offer.rating} />
@@ -86,25 +98,6 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
         </div>
       </article>
     );
-  }
-
-  private _handleImgClick(event) {
-    event.preventDefault();
-    const {offer, onImgClick} = this.props;
-
-    if (onImgClick) {
-      onImgClick(offer.id);
-    }
-  }
-
-  private _handleFavoriteClick() {
-    const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
-
-    if (isAuthenticated) {
-      onFavoriteClick(offer);
-    } else {
-      history.push(ROUTES.LOGIN);
-    }
   }
 }
 

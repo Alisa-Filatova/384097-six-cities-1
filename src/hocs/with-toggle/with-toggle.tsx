@@ -24,27 +24,24 @@ const withToggle = (Component) => {
 
   return class WithToggle extends React.PureComponent<T, State> {
 
-    constructor(props) {
-      super(props);
+    state: State = {
+      toggleStatus: false,
+    };
 
-      this.state = {toggleStatus: false};
-      this._handleToggle = this._handleToggle.bind(this);
-    }
+    private handleToggle = () => {
+      this.setState({
+        toggleStatus: !this.state.toggleStatus,
+      });
+    };
 
     render() {
       return (
         <Component
           {...this.props}
-          onToggle={this._handleToggle}
+          onToggle={this.handleToggle}
           toggleStatus={this.state.toggleStatus}
         />
       );
-    }
-
-    private _handleToggle() {
-      this.setState({
-        toggleStatus: !this.state.toggleStatus,
-      });
     }
   };
 };

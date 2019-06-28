@@ -11,8 +11,8 @@ import SortType from '../../types/enums/sort-type';
 
 configure({adapter: new Adapter()});
 
-describe(`MainPage`, () => {
-  it(`renders correctly`, () => {
+describe('MainPage', () => {
+  it('renders correctly', () => {
     const page = shallow(
         <MainPage
           activeOfferId={1}

@@ -11,8 +11,8 @@ import {Review} from '../../types/user';
 
 configure({adapter: new Adapter()});
 
-describe(`OfferDetails`, () => {
-  it(`renders correctly`, () => {
+describe('OfferDetails', () => {
+  it('renders correctly', () => {
     const page = shallow(
         <OfferDetails
           nearOffers={offersMock as Offer[]}

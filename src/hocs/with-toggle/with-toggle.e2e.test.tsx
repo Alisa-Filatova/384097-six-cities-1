@@ -8,7 +8,7 @@ configure({adapter: new Adapter()});
 const MockComponent = () => <div />;
 const WrappedMockComponent = withToggle(MockComponent);
 
-it(`Test withToggle hoc`, () => {
+it('Test withToggle hoc', () => {
   const wrapper = shallow(<WrappedMockComponent />);
 
   wrapper.props().onToggle();

@@ -7,8 +7,8 @@ import {favoriteOffersGroupMock} from '../../mocks/favorite-offers-group';
 
 configure({adapter: new Adapter()});
 
-describe(`Favorites`, () => {
-  it(`renders correctly`, () => {
+describe('Favorites', () => {
+  it('renders correctly', () => {
     const page = shallow(
         <Favorites
           offers={favoriteOffersGroupMock as any}

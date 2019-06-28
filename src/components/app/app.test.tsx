@@ -8,14 +8,14 @@ import {User} from '../../types/user';
 
 configure({adapter: new Adapter()});
 
-describe(`App`, () => {
-  it(`renders correctly`, () => {
+describe('App', () => {
+  it('renders correctly', () => {
     const app = shallow(
         <App
           isAuthenticated={true}
           pendingAuthorization={false}
           user={userMock as User}
-          location={{pathname: `/`}}
+          location={{pathname: '/'}}
         />
     );
 

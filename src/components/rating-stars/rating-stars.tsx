@@ -6,7 +6,7 @@ interface Props {
   prefix?: string;
 }
 
-const RatingStars: React.FunctionComponent<Props> = ({rating, showValue, prefix = `place-card`}) => (
+const RatingStars: React.FunctionComponent<Props> = ({rating, showValue, prefix = 'place-card'}) => (
   <div className={`${prefix}__rating rating`}>
     <div className={`${prefix}__stars rating__stars`}>
       <span style={{width: `${(Math.round(rating) * 10) * 2}%`}} />

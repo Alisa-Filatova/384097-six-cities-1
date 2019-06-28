@@ -43,7 +43,7 @@ class Favorites extends React.PureComponent<Props> {
         ) : (
           <main
             className="page__main page__main--favorites page__main--favorites-empty"
-            style={{height: `70vh`}}
+            style={{height: '70vh'}}
           >
             <div className="page__favorites-container container">
               <section className="favorites favorites--empty">

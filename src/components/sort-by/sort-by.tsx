@@ -60,7 +60,7 @@ const SortBy: React.FunctionComponent<Props> = (props) => {
         <ul className="places__options places__options--custom places__options--opened">
           {sortTypesList.map((sortType) =>
             <li
-              className={`places__option ${currentItem === sortType.name ? `places__option--active` : ``}`}
+              className={`places__option ${currentItem === sortType.name ? 'places__option--active' : ''}`}
               tabIndex={0}
               onClick={sortType.action}
               key={sortType.name}

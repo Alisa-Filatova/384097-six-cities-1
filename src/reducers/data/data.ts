@@ -63,7 +63,7 @@ const ActionCreator = {
 
 const Operation = {
   loadOffers: () => (dispatch, getState, api) => {
-    return api.get(`/hotels`)
+    return api.get('/hotels')
       .then((response) => {
         dispatch(ActionCreator.loadOffers(response.data));
         dispatch(ActionCreator.offersLoaded(true));
@@ -72,7 +72,7 @@ const Operation = {
   },
 
   loadFavoriteOffers: () => (dispatch, getState, api) => {
-    return api.get(`/favorite`)
+    return api.get('/favorite')
       .then((response) => {
         dispatch(ActionCreator.loadFavoriteOffers(response.data));
       })
@@ -81,7 +81,7 @@ const Operation = {
 
   toggleFavorite: (offer) => (dispatch, getState, api) => {
     const {id} = offer;
-    const status = offer.isFavorite ? `0` : `1`;
+    const status = offer.isFavorite ? '0' : '1';
 
     return api.post(`/favorite/${id}/${status}`)
       .then((response) => {

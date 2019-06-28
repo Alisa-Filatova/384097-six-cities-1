@@ -8,8 +8,8 @@ import {Offer} from '../../types/offer';
 
 configure({adapter: new Adapter()});
 
-describe(`OfferCard`, () => {
-  it(`get card offer id onImgClick handler`, () => {
+describe('OfferCard', () => {
+  it('get card offer id onImgClick handler', () => {
     const onImgCallback = jest.fn(() => card.props().offer);
 
     const card = mount(
@@ -23,7 +23,7 @@ describe(`OfferCard`, () => {
         </Router>
     );
 
-    card.find(`.cities__image-wrapper > a`).simulate(`click`);
+    card.find('.cities__image-wrapper > a').simulate('click');
     expect(onImgCallback.mock.results[0].value).toBe(card.props().offer);
   });
 });

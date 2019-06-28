@@ -22,18 +22,27 @@ const withPostComment = (Component) => {
 
   class WithPostComment extends React.PureComponent<T, State> {
 
-    constructor(props) {
-      super(props);
+    state: State = {
+      rating: 0,
+      comment: '',
+    };
 
-      this.state = {
-        rating: 0,
-        comment: ``,
-      };
+    handleRatingChange = (event)=> {
+      this.setState({rating: +event.target.value});
+    };
 
-      this._handleRatingChange = this._handleRatingChange.bind(this);
-      this._handleCommentChange = this._handleCommentChange.bind(this);
-      this._handleSubmitReview = this._handleSubmitReview.bind(this);
-    }
+    handleCommentChange = (event) => {
+      this.setState({comment: event.target.value});
+    };
+
+    handleSubmitReview = (event) => {
+      event.preventDefault();
+
+      const {rating, comment} = this.state;
+
+      this.props.saveReview({rating, comment}, this.props.offerId);
+      this.setState({rating: 0, comment: ''});
+    };
 
     render() {
       const {rating, comment} = this.state;
@@ -43,29 +52,12 @@ const withPostComment = (Component) => {
           {...this.props}
           rating={rating}
           comment={comment}
-          onSubmit={this._handleSubmitReview}
-          onRatingChange={this._handleRatingChange}
-          onCommentChange={this._handleCommentChange}
+          onSubmit={this.handleSubmitReview}
+          onRatingChange={this.handleRatingChange}
+          onCommentChange={this.handleCommentChange}
           disabled={!(comment.length > MIN_CHAR_COMMENT && comment.length < MAX_CHAR_COMMENT && rating > 0)}
         />
       );
-    }
-
-    private _handleRatingChange(event) {
-      this.setState({rating: +event.target.value});
-    }
-
-    private _handleCommentChange(event) {
-      this.setState({comment: event.target.value});
-    }
-
-    private _handleSubmitReview(event) {
-      event.preventDefault();
-
-      const {rating, comment} = this.state;
-
-      this.props.saveReview({rating, comment}, this.props.offerId);
-      this.setState({rating: 0, comment: ``});
     }
   }
 

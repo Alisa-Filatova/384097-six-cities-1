@@ -10,7 +10,7 @@ interface Props {
 const ReviewsList: React.FunctionComponent<Props> = ({reviews}) => (
   <>
     <h2 className="reviews__title">
-      {reviews.length === 1 ? `Review` : `Reviews`} &middot; <span className="reviews__amount">{reviews.length}</span>
+      {reviews.length === 1 ? 'Review' : 'Reviews'} &middot; <span className="reviews__amount">{reviews.length}</span>
     </h2>
     <ul className="reviews__list">
       {reviews.slice(0, MAX_COMMENTS).map((review) => (

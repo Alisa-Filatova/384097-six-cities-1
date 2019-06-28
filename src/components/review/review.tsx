@@ -7,9 +7,9 @@ interface Props {
 }
 
 const Review: React.FunctionComponent<Props> = ({review}) => {
-  const reviewDate = new Date(review.date).toLocaleDateString(`en-US`, {
-    month: `long`,
-    year: `numeric`,
+  const reviewDate = new Date(review.date).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
   });
 
   return (

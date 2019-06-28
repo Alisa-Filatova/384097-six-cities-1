@@ -8,7 +8,7 @@ configure({adapter: new Adapter()});
 const MockComponent = () => <div />;
 const WrappedMockComponent = withActiveItem(MockComponent);
 
-it(`Test withActiveOfferId hoc`, () => {
+it('Test withActiveOfferId hoc', () => {
   const wrapper = shallow(<WrappedMockComponent />);
 
   expect(wrapper.state().activeOfferId).toEqual(null);

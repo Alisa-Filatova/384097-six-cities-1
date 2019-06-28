@@ -33,12 +33,6 @@ interface Props {
 
 class OfferDetails extends React.PureComponent<Props> {
 
-  constructor(props) {
-    super(props);
-
-    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-  }
-
   componentDidMount() {
     this.props.getReviews();
   }
@@ -48,6 +42,16 @@ class OfferDetails extends React.PureComponent<Props> {
       this.props.getReviews();
     }
   }
+
+  private handleFavoriteClick = () => {
+    const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
+
+    if (isAuthenticated) {
+      onFavoriteClick(offer);
+    } else {
+      history.push(ROUTES.LOGIN);
+    }
+  };
 
   render() {
     const {
@@ -87,7 +91,7 @@ class OfferDetails extends React.PureComponent<Props> {
                 <h1 className="property__name">{offer.title}</h1>
                 <FavoriteButton
                   isActive={offer.isFavorite}
-                  onClick={this._handleFavoriteClick}
+                  onClick={this.handleFavoriteClick}
                   large
                 />
               </div>
@@ -101,10 +105,10 @@ class OfferDetails extends React.PureComponent<Props> {
                   {PlaceType[offer.type.toUpperCase()]}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {offer.bedrooms} {offer.bedrooms === 1 ? `Bedroom` : `Bedrooms`}
+                  {offer.bedrooms} {offer.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max {offer.maxAdults} {offer.maxAdults === 1 ? `adult` : `adults`}
+                  Max {offer.maxAdults} {offer.maxAdults === 1 ? 'adult' : 'adults'}
                 </li>
               </ul>
               <div className="property__price">
@@ -125,7 +129,7 @@ class OfferDetails extends React.PureComponent<Props> {
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div
-                    className={`property__avatar-wrapper ${offer.host.isPro ? `property__avatar-wrapper--pro` : ``} 
+                    className={`property__avatar-wrapper ${offer.host.isPro ? 'property__avatar-wrapper--pro' : ''} 
                     user__avatar-wrapper`}
                   >
                     <img
@@ -176,16 +180,6 @@ class OfferDetails extends React.PureComponent<Props> {
         </div>
       </main>
     );
-  }
-
-  private _handleFavoriteClick() {
-    const {offer, onFavoriteClick, isAuthenticated, history} = this.props;
-
-    if (isAuthenticated) {
-      onFavoriteClick(offer);
-    } else {
-      history.push(ROUTES.LOGIN);
-    }
   }
 }
 

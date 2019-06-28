@@ -3,8 +3,8 @@ import {MemoryRouter as Router} from 'react-router-dom';
 import * as renderer from 'react-test-renderer';
 import AppFooter from './app-footer';
 
-describe(`AppFooter`, () => {
-  it(`renders correctly`, () => {
+describe('AppFooter', () => {
+  it('renders correctly', () => {
     const footer = renderer.create(
         <Router>
           <AppFooter />

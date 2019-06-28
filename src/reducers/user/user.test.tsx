@@ -5,18 +5,18 @@ import ResponseStatus from '../../types/enums/response-status';
 import {userMock} from '../../mocks/user';
 
 const userSignIn = {
-  email: `alicefill@y888.ru`,
-  password: `asd`,
+  email: 'alicefill@y888.ru',
+  password: 'asd',
 };
 
-describe(`Test API works correctly`, () => {
-  it(`API correctly post to /login`, function () {
+describe('Test API works correctly', () => {
+  it('API correctly post to /login', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, dispatch);
     const apiMock = new MockAdapter(api);
     const authStatus = Operation.login(userSignIn);
 
-    apiMock.onPost(`/login`)
+    apiMock.onPost('/login')
       .reply(ResponseStatus.OK, userSignIn);
 
     return authStatus(dispatch, jest.fn(), api)
@@ -32,13 +32,13 @@ describe(`Test API works correctly`, () => {
       });
   });
 
-  it(`API correctly get to /login`, function () {
+  it('API correctly get to /login', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, dispatch);
     const apiMock = new MockAdapter(api);
     const authStatus = Operation.checkAuthorization();
 
-    apiMock.onGet(`/login`)
+    apiMock.onGet('/login')
       .reply(ResponseStatus.OK, userMock);
 
     return authStatus(dispatch, jest.fn(), api)
@@ -55,22 +55,22 @@ describe(`Test API works correctly`, () => {
   });
 });
 
-describe(`Test ActionCreator reducer data`, () => {
-  it(`set isAuthenticated`, () => {
+describe('Test ActionCreator reducer data', () => {
+  it('set isAuthenticated', () => {
     expect(ActionCreator.setAuthorizationStatus(false)).toEqual({
       type: UserAction.AUTHORIZATION_STATUS,
       payload: false,
     });
   });
 
-  it(`set login`, () => {
+  it('set login', () => {
     expect(ActionCreator.login(userSignIn)).toEqual({
       type: UserAction.LOGIN,
       payload: userSignIn,
     });
   });
 
-  it(`set pendingAuthorization status`, () => {
+  it('set pendingAuthorization status', () => {
     expect(ActionCreator.pendingAuthorization(true)).toEqual({
       type: UserAction.PENDING_AUTHORIZATION,
       payload: true,
@@ -78,8 +78,8 @@ describe(`Test ActionCreator reducer data`, () => {
   });
 });
 
-describe(`Test reducer data`, () => {
-  it(`authorization status`, () => {
+describe('Test reducer data', () => {
+  it('authorization status', () => {
     expect(reducer({...initialState}, {
       type: UserAction.AUTHORIZATION_STATUS,
       payload: true,
@@ -90,7 +90,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`load user data`, () => {
+  it('load user data', () => {
     expect(reducer({...initialState}, {
       type: UserAction.LOGIN,
       payload: userMock,
@@ -101,7 +101,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`pendingAuthorization status`, () => {
+  it('pendingAuthorization status', () => {
     expect(reducer({...initialState}, {
       type: UserAction.PENDING_AUTHORIZATION,
       payload: true,

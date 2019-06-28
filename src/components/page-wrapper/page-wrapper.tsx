@@ -9,13 +9,13 @@ interface Props {
 const getPageClassName = (page) => {
   switch (page) {
     case ROUTES.HOME:
-      return `page page--gray page--main`;
+      return 'page page--gray page--main';
 
     case ROUTES.LOGIN:
-      return `page page--gray page--login`;
+      return 'page page--gray page--login';
 
     default:
-      return `page`;
+      return 'page';
   }
 };
 

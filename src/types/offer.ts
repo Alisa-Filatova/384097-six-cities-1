@@ -1,10 +1,6 @@
 export interface City {
   name: string,
-  location: {
-    latitude: number,
-    longitude: number,
-    zoom: number,
-  }
+  location: PlaceLocation,
 }
 
 export interface Host {
@@ -14,7 +10,7 @@ export interface Host {
   avatarUrl: string;
 }
 
-export interface OfferLocation {
+export interface PlaceLocation {
   latitude: number;
   longitude: number;
   zoom: number;
@@ -36,7 +32,7 @@ export interface Offer {
   goods: [string];
   host: Host,
   description: string;
-  location: OfferLocation;
+  location: PlaceLocation;
 }
 
 export interface CityOffersGroup {

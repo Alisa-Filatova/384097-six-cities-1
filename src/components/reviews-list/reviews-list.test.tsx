@@ -4,8 +4,8 @@ import ReviewsList from './reviews-list';
 import {reviewsListMock} from '../../mocks/reviews-list';
 import {Review} from '../../types/user';
 
-describe(`ReviewsList`, () => {
-  it(`renders correctly`, () => {
+describe('ReviewsList', () => {
+  it('renders correctly', () => {
     const form = renderer.create(
         <ReviewsList reviews={reviewsListMock as Review[]} />
     ).toJSON();

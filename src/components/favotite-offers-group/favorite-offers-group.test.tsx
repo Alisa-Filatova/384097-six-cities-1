@@ -4,8 +4,8 @@ import * as renderer from 'react-test-renderer';
 import FavoriteOffersGroup from './favorite-offers-group';
 import {favoriteOffersGroupMock} from '../../mocks/favorite-offers-group';
 
-describe(`FavoriteOffersGroup`, () => {
-  it(`renders correctly`, () => {
+describe('FavoriteOffersGroup', () => {
+  it('renders correctly', () => {
     const group = renderer.create(
         <Router>
           <FavoriteOffersGroup

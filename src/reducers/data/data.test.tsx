@@ -7,14 +7,14 @@ import {offerMock} from '../../mocks/offer';
 import {offersMock} from '../../mocks/offers';
 import {cityMock} from '../../mocks/city';
 
-describe(`Test API works correctly`, () => {
-  it(`make a correct API call to /hotels`, function () {
+describe('Test API works correctly', () => {
+  it('make a correct API call to /hotels', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, jest.fn());
     const apiMock = new MockAdapter(api);
     const offersLoader = Operation.loadOffers();
 
-    apiMock.onGet(`/hotels`)
+    apiMock.onGet('/hotels')
       .reply(ResponseStatus.OK, []);
 
     return offersLoader(dispatch, jest.fn(), api)
@@ -27,13 +27,13 @@ describe(`Test API works correctly`, () => {
       });
   });
 
-  it(`make a correct API call to /favorite`, function () {
+  it('make a correct API call to /favorite', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, jest.fn());
     const apiMock = new MockAdapter(api);
     const favoriteOffersLoader = Operation.loadFavoriteOffers();
 
-    apiMock.onGet(`/favorite`)
+    apiMock.onGet('/favorite')
       .reply(ResponseStatus.OK, offersMock);
 
     return favoriteOffersLoader(dispatch, jest.fn(), api)
@@ -46,13 +46,13 @@ describe(`Test API works correctly`, () => {
       });
   });
 
-  it(`make a correct post to /favorite/:id/:status`, function () {
+  it('make a correct post to /favorite/:id/:status', function () {
     const dispatch = jest.fn();
     const api = createAPI(dispatch, dispatch);
     const apiMock = new MockAdapter(api);
     const toggleFavorite = Operation.toggleFavorite(offerMock);
 
-    apiMock.onPost(`/favorite/1/1`)
+    apiMock.onPost('/favorite/1/1')
       .reply(ResponseStatus.OK, offerMock);
 
     return toggleFavorite(dispatch, jest.fn(), api)
@@ -65,50 +65,50 @@ describe(`Test API works correctly`, () => {
   });
 });
 
-describe(`Test ActionCreator reducer data`, () => {
-  it(`set offersLoaded status`, () => {
+describe('Test ActionCreator reducer data', () => {
+  it('set offersLoaded status', () => {
     expect(ActionCreator.offersLoaded(true)).toEqual({
       payload: true,
       type: DataAction.OFFERS_LOADED,
     });
   });
 
-  it(`set loadOffers`, () => {
+  it('set loadOffers', () => {
     expect(ActionCreator.loadOffers(offerMock)).toEqual({
       payload: offerMock,
       type: DataAction.LOAD_OFFERS,
     });
   });
 
-  it(`set favoriteOffers`, () => {
+  it('set favoriteOffers', () => {
     expect(ActionCreator.loadFavoriteOffers(offerMock)).toEqual({
       payload: offerMock,
       type: DataAction.LOAD_FAVORITE_OFFERS,
     });
   });
 
-  it(`set sortOffers`, () => {
+  it('set sortOffers', () => {
     expect(ActionCreator.sortOffers(SortType.POPULAR)).toEqual({
       payload: SortType.POPULAR,
       type: DataAction.SORT_OFFERS,
     });
   });
 
-  it(`set currentCity`, () => {
+  it('set currentCity', () => {
     expect(ActionCreator.changeCity(cityMock)).toEqual({
       payload: cityMock,
       type: DataAction.CHANGE_CITY,
     });
   });
 
-  it(`add favorite offer`, () => {
+  it('add favorite offer', () => {
     expect(ActionCreator.addFavoriteOffer(offerMock)).toEqual({
       payload: offerMock,
       type: DataAction.ADD_FAVORITE_OFFER,
     });
   });
 
-  it(`remove favorite offer`, () => {
+  it('remove favorite offer', () => {
     expect(ActionCreator.removeFavoriteOffer(offerMock)).toEqual({
       payload: offerMock,
       type: DataAction.REMOVE_FAVORITE_OFFER,
@@ -116,8 +116,8 @@ describe(`Test ActionCreator reducer data`, () => {
   });
 });
 
-describe(`Test reducer data`, () => {
-  it(`get offersLoaded status`, () => {
+describe('Test reducer data', () => {
+  it('get offersLoaded status', () => {
     expect(reducer({...initialState}, {
       type: DataAction.OFFERS_LOADED,
       payload: true,
@@ -130,7 +130,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`load offers`, () => {
+  it('load offers', () => {
     expect(reducer({...initialState}, {
       type: DataAction.LOAD_OFFERS,
       payload: offersMock,
@@ -143,7 +143,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`load favorite offers`, () => {
+  it('load favorite offers', () => {
     expect(reducer({...initialState}, {
       type: DataAction.LOAD_FAVORITE_OFFERS,
       payload: offersMock,
@@ -156,7 +156,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`sorting offers`, () => {
+  it('sorting offers', () => {
     expect(reducer({...initialState}, {
       type: DataAction.SORT_OFFERS,
       payload: SortType.TOP_RATED,
@@ -169,7 +169,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`change currentCity`, () => {
+  it('change currentCity', () => {
     expect(reducer({...initialState}, {
       type: DataAction.CHANGE_CITY,
       payload: cityMock,
@@ -182,7 +182,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`add favorite offer`, () => {
+  it('add favorite offer', () => {
     expect(reducer({...initialState}, {
       type: DataAction.ADD_FAVORITE_OFFER,
       payload: offerMock,
@@ -195,7 +195,7 @@ describe(`Test reducer data`, () => {
     });
   });
 
-  it(`remove favorite offer`, () => {
+  it('remove favorite offer', () => {
     expect(reducer({...initialState}, {
       type: DataAction.REMOVE_FAVORITE_OFFER,
       payload: offerMock,

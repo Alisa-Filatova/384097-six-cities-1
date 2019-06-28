@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 import PageWrapper from './page-wrapper';
 
-describe(`PageWrapper`, () => {
-  it(`renders correctly`, () => {
+describe('PageWrapper', () => {
+  it('renders correctly', () => {
     const wrapper = renderer.create(
-        <PageWrapper location={`/login`}>
+        <PageWrapper location={'/login'}>
           <div>Some page</div>
         </PageWrapper>
     ).toJSON();

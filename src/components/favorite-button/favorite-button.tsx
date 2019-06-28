@@ -19,7 +19,7 @@ interface Props {
 
 const FavoriteButton: React.FunctionComponent<Props> = ({isActive, onClick, large}) => (
   <button
-    className={`place-card__bookmark-button button ${isActive ? `place-card__bookmark-button--active` : ``}`}
+    className={`place-card__bookmark-button button ${isActive ? 'place-card__bookmark-button--active' : ''}`}
     type="button"
     onClick={onClick}
   >

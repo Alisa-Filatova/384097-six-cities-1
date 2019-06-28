@@ -5,8 +5,8 @@ import AppHeader from './app-header';
 import {userMock} from '../../mocks/user';
 import {User} from '../../types/user';
 
-describe(`AppHeader`, () => {
-  it(`renders correctly`, () => {
+describe('AppHeader', () => {
+  it('renders correctly', () => {
     const header = renderer.create(
         <Router>
           <AppHeader isAuthenticated={true} user={userMock as User} />

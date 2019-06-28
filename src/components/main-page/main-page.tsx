@@ -60,7 +60,7 @@ const MainPage: React.FunctionComponent<Props> = (props) => {
   } = props;
 
   return (
-    <main className={`page__main page__main--index ${cityOffers.length === 0 ? `page__main--index-empty` : ``}`}>
+    <main className={`page__main page__main--index ${cityOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
       {!offersLoaded && <Loader />}
       {offersLoaded && cityOffers.length > 0 && (
         <>
@@ -70,12 +70,12 @@ const MainPage: React.FunctionComponent<Props> = (props) => {
             currentCity={currentCity}
             onCityClick={onCityClick}
           />
-          <div className="cities__places-wrapper" style={{height: `100vh`}}>
+          <div className="cities__places-wrapper" style={{height: '100vh'}}>
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {`${cityOffers.length} ${cityOffers.length === 1 ? `place` : `places`} to stay in ${currentCity.name}`}
+                  {`${cityOffers.length} ${cityOffers.length === 1 ? 'place' : 'places'} to stay in ${currentCity.name}`}
                 </b>
                 <SortBy
                   currentItem={sortValue}

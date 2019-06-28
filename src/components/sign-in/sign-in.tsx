@@ -15,17 +15,35 @@ interface Props {
 
 class SignIn extends React.PureComponent<Props> {
 
-  _emailInput: RefObject<HTMLInputElement>;
-  _passwordInput: RefObject<HTMLInputElement>;
+  emailInput: RefObject<HTMLInputElement> = React.createRef();
+  passwordInput: RefObject<HTMLInputElement> = React.createRef();
 
-  constructor(props) {
-    super(props);
+  private handleValidateFields = () => {
+    const email = this.emailInput.current.value;
+    const password = this.passwordInput.current.value;
 
-    this._emailInput = React.createRef();
-    this._passwordInput = React.createRef();
-    this._handleCheckDataLogin = this._handleCheckDataLogin.bind(this);
-    this._handleValidateFields = this._handleValidateFields.bind(this);
-  }
+    if (!EMAIL_REGEXP.test(email)) {
+      this.emailInput.current.style.borderColor = ERROR_COLOR;
+    } else if (!password) {
+      this.passwordInput.current.style.borderColor = ERROR_COLOR;
+    } else {
+      this.emailInput.current.style.borderColor = BASE_COLOR;
+      this.passwordInput.current.style.borderColor = BASE_COLOR;
+    }
+  };
+
+  private handleCheckDataLogin = (event) => {
+    event.preventDefault();
+
+    if (this.emailInput && this.passwordInput) {
+      const email = this.emailInput.current.value;
+      const password = this.passwordInput.current.value;
+
+      if (email && password && EMAIL_REGEXP.test(email)) {
+        this.props.onLogin({email, password});
+      }
+    }
+  };
 
   render() {
     return (
@@ -37,31 +55,31 @@ class SignIn extends React.PureComponent<Props> {
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
-                  ref={this._emailInput}
+                  ref={this.emailInput}
                   className="login__input form__input"
                   type="email"
                   name="email"
                   placeholder="Email"
-                  onChange={this._handleValidateFields}
+                  onChange={this.handleValidateFields}
                   required
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
                 <input
-                  ref={this._passwordInput}
+                  ref={this.passwordInput}
                   className="login__input form__input"
                   type="password"
                   name="password"
                   placeholder="Password"
-                  onChange={this._handleValidateFields}
+                  onChange={this.handleValidateFields}
                   required
                 />
               </div>
               <button
                 className="login__submit form__submit button"
                 type="submit"
-                onClick={this._handleCheckDataLogin}
+                onClick={this.handleCheckDataLogin}
               >
                 Sign in
               </button>
@@ -73,33 +91,6 @@ class SignIn extends React.PureComponent<Props> {
         </div>
       </main>
     );
-  }
-
-  private _handleValidateFields() {
-    const email = this._emailInput.current.value;
-    const password = this._passwordInput.current.value;
-
-    if (!EMAIL_REGEXP.test(email)) {
-      this._emailInput.current.style.borderColor = ERROR_COLOR;
-    } else if (!password) {
-      this._passwordInput.current.style.borderColor = ERROR_COLOR;
-    } else {
-      this._emailInput.current.style.borderColor = BASE_COLOR;
-      this._passwordInput.current.style.borderColor = BASE_COLOR;
-    }
-  }
-
-  private _handleCheckDataLogin(event) {
-    event.preventDefault();
-
-    if (this._emailInput && this._passwordInput) {
-      const email = this._emailInput.current.value;
-      const password = this._passwordInput.current.value;
-
-      if (email && password && EMAIL_REGEXP.test(email)) {
-        this.props.onLogin({email, password});
-      }
-    }
   }
 }
 

@@ -5,8 +5,8 @@ import OffersList from './offers-list';
 import {offersMock} from '../../mocks/offers';
 import {Offer} from '../../types/offer';
 
-describe(`OffersList`, () => {
-  it(`renders correctly`, () => {
+describe('OffersList', () => {
+  it('renders correctly', () => {
     const list = renderer.create(
         <Router>
           <OffersList

@@ -4,8 +4,8 @@ import CitiesList from './cities-list';
 import {cityMock} from '../../mocks/city';
 import {City} from '../../types/offer';
 
-describe(`CitiesList`, () => {
-  it(`renders correctly`, () => {
+describe('CitiesList', () => {
+  it('renders correctly', () => {
     const list = renderer.create(
         <CitiesList
           cities={[cityMock] as City[]}

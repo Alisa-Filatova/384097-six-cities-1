@@ -3,8 +3,8 @@ import * as renderer from 'react-test-renderer';
 import SortBy from './sort-by';
 import SortType from '../../types/enums/sort-type';
 
-describe(`SortBy`, () => {
-  it(`renders correctly`, () => {
+describe('SortBy', () => {
+  it('renders correctly', () => {
     const sortBy = renderer.create(
         <SortBy
           currentItem={SortType.POPULAR}

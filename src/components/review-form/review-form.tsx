@@ -25,7 +25,7 @@ const ReviewForm: React.FunctionComponent<Props> = ({
   saveReviewStatus,
 }) => {
   const errorStyle = {
-    borderColor: saveReviewStatus !== ResponseStatus.OK && saveReviewStatus !== null ? ERROR_COLOR : ``
+    borderColor: saveReviewStatus !== ResponseStatus.OK && saveReviewStatus !== null ? ERROR_COLOR : ''
   };
 
   return (

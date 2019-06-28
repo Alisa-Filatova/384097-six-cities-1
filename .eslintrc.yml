@@ -18,6 +18,7 @@ overrides:
       quotes: 'off'
       # TypeScript's interfaces used instead
       react/prop-types: 'off'
+      no-invalid-this: 'off'
 
 parserOptions:
   ecmaFeatures:
