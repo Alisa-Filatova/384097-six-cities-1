@@ -36,7 +36,7 @@ interface Props {
   isAuthenticated: boolean,
   offer: Offer;
   activeOfferId: number;
-  onImgClick?: () => void;
+  onPlaceClick?: () => void;
   history?: any[],
 }
 
@@ -55,7 +55,7 @@ const MainPage: React.FunctionComponent<Props> = (props) => {
     sortValue,
     isAuthenticated,
     history,
-    onImgClick,
+    onPlaceClick,
     activeOfferId,
   } = props;
 
@@ -86,10 +86,11 @@ const MainPage: React.FunctionComponent<Props> = (props) => {
                 />
                 <OffersList
                   rentalOffers={cityOffers}
-                  onImgClick={onImgClick}
+                  onImgClick={onPlaceClick}
                   history={history}
                   onFavoriteClick={onFavoriteClick}
                   isAuthenticated={isAuthenticated}
+                  activeOfferId={activeOfferId}
                 />
               </section>
               <div className="cities__right-section">
@@ -98,6 +99,7 @@ const MainPage: React.FunctionComponent<Props> = (props) => {
                   currentCity={currentCity}
                   activeOfferId={activeOfferId}
                   cityOffers={cityOffers}
+                  onPinClick={onPlaceClick}
                   zoom
                 />
               </div>
@@ -149,7 +151,7 @@ export default withActiveOfferId(
     withTransformProps(
         (props) => ({
           ...props,
-          onImgClick: props.setActiveId,
+          onPlaceClick: props.setActiveId,
         })
     )(connect(mapStateToProps, mapDispatchToProps)(MainPage))
 );

@@ -74,8 +74,19 @@ class OfferDetails extends React.PureComponent<Props> {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {offer.images.slice(0, MAX_PLACE_IMG).map((image, idx) =>
-                <div className="property__image-wrapper" key={image + idx}>
-                  <img className="property__image" src={image} alt="Photo studio" />
+                <div
+                  className="property__image-wrapper"
+                  key={image + idx}
+                  style={{
+                    backgroundImage: `url(/img/room.jpg)`,
+                    display: 'inline-block',
+                  }}
+                >
+                  <img
+                    className="property__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
                 </div>
               )}
             </div>

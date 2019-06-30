@@ -11,6 +11,7 @@ interface Props {
   prefix?: string;
   small?: boolean;
   history?: any[];
+  activeOfferId?: number;
 }
 
 const OffersList = (props: Props) => {
@@ -23,6 +24,7 @@ const OffersList = (props: Props) => {
     history,
     onFavoriteClick,
     isAuthenticated,
+    activeOfferId,
   } = props;
 
   return (
@@ -37,6 +39,7 @@ const OffersList = (props: Props) => {
           prefix={prefix}
           small={small}
           history={history}
+          activeOffer={activeOfferId}
         />
       ))}
     </div>

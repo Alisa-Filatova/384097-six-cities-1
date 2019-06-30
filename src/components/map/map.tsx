@@ -18,6 +18,7 @@ interface Props {
   cityOffers: Offer[];
   zoom?: boolean;
   className?: string;
+  onPinClick?: (placeId: number) => void;
 }
 
 class Map extends React.PureComponent<Props> {
@@ -57,6 +58,32 @@ class Map extends React.PureComponent<Props> {
   componentWillUnmount() {
     this.map.remove();
   }
+
+  private handlePinClick = (placeId: number) => {
+    if (this.props.onPinClick) {
+      this.props.onPinClick(placeId);
+
+      const currentOffer = this.props.cityOffers.filter((offer) => offer.id === placeId)[0];
+
+      const coordinates = [
+        currentOffer.location.latitude,
+        currentOffer.location.longitude,
+      ];
+
+      leaflet.popup()
+        .setLatLng(coordinates)
+        .setContent(
+            `<img 
+                src="${currentOffer.previewImage}" 
+                style="height: 40px"
+                alt="${currentOffer.title}" 
+              /><br>
+              <b>${currentOffer.title}</b><br>
+              <b>&euro;${currentOffer.price} / night</b>`
+        )
+        .openOn(this.map);
+    }
+  };
 
   render() {
     const {className} = this.props;
@@ -105,11 +132,14 @@ class Map extends React.PureComponent<Props> {
 
     const options = {
       icon: activeOfferId === place.id ? activePin : pin,
+      riseOnHover: true,
+      title: place.title,
     };
 
     leaflet
       .marker(coordinates, options)
-      .addTo(this.markersLayer);
+      .addTo(this.markersLayer)
+      .on('click', () => this.handlePinClick(place.id));
   }
 }
 

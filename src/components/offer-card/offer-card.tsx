@@ -20,6 +20,7 @@ interface Props {
   offer: Offer;
   isAuthenticated: boolean;
   onFavoriteClick: (Offer) => void;
+  activeOffer?: number;
   history?: any[];
   onImgClick?: (id: number) => void;
   prefix?: string;
@@ -56,10 +57,13 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
   };
 
   render() {
-    const {offer, prefix, small, onImgClick} = this.props;
+    const {offer, prefix, small, onImgClick, activeOffer} = this.props;
 
     return (
-      <article className={`${prefix}__place-card ${prefix}__card place-card`}>
+      <article
+        className={`${prefix}__place-card ${prefix}__card place-card`}
+        style={{opacity: activeOffer === offer.id ? 0.6 : 1}}
+      >
         {offer.isPremium && (
           <div className="place-card__mark">
             <span>Premium</span>
@@ -68,7 +72,12 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
         <div className={`${prefix}__image-wrapper place-card__image-wrapper`}>
           <a
             onClick={this.handleImgClick}
-            style={{cursor: onImgClick ? 'pointer' : 'default'}}
+            style={{
+              cursor: (onImgClick ? 'pointer' : 'default'),
+              backgroundImage: `url(/img/${small ? 'room-small' : 'room'}.jpg)`,
+              display: 'inline-block',
+              borderRadius: '3px',
+            }}
           >
             <img
               className="place-card__image"
@@ -76,6 +85,7 @@ class OfferCard extends React.PureComponent<Props & DefaultProps> {
               width={small ? imageSize.SMALL.width : imageSize.DEFAULT.width}
               height={small ? imageSize.SMALL.height : imageSize.DEFAULT.height}
               alt={offer.title}
+              style={{height: small ? imageSize.SMALL.height : imageSize.DEFAULT.height}}
             />
           </a>
         </div>
