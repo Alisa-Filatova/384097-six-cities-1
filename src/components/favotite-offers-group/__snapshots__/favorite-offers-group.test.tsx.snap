@@ -34,6 +34,11 @@ exports[`FavoriteOffersGroup renders correctly 1`] = `
     >
       <article
         className="favorites__place-card favorites__card place-card"
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
       >
         <div
           className="favorites__image-wrapper place-card__image-wrapper"
@@ -42,7 +47,10 @@ exports[`FavoriteOffersGroup renders correctly 1`] = `
             onClick={[Function]}
             style={
               Object {
+                "backgroundImage": "url(/img/room-small.jpg)",
+                "borderRadius": "3px",
                 "cursor": "default",
+                "display": "inline-block",
               }
             }
           >
@@ -51,6 +59,11 @@ exports[`FavoriteOffersGroup renders correctly 1`] = `
               className="place-card__image"
               height={110}
               src="img/1.png"
+              style={
+                Object {
+                  "height": 110,
+                }
+              }
               width={150}
             />
           </a>

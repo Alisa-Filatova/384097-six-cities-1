@@ -3,6 +3,11 @@
 exports[`OfferCard renders correctly 1`] = `
 <article
   className="cities__place-card cities__card place-card"
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
 >
   <div
     className="cities__image-wrapper place-card__image-wrapper"
@@ -11,7 +16,10 @@ exports[`OfferCard renders correctly 1`] = `
       onClick={[Function]}
       style={
         Object {
+          "backgroundImage": "url(/img/room.jpg)",
+          "borderRadius": "3px",
           "cursor": "pointer",
+          "display": "inline-block",
         }
       }
     >
@@ -20,6 +28,11 @@ exports[`OfferCard renders correctly 1`] = `
         className="place-card__image"
         height={200}
         src="img/1.png"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
         width={260}
       />
     </a>

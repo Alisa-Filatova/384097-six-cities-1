@@ -16,6 +16,12 @@ exports[`OfferDetails renders correctly 1`] = `
         <div
           className="property__image-wrapper"
           key="img/1.png0"
+          style={
+            Object {
+              "backgroundImage": "url(/img/room.jpg)",
+              "display": "inline-block",
+            }
+          }
         >
           <img
             alt="Photo studio"
@@ -26,6 +32,12 @@ exports[`OfferDetails renders correctly 1`] = `
         <div
           className="property__image-wrapper"
           key="img/2.png1"
+          style={
+            Object {
+              "backgroundImage": "url(/img/room.jpg)",
+              "display": "inline-block",
+            }
+          }
         >
           <img
             alt="Photo studio"
